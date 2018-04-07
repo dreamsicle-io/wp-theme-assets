@@ -1,0 +1,46 @@
+{
+  "name": "wpmdc",
+  "version": "0.0.1",
+  "description": "WordPress x Material Design Components.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreamsicle-io/wpmdc.git"
+  },
+  "keywords": [],
+  "author": "Dreamsicle",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dreamsicle-io/wpmdc/issues"
+  },
+  "homepage": "https://github.com/dreamsicle-io/wpmdc",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^15.2.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-debug": "^3.2.0",
+    "gulp-eslint": "^4.0.2",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sass-lint": "^1.3.4",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-wp-pot": "^2.2.0",
+    "material-components-web": "^0.34.1",
+    "normalize.css": "^8.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }, 
+  "scripts": {
+    "start": "node ./node_modules/gulp/bin/gulp",
+    "build": "node ./node_modules/gulp/bin/gulp build",
+    "watch": "node ./node_modules/gulp/bin/gulp watch",
+    "clean": "node ./node_modules/gulp/bin/gulp clean"
+  }
+}
