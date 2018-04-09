@@ -20,7 +20,7 @@ const sassLint = require('gulp-sass-lint');
 const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 /**
- * Build Sass.
+ * Build SASS.
  *
  * Process:
  *	 1. Imports all SASS modules to file.
@@ -314,6 +314,21 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
 gulp.task('build', gulp.series('build:package', 'build:sass', 'build:js', 'build:pot', 'build:images'));
 
 /**
+ * Clean package Files.
+ *
+ * Process:
+ *	 1. Deletes the default style.css file containing generated theme header.
+ *	 2. Deletes the README.md file containing generated documentation.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:package`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
+ */
+gulp.task('clean:package', function packageCleaner(done) {
+	return del(['./README.md', 'style.css'], done());
+});
+
+/**
  * Clean build CSS.
  *
  * Process:
@@ -322,7 +337,6 @@ gulp.task('build', gulp.series('build:package', 'build:sass', 'build:js', 'build
  * Run:
  *	 - Global command: `gulp clean:css`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
- *	 - NPM script: `npm run clean:css`.
  */
 gulp.task('clean:css', function cssCleaner(done) {
 	return del(['./assets/dist/css'], done());
@@ -369,7 +383,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 - NPM script: `npm run clean`.
  */
 gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './languages'], done());
+	return del(['./assets/dist', './languages', './README.md', 'style.css'], done());
 });
 
 /**
@@ -430,7 +444,7 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  * Watch source files and build on change.
  *
  * Process:
- *	 1. Runs the `build:sass` task when the source Sass changes.
+ *	 1. Runs the `build:sass` task when the source SASS changes.
  *	 2. Runs the `build:js` task when the source JS changes.
  *	 3. Runs the `build:pot` task when the source php changes.
  *	 3. Runs the `build:images` task when the source images change.
