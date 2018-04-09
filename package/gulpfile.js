@@ -311,7 +311,7 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build`.
  *	 - NPM script: `npm run build`.
  */
-gulp.task('build', gulp.series('build:package', 'build:sass', 'build:js', 'build:pot', 'build:images'));
+gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images'));
 
 /**
  * Clean package Files.
@@ -456,9 +456,9 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json'], gulp.series('build:package'));
+	gulp.watch(['./**/*.php', '!./node_modules/**', '!./assets/**', '!./languages/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
-	gulp.watch(['./**/*.php'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
 });
 
