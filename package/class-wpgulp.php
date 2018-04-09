@@ -16,9 +16,11 @@ class WPGulp {
 	}
 
 	public function init() {
-		add_action( 'enqueue_scripts', array( $this, 'enqueue_site_assets') );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets') );
-		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_assets') );
+		add_action( 'enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ), 10 );
+		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_login_assets' ), 10 );
+		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_assets' ), 10 );
+		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_customizer_controls_assets' ), 10 );
 	}
 
 	public static function enqueue_site_assets() {
@@ -53,11 +55,49 @@ class WPGulp {
 		);
 	}
 
-	public static function enqueue_customizer_assets() {
+	public static function enqueue_login_assets() {
+		wp_enqueue_style( 
+			$this->theme_textdomain . '-login', 
+			$this->assets_directory_uri . '/css/login.min.css', 
+			array(), 
+			$this->theme_version 
+		);
 		wp_enqueue_script( 
-			$this->theme_textdomain . '-customizer', 
-			$this->assets_directory_uri . '/js/customizer.min.js', 
-			array( $this->theme_textdomain ), 
+			$this->theme_textdomain . '-login', 
+			$this->assets_directory_uri . '/js/login.min.js', 
+			array(), 
+			$this->theme_version, 
+			true 
+		);
+	}
+
+	public static function enqueue_customizer_preview_assets() {
+		wp_enqueue_style( 
+			$this->theme_textdomain . '-customizer-preview', 
+			$this->assets_directory_uri . '/css/customizer-preview.min.css', 
+			array(), 
+			$this->theme_version 
+		);
+		wp_enqueue_script( 
+			$this->theme_textdomain . '-customizer-preview', 
+			$this->assets_directory_uri . '/js/customizer-preview.min.js', 
+			array( 'jquery', 'customize-preview' ), 
+			$this->theme_version, 
+			true 
+		);
+	}
+
+	public static function enqueue_customizer_controls_assets() {
+		wp_enqueue_style( 
+			$this->theme_textdomain . '-customizer-controls', 
+			$this->assets_directory_uri . '/css/customizer-controls.min.css', 
+			array(), 
+			$this->theme_version 
+		);
+		wp_enqueue_script( 
+			$this->theme_textdomain . '-customizer-controls', 
+			$this->assets_directory_uri . '/js/customizer-controls.min.js', 
+			array( 'jquery', 'customize-controls' ), 
 			$this->theme_version, 
 			true 
 		);
