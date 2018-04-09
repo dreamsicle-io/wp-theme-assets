@@ -22,7 +22,7 @@ root
 ―――― ―――― ―――― ―――― admin.js
 ―――― ―――― ―――― ―――― customizer.js
 ―――― ―――― ―――― /sass
-―――― ―――― ―――― ―――― modules
+―――― ―――― ―――― ―――― /modules
 ―――― ―――― ―――― ―――― site.scss
 ―――― ―――― ―――― ―――― admin.scss
 ―――― ―――― ―――― ―――― editor.scss
