@@ -57,7 +57,7 @@ class WPGulp {
 		wp_enqueue_script( 
 			$this->theme_textdomain . '-customizer', 
 			$this->assets_directory_uri . '/js/customizer.min.js', 
-			array(), 
+			array( $this->theme_textdomain ), 
 			$this->theme_version, 
 			true 
 		);
