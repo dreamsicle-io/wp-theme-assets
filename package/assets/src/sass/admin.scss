@@ -1,0 +1,12 @@
+@import './admin/variables';
+@import './admin/mixins';
+
+html {
+	@include test-mixin;
+	z-index: $test-variable;
+
+	body {
+		z-index: $test-variable;
+	}
+
+}
