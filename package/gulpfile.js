@@ -109,7 +109,7 @@ gulp.task('build:js:admin', function adminJsBuilder() {
 });
 
 /**
- * Build Customizer JS.
+ * Build Login JS.
  *
  * Process:
  *	 1. Imports JS modules to file. 
@@ -121,21 +121,81 @@ gulp.task('build:js:admin', function adminJsBuilder() {
  *	 7. Logs created files to the console.
  *
  * Run:
- *	 - Global command: `gulp build:js:customizer`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:customizer`.
+ *	 - Global command: `gulp build:js:login`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:login`.
  */
-gulp.task('build:js:customizer', function customizerJsBuilder() {
-	const bundler = browserify('./assets/src/js/customizer.js', { debug: true }).transform(babel, { presets: ['env'] });
+gulp.task('build:js:login', function loginJsBuilder() {
+	const bundler = browserify('./assets/src/js/login.js', { debug: true }).transform(babel, { presets: ['env'] });
 	return bundler.bundle()
 		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('customizer.js'))
+		.pipe(source('login.js'))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:customizer' }));
+		.pipe(debug({ title: 'build:js:login' }));
+});
+
+/**
+ * Build Customizer Preview JS.
+ *
+ * Process:
+ *	 1. Imports JS modules to file. 
+ *	 2. Transpiles the file with Babel.
+ *	 3. Minifies the file.
+ *	 4. Renames the compiled file to *.min.js.
+ *	 5. Writes sourcemaps to initial content.
+ *	 6. Writes created files to the build directory.
+ *	 7. Logs created files to the console.
+ *
+ * Run:
+ *	 - Global command: `gulp build:js:customizer-preview`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:customizer-preview`.
+ */
+gulp.task('build:js:customizer-preview', function customizerPreviewJsBuilder() {
+	const bundler = browserify('./assets/src/js/customizer-preview.js', { debug: true }).transform(babel, { presets: ['env'] });
+	return bundler.bundle()
+		.on('error', function(err) { console.error(err); this.emit('end'); })
+		.pipe(source('customizer-preview.js'))
+		.pipe(buffer())
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('./assets/dist/js'))
+		.pipe(debug({ title: 'build:js:customizer-preview' }));
+});
+
+/**
+ * Build Customizer Controls JS.
+ *
+ * Process:
+ *	 1. Imports JS modules to file. 
+ *	 2. Transpiles the file with Babel.
+ *	 3. Minifies the file.
+ *	 4. Renames the compiled file to *.min.js.
+ *	 5. Writes sourcemaps to initial content.
+ *	 6. Writes created files to the build directory.
+ *	 7. Logs created files to the console.
+ *
+ * Run:
+ *	 - Global command: `gulp build:js:customizer-controls`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:customizer-controls`.
+ */
+gulp.task('build:js:customizer-controls', function customizerControlsJsBuilder() {
+	const bundler = browserify('./assets/src/js/customizer-controls.js', { debug: true }).transform(babel, { presets: ['env'] });
+	return bundler.bundle()
+		.on('error', function(err) { console.error(err); this.emit('end'); })
+		.pipe(source('customizer-controls.js'))
+		.pipe(buffer())
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('./assets/dist/js'))
+		.pipe(debug({ title: 'build:js:customizer-controls' }));
 });
 
 /**
@@ -144,13 +204,14 @@ gulp.task('build:js:customizer', function customizerJsBuilder() {
  * Process:
  *	 1. Runs the `build:js:site` task. 
  *	 2. Runs the `build:js:admin` task. 
- *	 3. Runs the `build:js:customizer` task. 
+ *	 3. Runs the `build:js:customizer-preview` task. 
+ *	 3. Runs the `build:js:customizer-controls` task. 
  *
  * Run:
  *	 - Global command: `gulp build:js`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js`.
  */
-gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:customizer'));
+gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:login', 'build:js:customizer-preview', 'build:js:customizer-controls'));
 
 /**
  * Build localization files for translations.
