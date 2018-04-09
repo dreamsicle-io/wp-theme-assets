@@ -2,24 +2,42 @@
   "name": "wpgulp",
   "version": "0.0.1",
   "description": "A simple, zero configuration Gulp build & lint setup for developing modern WordPress themes.",
-  "main": "",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dreamsicle-io/wpgulp.git"
   },
-  "keywords": [],
-  "author": "Dreamsicle",
+  "keywords": [
+    "translation-ready"
+  ],
+  "author": {
+    "name": "Dreamsicle",
+    "email": "hello@dreamsicle.io",
+    "url": "http://www.dreamsicle.io"
+  },
+  "contributors": [
+    {
+      "name": "Noah Mason",
+      "email": "noah@dreamsicle.io",
+      "url": "http://www.dreamsicle.io"
+    }
+  ],
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/dreamsicle-io/wpgulp/issues"
   },
   "homepage": "https://github.com/dreamsicle-io/wpgulp",
+  "wordpress": {
+    "versionRequired": "4.9.4",
+    "versionTested": "4.9.4"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "browserify": "^15.2.0",
     "del": "^3.0.0",
+    "eslint-plugin-json": "^1.2.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-debug": "^3.2.0",
@@ -31,9 +49,11 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-wp-pot": "^2.2.0",
+    "material-components-web": "^0.34.1",
+    "normalize.css": "^8.0.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
-  }, 
+  },
   "scripts": {
     "start": "node ./node_modules/gulp/bin/gulp",
     "build": "node ./node_modules/gulp/bin/gulp build",
