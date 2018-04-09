@@ -182,8 +182,8 @@ gulp.task('build:pot', function potBuilder() {
  *	 4. Logs created files to the console.
  *
  * Run:
- *	 - Global command: `gulp build:pot`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:pot`.
+ *	 - Global command: `gulp build:images`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:images`.
  */
 gulp.task('build:images', function imageBuilder() {
 	return gulp.src(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'])
