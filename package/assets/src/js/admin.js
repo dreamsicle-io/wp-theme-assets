@@ -1,5 +1,5 @@
 
-import TestModule from './admin/test-module';
+import TestModule from './modules/test-module';
 
 document.addEventListener('DOMContentLoaded', () => {
 	TestModule.log();

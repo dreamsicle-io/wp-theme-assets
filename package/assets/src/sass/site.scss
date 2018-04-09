@@ -1,12 +1,4 @@
-@import './site/variables';
-@import './site/mixins';
+@import './variables';
+@import './mixins';
 
-html {
-	@include test-mixin;
-	z-index: $test-variable;
-
-	body {
-		z-index: $test-variable;
-	}
-
-}
+@import './modules/test-module';
