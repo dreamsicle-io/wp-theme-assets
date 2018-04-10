@@ -183,7 +183,7 @@ root
 
 ## Testing Build
 
-Included is an [assets structure boilerplate](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src) located at `assets/src` directory comes prepopulated with all expected `.js` and `.scss` files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
+Included is an [assets structure boilerplate](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src), located at `assets/src` directory comes prepopulated with all expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js) and [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass) files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
 
 **Test assets included by default:** 
 
