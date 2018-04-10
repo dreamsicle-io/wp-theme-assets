@@ -1,6 +1,6 @@
 <?php 
 
-class WPGulp {
+class WPTA {
 
 	public $theme_textdomain;
 
