@@ -195,4 +195,9 @@ root
 
 ## Testing Build
 
-This package's `assets/src` directory comes prepopulated with all expected `.js` and `.scss` files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly.
+This package's `assets/src` directory comes prepopulated with all expected `.js` and `.scss` files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
+
+* A test `.scss` module, mixin, and variable are included to test SASS, Sourcemaps, Autoprefixer, Minification, SASS Lint, etc.
+* A test `.js` module to test Babel (ES6), Browserify, Uglify, Sourcemaps, ESLint, etc. 
+* A test `.svg` file is included to test image optimizations. 
+* A method called `test_translations()` is included on the `WP_Theme_Assets` class to test `.pot` generation through various WordPress language localization functions like `__()`, `_x()`, and `_nx()`.
