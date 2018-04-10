@@ -1,5 +1,6 @@
 'use-strict';
 
+const pkg = require('./package.json');
 const fs = require('fs');
 const del = require('del');
 const browserify = require('browserify');
@@ -17,7 +18,6 @@ const rename = require('gulp-rename');
 const wpPot = require('gulp-wp-pot');
 const eslint = require('gulp-eslint');
 const sassLint = require('gulp-sass-lint');
-const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 /**
  * Build SASS.
@@ -320,7 +320,7 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  */
 gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
-	if (pkg.contributors.length > 0) {
+	if (pkg.contributors && pkg.contributors.length > 0) {
 		pkg.contributors.map(function(contributor, i) {
 			contributorNames.push(contributor.name);
 		});
