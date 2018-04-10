@@ -319,14 +319,12 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme`.
  */
 gulp.task('build:package:readme', function packageReadmeBuilder(done) {
-	var contributors = pkg.author ? [pkg.author] : [];
-	pkg.contributors.map(function(contributor, i) { 
-		contributors.push(contributor);
-	});
-	var contributorNames = [];
-	contributors.map(function(contributor, i) {
-		contributorNames.push(contributor.name)
-	});
+	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
+	if (pkg.contributors.length > 0) {
+		pkg.contributors.map(function(contributor, i) {
+			contributorNames.push(contributor.name);
+		});
+	}
 	const data = {
 		'Contributors': (contributorNames.length > 0) ? contributorNames.join(', ') : '', 
 		'Version': pkg.version || '', 
