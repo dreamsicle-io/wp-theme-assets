@@ -16,11 +16,19 @@ class WPGulp {
 	}
 
 	public function init() {
+		add_action( 'after_setup_theme', array( $this, 'load_textdomain' ), 10 );
 		add_action( 'enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ), 10 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_login_assets' ), 10 );
 		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_assets' ), 10 );
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_customizer_controls_assets' ), 10 );
+	}
+
+	public function load_textdomain() {
+		load_theme_textdomain( 
+			$this->theme_textdomain, 
+			$this->assets_directory_uri . '/languages' 
+		);
 	}
 
 	public static function enqueue_site_assets() {
