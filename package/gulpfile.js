@@ -456,7 +456,7 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 - NPM script: `npm run clean`.
  */
 gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './README.md', 'style.css'], done);
+	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'], done);
 });
 
 /**
