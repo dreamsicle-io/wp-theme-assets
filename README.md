@@ -187,6 +187,6 @@ This package's `assets/src` directory comes prepopulated with all expected `.js`
 
 **Test assets included by default:** 
 
-* A test `.scss` module to test SASS processing.
-* A test `.js` module to test JavaScript processing. 
+* A test `test-module.scss` module to test SASS processing.
+* A test `test-module.js` module to test JavaScript processing. 
 * A `WP_Theme_Assets::test_translations()` method to test language processing.
