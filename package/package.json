@@ -1,11 +1,11 @@
 {
-  "name": "wpta",
+  "name": "wp-theme-assets",
   "version": "0.0.1",
   "description": "A simple, zero configuration Gulp build & lint setup for developing modern WordPress themes.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dreamsicle-io/wpta.git"
+    "url": "git+https://github.com/dreamsicle-io/wp-theme-assets.git"
   },
   "keywords": [
     "translation-ready"
@@ -24,9 +24,9 @@
   ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/dreamsicle-io/wpta/issues"
+    "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"
   },
-  "homepage": "https://github.com/dreamsicle-io/wpta",
+  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets",
   "wordpress": {
     "versionRequired": "4.9.4",
     "versionTested": "4.9.4"
