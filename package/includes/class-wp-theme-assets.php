@@ -122,10 +122,10 @@ class WP_Theme_Assets {
 	public static function test_translation() {
 		return sprintf(
 			/* translators: 1: __(), 2: esc_html__(), 3: _nx(). */
-			_x( '%1$s %2$s %3$s', 'test string _x context message', $this->theme_textdomain ), 
+			_x( '%1$s %2$s %3$s', 'test string _x context message', 'wp-theme-assets' ), 
 			__( 'Test String', $this->theme_textdomain ), 
-			esc_html__( 'Test String (HTML escaped)', $this->theme_textdomain ), 
-			_nx( '%s Item', '%s Items', 5, 'test string _nx context message', $this->theme_textdomain )
+			esc_html__( 'Test String (HTML escaped)', 'wp-theme-assets' ), 
+			_nx( '%s Item', '%s Items', 5, 'test string _nx context message', 'wp-theme-assets' )
 		);
 	}
 
