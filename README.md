@@ -20,13 +20,17 @@ root
 ―――― ―――― ―――― ―――― /modules
 ―――― ―――― ―――― ―――― site.js
 ―――― ―――― ―――― ―――― admin.js
-―――― ―――― ―――― ―――― customizer.js
+―――― ―――― ―――― ―――― customizer-preview.js
+―――― ―――― ―――― ―――― customizer-controls.js
 ―――― ―――― ―――― /sass
 ―――― ―――― ―――― ―――― /modules
 ―――― ―――― ―――― ―――― site.scss
 ―――― ―――― ―――― ―――― admin.scss
 ―――― ―――― ―――― ―――― editor.scss
+―――― ―――― ―――― ―――― customizer-preview.scss
+―――― ―――― ―――― ―――― customizer-controls.scss
 ―――― ―――― ―――― /images
+―――― ―――― ―――― ―――― test-icon.svg
 ```
 
 ### Build Files
@@ -40,8 +44,10 @@ root
 ―――― ―――― ―――― ―――― site.min.js.map
 ―――― ―――― ―――― ―――― admin.min.js
 ―――― ―――― ―――― ―――― admin.min.js.map
-―――― ―――― ―――― ―――― customizer.min.js
-―――― ―――― ―――― ―――― customizer.min.js.map
+―――― ―――― ―――― ―――― customizer-preview.min.js
+―――― ―――― ―――― ―――― customizer-preview.min.js.map
+―――― ―――― ―――― ―――― customizer-controls.min.js
+―――― ―――― ―――― ―――― customizer-controls.min.js.map
 ―――― ―――― ―――― /css
 ―――― ―――― ―――― ―――― site.min.css
 ―――― ―――― ―――― ―――― site.min.css.map
@@ -49,7 +55,12 @@ root
 ―――― ―――― ―――― ―――― admin.min.css.map
 ―――― ―――― ―――― ―――― editor.min.css
 ―――― ―――― ―――― ―――― editor.min.css.map
+―――― ―――― ―――― ―――― customizer-preview.min.css
+―――― ―――― ―――― ―――― customizer-preview.min.css.map
+―――― ―――― ―――― ―――― customizer-controls.min.css
+―――― ―――― ―――― ―――― customizer-controls.min.css.map
 ―――― ―――― ―――― /images
+―――― ―――― ―――― ―――― test-icon.svg (optimized but not renamed)
 ―――― /languages
 ―――― ―――― {textdomain}.pot
 ―――― README.md
