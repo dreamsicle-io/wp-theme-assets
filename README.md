@@ -74,51 +74,51 @@ The included development commands, found on the `scripts` key in the `package.js
 
 ### Install
 
+This command will install all dependencies listed on the `devDependencies` key in the `package.json` file. This will generate a `package-lock.json` file and a `node_modules` directory in the theme root, both of which are ignored in the `.gitignore` file by default.
+
 ```shell
 npm install
 ```
 
-This command will install all dependencies listed on the `devDependencies` key in the `package.json` file. This will generate a `package-lock.json` file and a `node_modules` directory in the theme root, both of which are ignored in the `.gitignore` file by default.
-
 ### Start
+
+This command will start the `default` task, which runs the `lint`, `build`, and `watch` tasks in series.
 
 ```shell
 npm start
 ```
 
-This command will start the `default` task, which runs the `lint`, `build`, and `watch` tasks in series.
-
 ### Build
+
+This command will start the `build` task, which runs the `build:package`, `build:pot`, `build:sass`, `build:js`, and `build:images` tasks in series.
 
 ```shell
 npm run build
 ```
 
-This command will start the `build` task, which runs the `build:package`, `build:pot`, `build:sass`, `build:js`, and `build:images` tasks in series.
-
 ### Watch
+
+This command will start the `watch` task, which watches for changes in source files and reruns relevant building and linting tasks when changes are detected.
 
 ```shell
 npm run watch
 ```
 
-This command will start the `watch` task, which watches for changes in source files and reruns relevant building and linting tasks when changes are detected.
-
 ### Clean
+
+This command will start the `clean` task, which will delete all built assets including the `assets/dist` directory, as well as `languages/{textdomain}.pot`, `REAMDE.md`, and `style.css`.
 
 ```shell
 npm run clean
 ```
 
-This command will start the `clean` task, which will delete all built assets including the `assets/dist` directory, as well as `languages/{textdomain}.pot`, `REAMDE.md`, and `style.css`.
-
 ### Lint
+
+This command will start the `lint` task, which will lint SASS files in `src/sass` according to `.sasslintrc` file; and JS files in `src/js` according to the `.eslintrc` file.
 
 ```shell
 npm run lint
 ```
-
-This command will start the `lint` task, which will lint SASS files in `src/sass` according to `.sasslintrc` file; and JS files in `src/js` according to the `.eslintrc` file.
 
 ## File structure 
 
