@@ -59,7 +59,7 @@ The included `WP_Theme_Assets` class, found at `includes/class-wp-theme-assets.p
 **Place the following snippet in the theme's `functions.php` file:**
 
 ```php
-require get_template_directory_uri() . '/includes/class-wp-theme-assets.php' );
+require get_template_directory_uri() . '/includes/class-wp-theme-assets.php';
 
 function wp_theme_assets_init() {
     WP_Theme_Assets::init();
