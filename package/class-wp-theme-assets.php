@@ -8,11 +8,14 @@ class WP_Theme_Assets {
 
 	public $assets_directory_uri;
 
+	public $languages_directory_uri;
+
 	function __construct() {
 		$theme = wp_get_theme();
 		$this->theme_textdomain = $theme->get('TextDomain');
 		$this->theme_version = $theme->get('Version');
 		$this->assets_directory_uri = get_template_directory_uri() . '/assets/dist';
+		$this->languages_directory_uri = get_template_directory_uri() . '/languages';
 	}
 
 	public function init() {
@@ -28,7 +31,7 @@ class WP_Theme_Assets {
 	public function load_languages() {
 		load_theme_textdomain( 
 			$this->theme_textdomain, 
-			$this->assets_directory_uri . '/languages' 
+			$this->languages_directory_uri 
 		);
 	}
 
@@ -113,6 +116,16 @@ class WP_Theme_Assets {
 			array( 'jquery', 'customize-controls' ), 
 			$this->theme_version, 
 			true 
+		);
+	}
+
+	public static function test_translation() {
+		return sprintf(
+			/* translators: 1: __(), 2: esc_html__(), 3: _nx(). */
+			_x( '%1$s %2$s %3$s', 'test string _x context message', $this->theme_textdomain ), 
+			__( 'Test String', $this->theme_textdomain ), 
+			esc_html__( 'Test String (HTML escaped)', $this->theme_textdomain ), 
+			_nx( '%s Item', '%s Items', 5, 'test string _nx context message', $this->theme_textdomain )
 		);
 	}
 

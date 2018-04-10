@@ -228,9 +228,9 @@ gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:l
  */
 gulp.task('build:pot', function potBuilder() {
 	return gulp.src(['./**/*.php'])
-		.pipe(wpPot({ domain: 'wpmdc' })
+		.pipe(wpPot({ domain: pkg.name })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
-		.pipe(gulp.dest('./assets/dist/languages/wpmdc.pot'))
+		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
 		.pipe(debug({ title: 'build:pot' }));
 });
 
@@ -426,7 +426,7 @@ gulp.task('clean:js', function jsCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
  */
 gulp.task('clean:pot', function potCleaner(done) {
-	return del(['./assets/dist/languages'], done);
+	return del(['./languages/*.pot'], done);
 });
 
 /**
