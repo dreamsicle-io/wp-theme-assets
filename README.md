@@ -187,6 +187,8 @@ This package's `assets/src` directory comes prepopulated with all expected `.js`
 
 **Test assets included by default:** 
 
-* A test `test-module.scss` module to test SASS processing.
-* A test `test-module.js` module to test JavaScript processing. 
-* A `WP_Theme_Assets::test_translations()` method to test language processing.
+* All expected [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass).
+* All expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js).
+* A [test SASS module](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src/sass/modules/_test-module.scss) `test-module.scss` to test SASS processing.
+* A [test JS module](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src/js/modules/test-module.js) `test-module.js` to test JavaScript processing. 
+* A [method](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/includes/class-wp-theme-assets.php) `WP_Theme_Assets::test_translations()` to test language processing.
