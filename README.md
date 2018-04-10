@@ -1,4 +1,4 @@
-# WPGulp
+# WordPress Theme Assets
 
 A simple, zero configuration Gulp build &amp; lint setup for developing modern WordPress themes. This setup will build and optimize SASS, JavaScript, language localizations, and images. 
 
