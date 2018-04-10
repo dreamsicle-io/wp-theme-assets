@@ -10,11 +10,11 @@ The package also includes a php class named `WP_Theme_Assets` in `includes/class
 
 In order to give complete control of the entire setup, this package comes "ejected," and is not abstracted into an npm module. This means that the theme has full control over all dependencies, scripts, Gulp tasks, and linting configurations. This, however, means that using this tool requires downloading it and dropping some files into a WordPress theme's root directory. 
 
-### Download
+### 1. Download
 
 Download the latest release as a `.zip` file and extract the contents locally.
 
-### Include Files
+### 2. Include Files
 
 Place all the files and directories inside the `/package` directory into the theme's root.
 
@@ -22,7 +22,7 @@ Place all the files and directories inside the `/package` directory into the the
 
 > **Note about licenses:** If the theme already has a `LICENSE` file, ignore the `LICENSE` from this package. If the theme's license is not GPL-3.0, make sure the correct license is listed in `package.json`.
 
-### Install Dependencies
+### 3. Install Dependencies
 
 Once the files have been included in the theme, it's time to install the dependencies.
 
@@ -40,7 +40,7 @@ npm install
 
 > **Note:** This will install all dependencies and log the command's progress. On some systems, logs may show "Skipping optional dependency" messages; these may be ignored.
 
-### Create the first build
+### 4. Create the first build
 
 Now that all files have been included, and all dependencies have been installed, it is time to create the first build.
 
@@ -52,7 +52,7 @@ npm run build
 
 > **Note:** This will create a directory at `assets/dist` and build all `.css` and `.js` files, as well as optimize all images. This will also create a `languages` directory and place a built `.pot` file inside of it. Lastly, this will build the required `style.css` and `README.md` files in the theme root.
 
-### Initialize WP_Theme_Assets Class
+### 5. Initialize WP_Theme_Assets Class
 
 The included `WP_Theme_Assets` class, found at `includes/class-wp-theme-assets.php`, beautifully handles all script and stylesheet enqueues of built assets automatically. It also loads the theme textdomain and registers the languages directory.
 
