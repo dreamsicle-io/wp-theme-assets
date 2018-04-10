@@ -70,7 +70,7 @@ add_action( 'after_setup_theme', 'wp_theme_assets_init', 10 );
 
 ## Development Commands
 
-The included [gulpfile](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/gulpfile.js) contains all tasks that handle linting and building in this package. The included [development commands](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package.json), found on the `scripts` key in the `package.json` file, control all top level commands needed for this setup to function properly.
+The included [gulpfile](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/gulpfile.js) contains all tasks that handle linting and building in this package. The included [development commands](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/package.json), found on the `scripts` key in the `package.json` file, control all top level commands needed for this setup to function properly.
 
 ### Install
 
@@ -122,7 +122,7 @@ npm run lint
 
 ## File structure 
 
-This gulp setup expects that the project root's `package.json` is setup properly, and that an [opinionated file structure](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package) is followed. The localization tasks are handled by the built in WordPress localization functions in all theme `.php` files, but the [source assets](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets) should be structured accordingly.
+This gulp setup expects that the project root's `package.json` is setup properly, and that an [opinionated file structure](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package) is followed. The localization tasks are handled by the built in WordPress localization functions in all theme `.php` files, but the [source assets](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets) should be structured accordingly.
 
 ### Source Files 
 
@@ -183,7 +183,7 @@ root
 
 ## Testing Build
 
-Included is an [assets structure boilerplate](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src), located at `assets/src` directory comes prepopulated with all expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js) and [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass) files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
+Included is an [assets structure boilerplate](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src), located at `assets/src` directory comes prepopulated with all expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js) and [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass) files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
 
 **Test assets included by default:** 
 
