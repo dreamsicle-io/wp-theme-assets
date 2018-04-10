@@ -230,7 +230,7 @@ gulp.task('build:pot', function potBuilder() {
 	return gulp.src(['./**/*.php'])
 		.pipe(wpPot({ domain: 'wpmdc' })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
-		.pipe(gulp.dest('./languages/wpmdc.pot'))
+		.pipe(gulp.dest('./assets/dist/languages/wpmdc.pot'))
 		.pipe(debug({ title: 'build:pot' }));
 });
 
@@ -384,7 +384,7 @@ gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'buil
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
  */
 gulp.task('clean:package', function packageCleaner(done) {
-	return del(['./README.md', 'style.css'], done());
+	return del(['./README.md', 'style.css'], done);
 });
 
 /**
@@ -398,7 +398,7 @@ gulp.task('clean:package', function packageCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
  */
 gulp.task('clean:css', function cssCleaner(done) {
-	return del(['./assets/dist/css'], done());
+	return del(['./assets/dist/css'], done);
 });
 
 /**
@@ -412,7 +412,7 @@ gulp.task('clean:css', function cssCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
  */
 gulp.task('clean:js', function jsCleaner(done) {
-	return del(['./assets/dist/js'], done());
+	return del(['./assets/dist/js'], done);
 });
 
 /**
@@ -422,11 +422,25 @@ gulp.task('clean:js', function jsCleaner(done) {
  *	 1. Deletes the localization build directory.
  *
  * Run:
- *	 - Global command: `gulp clean:js`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
+ *	 - Global command: `gulp clean:pot`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
  */
 gulp.task('clean:pot', function potCleaner(done) {
-	return del(['./languages'], done());
+	return del(['./assets/dist/languages'], done);
+});
+
+/**
+ * Clean build images.
+ *
+ * Process:
+ *	 1. Deletes the images build directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:images`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:images`.
+ */
+gulp.task('clean:images', function imagesCleaner(done) {
+	return del(['./assets/dist/images'], done);
 });
 
 /**
@@ -442,7 +456,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 - NPM script: `npm run clean`.
  */
 gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './languages', './README.md', 'style.css'], done());
+	return del(['./assets/dist', './README.md', 'style.css'], done);
 });
 
 /**
