@@ -1,6 +1,6 @@
 <?php 
 
-class WPTA {
+class WP_Theme_Assets {
 
 	public $theme_textdomain;
 
