@@ -12,11 +12,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": [
-    "json", 
-    "html", 
-    "markdown"
-  ], 
+  "plugins": [], 
   "rules": {
     "indent": [ 
       "error", 
