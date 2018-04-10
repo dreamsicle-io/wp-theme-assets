@@ -517,10 +517,11 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  * Watch source files and build on change.
  *
  * Process:
- *	 1. Runs the `build:sass` task when the source SASS changes.
- *	 2. Runs the `build:js` task when the source JS changes.
- *	 3. Runs the `build:pot` task when the source php changes.
- *	 3. Runs the `build:images` task when the source images change.
+ *	 1. Runs the `build:package` task when the package.json file changes.
+ *	 2. Runs the `build:pot` task when the source php changes.
+ *	 3. Runs the `lint:sass` and `build:sass` tasks when the source SASS changes.
+ *	 4. Runs the `lint:js` and `build:js` tasks when the source JS changes.
+ *	 5. Runs the `build:images` task when the source images change.
  * 
  * Run: 
  *	 - Global command: `gulp watch`.
@@ -539,12 +540,13 @@ gulp.task('watch', function watcher() {
  * Build all assets (default task). 
  *
  * Process:
- *	 1. Runs the `build` task.
- *	 2. Runs the `watch` task.
+ *	 1. Runs the `lint` task.
+ *	 2. Runs the `build` task.
+ *	 3. Runs the `watch` task.
  * 
  * Run: 
  *	 - Global command: `gulp`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp`.
  *	 - NPM script: `npm start`.
  */
-gulp.task('default', gulp.series('build', 'watch'));
+gulp.task('default', gulp.series('lint', 'build', 'watch'));
