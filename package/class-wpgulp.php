@@ -16,7 +16,8 @@ class WPGulp {
 	}
 
 	public function init() {
-		add_action( 'after_setup_theme', array( $this, 'load_textdomain' ), 10 );
+		add_action( 'after_setup_theme', array( $this, 'load_languages' ), 10 );
+		add_action( 'after_setup_theme', array( $this, 'enqueue_editor_assets' ), 10 );
 		add_action( 'enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ), 10 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_login_assets' ), 10 );
@@ -24,11 +25,15 @@ class WPGulp {
 		add_action( 'customize_controls_enqueue_scripts',  array( $this, 'enqueue_customizer_controls_assets' ), 10 );
 	}
 
-	public function load_textdomain() {
+	public function load_languages() {
 		load_theme_textdomain( 
 			$this->theme_textdomain, 
 			$this->assets_directory_uri . '/languages' 
 		);
+	}
+
+	public function enqueue_editor_assets() {
+		add_editor_style( $this->assets_directory_uri . '/css/editor.min.css' );
 	}
 
 	public static function enqueue_site_assets() {
