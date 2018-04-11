@@ -39,7 +39,7 @@ class WP_Theme_Assets {
 		add_editor_style( $this->assets_directory_uri . '/css/editor.min.css' );
 	}
 
-	public static function enqueue_site_assets() {
+	public function enqueue_site_assets() {
 		wp_enqueue_style( 
 			$this->theme_textdomain, 
 			$this->assets_directory_uri . '/css/site.min.css', 
@@ -55,7 +55,7 @@ class WP_Theme_Assets {
 		);
 	}
 
-	public static function enqueue_admin_assets() {
+	public function enqueue_admin_assets() {
 		wp_enqueue_style( 
 			$this->theme_textdomain . '-admin', 
 			$this->assets_directory_uri . '/css/admin.min.css', 
@@ -71,7 +71,7 @@ class WP_Theme_Assets {
 		);
 	}
 
-	public static function enqueue_login_assets() {
+	public function enqueue_login_assets() {
 		wp_enqueue_style( 
 			$this->theme_textdomain . '-login', 
 			$this->assets_directory_uri . '/css/login.min.css', 
@@ -87,7 +87,7 @@ class WP_Theme_Assets {
 		);
 	}
 
-	public static function enqueue_customizer_preview_assets() {
+	public function enqueue_customizer_preview_assets() {
 		wp_enqueue_style( 
 			$this->theme_textdomain . '-customizer-preview', 
 			$this->assets_directory_uri . '/css/customizer-preview.min.css', 
@@ -103,7 +103,7 @@ class WP_Theme_Assets {
 		);
 	}
 
-	public static function enqueue_customizer_controls_assets() {
+	public function enqueue_customizer_controls_assets() {
 		wp_enqueue_style( 
 			$this->theme_textdomain . '-customizer-controls', 
 			$this->assets_directory_uri . '/css/customizer-controls.min.css', 
@@ -119,11 +119,11 @@ class WP_Theme_Assets {
 		);
 	}
 
-	public static function test_translation() {
+	public function test_translation() {
 		return sprintf(
 			/* translators: 1: __(), 2: esc_html__(), 3: _nx(). */
 			_x( '%1$s %2$s %3$s', 'test string _x context message', 'wp-theme-assets' ), 
-			__( 'Test String', $this->theme_textdomain ), 
+			__( 'Test String', 'wp-theme-assets' ), 
 			esc_html__( 'Test String (HTML escaped)', 'wp-theme-assets' ), 
 			_nx( '%s Item', '%s Items', 5, 'test string _nx context message', 'wp-theme-assets' )
 		);
