@@ -59,13 +59,11 @@ The included `WP_Theme_Assets` [php class](https://github.com/dreamsicle-io/wp-t
 **Place the following snippet in the theme's `functions.php` file:**
 
 ```php
+// Require the class-wp-theme-assets.php file.
 require get_template_directory_uri() . '/includes/class-wp-theme-assets.php';
 
-function wp_theme_assets_init() {
-    (new WP_Theme_Assets)->init();
-}
-
-add_action( 'after_setup_theme', 'wp_theme_assets_init', 10 );
+// Hook the `WP_Theme_Assets` class's `init()` method to `after_setup_theme`.
+add_action( 'after_setup_theme', array( new WP_Theme_Assets, 'init' ), 10 );
 ```
 
 ## Development Commands
