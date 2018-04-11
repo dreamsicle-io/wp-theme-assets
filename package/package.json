@@ -1,6 +1,6 @@
 {
   "name": "wp-theme-assets",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple, zero configuration Gulp build & lint setup for developing modern WordPress themes.",
   "main": "index.js",
   "repository": {
