@@ -1,8 +1,7 @@
-
 class TestModule {
 
-	constructor() {
-		this.message = `${this.constructor.name} was bundled properly.`;
+	constructor(handle = 'script') {
+		this.message = `${handle} was bundled properly.`;
 	}
 
 	log() {
