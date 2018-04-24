@@ -62,9 +62,11 @@ The included `WP_Theme_Assets` [php class](https://github.com/dreamsicle-io/wp-t
 // Require the class-wp-theme-assets.php file.
 require get_template_directory_uri() . '/includes/class-wp-theme-assets.php';
 
-// Hook the `WP_Theme_Assets` class's `init()` method to `after_setup_theme`.
-add_action( 'after_setup_theme', array( new WP_Theme_Assets, 'init' ), 10 );
+// Hook the `WP_Theme_Assets` class's `init()` method to `after_setup_theme`. 
+add_action( 'after_setup_theme', array( new WP_Theme_Assets, 'init' ), 0 );
 ```
+
+> **Note:** This is hooked at priority `0` to allow the class's methods to use `after_setup_theme` also. 
 
 ## Development Commands
 
