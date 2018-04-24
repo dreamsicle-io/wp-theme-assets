@@ -21,7 +21,7 @@ class WP_Theme_Assets {
 	public function init() {
 		add_action( 'after_setup_theme', array( $this, 'load_languages' ), 10 );
 		add_action( 'after_setup_theme', array( $this, 'enqueue_editor_assets' ), 10 );
-		add_action( 'enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ), 10 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_login_assets' ), 10 );
 		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_assets' ), 10 );
