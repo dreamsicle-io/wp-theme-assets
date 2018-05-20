@@ -1,32 +1,36 @@
 {
-  "name": "wp-theme-assets",
-  "version": "0.0.9",
-  "description": "A simple, zero configuration Gulp build & lint setup for developing modern WordPress themes.",
-  "main": "index.js",
+  "name": "wp-theme",
+  "version": "0.0.1",
+  "description": "Just another WordPress theme.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dreamsicle-io/wp-theme-assets.git"
+    "url": "https://git.example.org/wp-theme"
   },
   "keywords": [
     "translation-ready"
   ],
   "author": {
-    "name": "Dreamsicle",
-    "email": "hello@dreamsicle.io",
-    "url": "http://www.dreamsicle.io"
+    "name": "Example Org",
+    "email": "info@example.org",
+    "url": "https://www.example.org"
   },
   "contributors": [
     {
-      "name": "Noah Mason",
-      "email": "noah@dreamsicle.io",
-      "url": "http://www.dreamsicle.io"
+      "name": "Contributor One",
+      "email": "contributor1@example.org",
+      "url": "https://www.example.org/contributor1"
+    }, 
+    {
+      "name": "Contributor Two",
+      "email": "contributor2@example.org",
+      "url": "https://www.example.org/contributor2"
     }
   ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"
+    "url": "https://git.example.org/wp-theme/issues"
   },
-  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets",
+  "homepage": "https://www.example.org",
   "wordpress": {
     "versionRequired": "4.9.4",
     "versionTested": "4.9.4"
