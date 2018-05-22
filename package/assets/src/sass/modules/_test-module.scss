@@ -1,13 +1,13 @@
-.wpgulp-test-module {
-	@include test-mixin;
-	@include test-mixin-autoprefixer;
-	z-index: $test-variable;
+.wp-theme-assets-test-module {
+	@include wp-theme-assets-test-mixin;
+	@include wp-theme-assets-test-mixin-autoprefixer;
+	z-index: $wp-theme-assets-test-variable;
 
 	&__element {
-		@include test-mixin(5);
+		@include wp-theme-assets-test-mixin(5);
 
 		&--modifier {
-			@include test-mixin(10);
+			@include wp-theme-assets-test-mixin(10);
 		}
 	}
 }
