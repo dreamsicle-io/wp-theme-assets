@@ -1,7 +1,6 @@
 # Build
 
 /package/assets/dist
-/package/package-lock.json
 /package/languages
 /package/README.md
 /package/style.css
