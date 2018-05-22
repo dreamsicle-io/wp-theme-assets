@@ -19,7 +19,7 @@
       "name": "Contributor One",
       "email": "contributor1@example.org",
       "url": "https://www.example.org/contributor1"
-    }, 
+    },
     {
       "name": "Contributor Two",
       "email": "contributor2@example.org",
@@ -48,7 +48,7 @@
     "gulp-imagemin": "^4.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^4.0.1",
-    "gulp-sass-lint": "^1.3.4",
+    "gulp-sass-lint": "^1.4.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-wp-pot": "^2.3.0-2",
