@@ -88,8 +88,8 @@ gulp.task('build:images:vendor', function VendorImagesBuilder(done) {
  *
  * Process:
  *	 1. Runs the `build:css:vendor` task. 
- *	 1. Runs the `build:js:vendor` task. 
- *	 1. Runs the `build:images:vendor` task. 
+ *	 2. Runs the `build:js:vendor` task. 
+ *	 3. Runs the `build:images:vendor` task. 
  *
  * Run:
  *	 - Global command: `gulp build:vendor`.
@@ -306,7 +306,7 @@ gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:l
  */
 gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
-	return gulp.src(['./**/*.php'])
+	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
 		.pipe(wpPot({ domain: pkg.name })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
@@ -451,7 +451,7 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build`.
  *	 - NPM script: `npm run build`.
  */
-gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images'));
+gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
 
 /**
  * Clean package Files.
@@ -614,7 +614,7 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json'], gulp.series('build:package'));
-	gulp.watch(['./**/*.php', '!./vendor/**', '!./node_modules/**', '!./assets/**', '!./languages/**'], gulp.series('build:pot'));
+	gulp.watch(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
