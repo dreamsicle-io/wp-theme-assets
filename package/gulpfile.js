@@ -359,7 +359,7 @@ gulp.task('build:images', function imageBuilder() {
 gulp.task('build:package:style', function packageStyleBuilder(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	const data = {
-		'Theme Name': pkg.name || '', 
+		'Theme Name': pkg.themeName || '', 
 		'Theme URI': pkg.homepage || '', 
 		'Author': pkg.author.name || '', 
 		'Author URI': pkg.author.url || '', 
