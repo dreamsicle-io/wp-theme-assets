@@ -1,6 +1,6 @@
 # Build
 
 /package/assets/dist
-/package/languages
+/package/languages/*.pot
 /package/README.md
 /package/style.css
