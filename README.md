@@ -180,15 +180,3 @@ root
 ―――― README.md 
 ―――― style.css 
 ```
-
-## Testing Build
-
-Included is an [assets structure boilerplate](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src), located at `assets/src` directory comes prepopulated with all expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js) and [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass) files. These files themselves are also prepopulated with small snippets intended to test the various build tasks and ensure they are all working properly. 
-
-**Test assets included by default:** 
-
-* All expected [source SASS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/sass).
-* All expected [source JS](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets/src/js).
-* A [test SASS module](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src/sass/modules/_test-module.scss) `test-module.scss` to test SASS processing.
-* A [test JS module](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/assets/src/js/modules/test-module.js) `test-module.js` to test JavaScript processing. 
-* A [method](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/includes/class-wp-theme-assets.php) `WP_Theme_Assets::test_translations()` to test language processing.

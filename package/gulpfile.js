@@ -415,7 +415,7 @@ gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 		'License URI': 'LICENSE', 
 		'Tags': (pkg.keywords.length > 0) ? pkg.keywords.join(', ') : '', 
 	};
-	var contents = '# ' + pkg.name + '\n\n';
+	var contents = '# ' + pkg.themeName || pkg.name || '' + '\n\n';
 	for (var key in data) {
 		contents += '**' + key + ':** ' + data[key] + '\n';
 	}
