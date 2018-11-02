@@ -18,6 +18,85 @@ const wpPot = require('gulp-wp-pot');
 const eslint = require('gulp-eslint');
 const sassLint = require('gulp-sass-lint');
 
+// Vendor Files
+const vendorCss = [];
+const vendorJs = [];
+const vendorImages = [];
+
+/**
+ * Build CSS Vendor.
+ *
+ * Process:
+ *	 1. Moves all vendor CSS to `assets/dist/css` directory.
+ *
+ * Run:
+ *	 - Global command: `gulp build:css:vendor`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:css:vendor`.
+ */
+gulp.task('build:css:vendor', function VendorCssBuilder(done) {
+	if (vendorCss && (vendorCss.length > 0)) {
+		return gulp.src(vendorCss)
+			.pipe(gulp.dest('./assets/dist/css'))
+			.pipe(debug({ title: 'build:css:vendor' }));
+	} else {
+		return done();
+	}
+});
+
+/**
+ * Build JS Vendor.
+ *
+ * Process:
+ *	 1. Moves all vendor JS to `assets/dist/js` directory.
+ *
+ * Run:
+ *	 - Global command: `gulp build:js:vendor`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:vendor`.
+ */
+gulp.task('build:js:vendor', function VendorJsBuilder(done) {
+	if (vendorJs && (vendorJs.length > 0)) {
+		return gulp.src(vendorJs)
+			.pipe(gulp.dest('./assets/dist/js'))
+			.pipe(debug({ title: 'build:js:vendor' }));
+	} else {
+		return done();
+	}
+});
+
+/**
+ * Build Vendor Images.
+ *
+ * Process:
+ *	 1. Moves all vendor images to `assets/dist/images` directory.
+ *
+ * Run:
+ *	 - Global command: `gulp build:images:vendor`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:images:vendor`.
+ */
+gulp.task('build:images:vendor', function VendorImagesBuilder(done) {
+	if (vendorImages && (vendorImages.length > 0)) {
+		return gulp.src(vendorImages)
+			.pipe(gulp.dest('./assets/dist/images'))
+			.pipe(debug({ title: 'build:images:vendor' }));
+	} else {
+		return done();
+	}
+});
+
+/**
+ * Build Vendor.
+ *
+ * Process:
+ *	 1. Runs the `build:css:vendor` task. 
+ *	 1. Runs the `build:js:vendor` task. 
+ *	 1. Runs the `build:images:vendor` task. 
+ *
+ * Run:
+ *	 - Global command: `gulp build:vendor`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:vendor`.
+ */
+gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'build:images:vendor'));
+
 /**
  * Build SASS.
  *
@@ -524,6 +603,9 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  *	 3. Runs the `lint:sass` and `build:sass` tasks when the source SASS changes.
  *	 4. Runs the `lint:js` and `build:js` tasks when the source JS changes.
  *	 5. Runs the `build:images` task when the source images change.
+ *	 6. Runs the `build:css:vendor` task when the vendor css changes.
+ *	 7. Runs the `build:js:vendor` task when the vendor js changes.
+ *	 8. Runs the `build:images:vendor` task when the vendor images change.
  * 
  * Run: 
  *	 - Global command: `gulp watch`.
@@ -532,10 +614,13 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json'], gulp.series('build:package'));
-	gulp.watch(['./**/*.php', '!./node_modules/**', '!./assets/**', '!./languages/**'], gulp.series('build:pot'));
+	gulp.watch(['./**/*.php', '!./vendor/**', '!./node_modules/**', '!./assets/**', '!./languages/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
+	gulp.watch(vendorCss, gulp.series('build:css:vendor'));
+	gulp.watch(vendorJs, gulp.series('build:js:vendor'));
+	gulp.watch(vendorImages, gulp.series('build:images:vendor'));
 });
 
 /**
