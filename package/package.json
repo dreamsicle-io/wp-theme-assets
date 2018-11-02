@@ -1,5 +1,6 @@
 {
   "name": "wp-theme",
+  "themeName": "WP Theme",
   "version": "0.0.1",
   "description": "Just another WordPress theme.",
   "repository": {
@@ -14,18 +15,7 @@
     "email": "info@example.org",
     "url": "https://www.example.org"
   },
-  "contributors": [
-    {
-      "name": "Contributor One",
-      "email": "contributor1@example.org",
-      "url": "https://www.example.org/contributor1"
-    },
-    {
-      "name": "Contributor Two",
-      "email": "contributor2@example.org",
-      "url": "https://www.example.org/contributor2"
-    }
-  ],
+  "contributors": [],
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://git.example.org/wp-theme/issues"
@@ -37,21 +27,21 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babelify": "^8.0.0",
-    "browserify": "^16.2.0",
+    "browserify": "^16.2.3",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-debug": "^4.0.0",
     "gulp-eslint": "^4.0.2",
     "gulp-imagemin": "^4.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
     "gulp-sass-lint": "^1.4.0",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0",
-    "gulp-wp-pot": "^2.3.0-2",
+    "gulp-uglify": "^3.0.1",
+    "gulp-wp-pot": "^2.3.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },
