@@ -24,6 +24,129 @@ const vendorJs = [];
 const vendorImages = [];
 
 /**
+ * Clean package Files.
+ *
+ * Process:
+ *	 1. Deletes the default style.css file containing generated theme header.
+ *	 2. Deletes the README.md file containing generated documentation.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:package`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
+ */
+gulp.task('clean:package', function packageCleaner(done) {
+	del(['./README.md', 'style.css'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
+ * Clean build CSS.
+ *
+ * Process:
+ *	 1. Deletes the CSS build directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:css`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
+ */
+gulp.task('clean:css', function cssCleaner(done) {
+	return del(['./assets/dist/css'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
+ * Clean build JS.
+ *
+ * Process:
+ *	 1. Deletes the JS build directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:js`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
+ */
+gulp.task('clean:js', function jsCleaner(done) {
+	return del(['./assets/dist/js'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
+ * Clean localization build files.
+ *
+ * Process:
+ *	 1. Deletes the localization build directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:pot`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
+ */
+gulp.task('clean:pot', function potCleaner(done) {
+	return del(['./languages/*.pot'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
+ * Clean build images.
+ *
+ * Process:
+ *	 1. Deletes the images build directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean:images`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:images`.
+ */
+gulp.task('clean:images', function imagesCleaner(done) {
+	return del(['./assets/dist/images'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
+ * Clean build assets.
+ *
+ * Process: 
+ *	 1. Deletes the build directory.
+ *	 2. Deletes the localization directory.
+ *
+ * Run:
+ *	 - Global command: `gulp clean`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp clean`.
+ *	 - NPM script: `npm run clean`.
+ */
+gulp.task('clean', function cleaner(done) {
+	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
  * Build CSS Vendor.
  *
  * Process:
@@ -421,11 +544,11 @@ gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 		contents += '**' + key + ':** ' + data[key] + '\n';
 	}
 	contents += '\n' + pkg.description + '\n';
-	return fs.writeFile('./README.md', contents, function(error) {
-		if (error) { 
-			console.error(error);
+	fs.writeFile('./README.md', contents, function(err) {
+		if (err) { 
+			console.error(err);
 		}
-		done();
+		return done();
 	});
 });
 
@@ -446,129 +569,19 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
- *	 1. Runs the `build:package` task.
- *	 2. Runs the `build:sass` task.
- *	 3. Runs the `build:js` task.
- *	 4. Runs the `build:pot` task.
- *	 5. Runs the `build:images` task.
+ *	 1. Runs the `clean` task.
+ *	 2. Runs the `build:package` task.
+ *	 3. Runs the `build:sass` task.
+ *	 4. Runs the `build:js` task.
+ *	 5. Runs the `build:pot` task.
+ *	 6. Runs the `build:images` task.
  *
  * Run:
  *	 - Global command: `gulp build`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build`.
  *	 - NPM script: `npm run build`.
  */
-gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
-
-/**
- * Clean package Files.
- *
- * Process:
- *	 1. Deletes the default style.css file containing generated theme header.
- *	 2. Deletes the README.md file containing generated documentation.
- *
- * Run:
- *	 - Global command: `gulp clean:package`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
- */
-gulp.task('clean:package', function packageCleaner(done) {
-	return del(['./README.md', 'style.css'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
-
-/**
- * Clean build CSS.
- *
- * Process:
- *	 1. Deletes the CSS build directory.
- *
- * Run:
- *	 - Global command: `gulp clean:css`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
- */
-gulp.task('clean:css', function cssCleaner(done) {
-	return del(['./assets/dist/css'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
-
-/**
- * Clean build JS.
- *
- * Process:
- *	 1. Deletes the JS build directory.
- *
- * Run:
- *	 - Global command: `gulp clean:js`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
- */
-gulp.task('clean:js', function jsCleaner(done) {
-	return del(['./assets/dist/js'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
-
-/**
- * Clean localization build files.
- *
- * Process:
- *	 1. Deletes the localization build directory.
- *
- * Run:
- *	 - Global command: `gulp clean:pot`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
- */
-gulp.task('clean:pot', function potCleaner(done) {
-	return del(['./languages/*.pot'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
-
-/**
- * Clean build images.
- *
- * Process:
- *	 1. Deletes the images build directory.
- *
- * Run:
- *	 - Global command: `gulp clean:images`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:images`.
- */
-gulp.task('clean:images', function imagesCleaner(done) {
-	return del(['./assets/dist/images'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
-
-/**
- * Clean build assets.
- *
- * Process: 
- *	 1. Deletes the build directory.
- *	 2. Deletes the localization directory.
- *
- * Run:
- *	 - Global command: `gulp clean`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp clean`.
- *	 - NPM script: `npm run clean`.
- */
-gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
-		.catch(function(err) {
-			console.error(err);
-			done();
-		});
-});
+gulp.task('build', gulp.series('clean', 'build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
 
 /**
  * Lint all SCSS files.
