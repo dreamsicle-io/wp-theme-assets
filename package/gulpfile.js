@@ -55,7 +55,7 @@ gulp.task('clean:package', function packageCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
  */
 gulp.task('clean:css', function cssCleaner(done) {
-	return del(['./assets/dist/css'])
+	del(['./assets/dist/css'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -75,7 +75,7 @@ gulp.task('clean:css', function cssCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
  */
 gulp.task('clean:js', function jsCleaner(done) {
-	return del(['./assets/dist/js'])
+	del(['./assets/dist/js'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -95,7 +95,7 @@ gulp.task('clean:js', function jsCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
  */
 gulp.task('clean:pot', function potCleaner(done) {
-	return del(['./languages/*.pot'])
+	del(['./languages/*.pot'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -115,7 +115,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:images`.
  */
 gulp.task('clean:images', function imagesCleaner(done) {
-	return del(['./assets/dist/images'])
+	del(['./assets/dist/images'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -137,7 +137,7 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 - NPM script: `npm run clean`.
  */
 gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
+	del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -569,19 +569,18 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
- *	 1. Runs the `clean` task.
- *	 2. Runs the `build:package` task.
- *	 3. Runs the `build:sass` task.
- *	 4. Runs the `build:js` task.
- *	 5. Runs the `build:pot` task.
- *	 6. Runs the `build:images` task.
+ *	 1. Runs the `build:package` task.
+ *	 2. Runs the `build:sass` task.
+ *	 3. Runs the `build:js` task.
+ *	 4. Runs the `build:pot` task.
+ *	 5. Runs the `build:images` task.
  *
  * Run:
  *	 - Global command: `gulp build`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build`.
  *	 - NPM script: `npm run build`.
  */
-gulp.task('build', gulp.series('clean', 'build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
+gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
 
 /**
  * Lint all SCSS files.
