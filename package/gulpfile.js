@@ -400,6 +400,7 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  */
 gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkgName = pkg.themeName || pkg.name || '';
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
 	if (pkg.contributors && pkg.contributors.length > 0) {
 		pkg.contributors.map(function(contributor, i) {
@@ -408,19 +409,24 @@ gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 	}
 	const data = {
 		'Contributors': (contributorNames.length > 0) ? contributorNames.join(', ') : '', 
-		'Version': pkg.version || '', 
-		'Requires at least': pkg.wordpress.versionRequired || '', 
-		'Tested up to': pkg.wordpress.versionTested || '', 
-		'License': pkg.license || '', 
+		'Version': pkg.version, 
+		'Requires at least': 'WordPress ' + pkg.wordpress.versionRequired, 
+		'Tested up to': 'WordPress ' + pkg.wordpress.versionTested, 
+		'License': pkg.license, 
 		'License URI': 'LICENSE', 
 		'Tags': (pkg.keywords.length > 0) ? pkg.keywords.join(', ') : '', 
 	};
-	var contents = '# ' + pkg.themeName || pkg.name || '' + '\n\n';
+	var contents = '# ' + pkgName + '\n\n';
 	for (var key in data) {
 		contents += '**' + key + ':** ' + data[key] + '\n';
 	}
-	contents += '\n## Description\n\n' + pkg.description + '\n';
-	return fs.writeFile('./README.md', contents, done);
+	contents += '\n' + pkg.description + '\n';
+	return fs.writeFile('./README.md', contents, function(error) {
+		if (error) { 
+			console.error(error);
+		}
+		done();
+	});
 });
 
 /**
@@ -465,7 +471,11 @@ gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'buil
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
  */
 gulp.task('clean:package', function packageCleaner(done) {
-	return del(['./README.md', 'style.css'], done);
+	return del(['./README.md', 'style.css'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
@@ -479,7 +489,11 @@ gulp.task('clean:package', function packageCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:css`.
  */
 gulp.task('clean:css', function cssCleaner(done) {
-	return del(['./assets/dist/css'], done);
+	return del(['./assets/dist/css'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
@@ -493,7 +507,11 @@ gulp.task('clean:css', function cssCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:js`.
  */
 gulp.task('clean:js', function jsCleaner(done) {
-	return del(['./assets/dist/js'], done);
+	return del(['./assets/dist/js'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
@@ -507,7 +525,11 @@ gulp.task('clean:js', function jsCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:pot`.
  */
 gulp.task('clean:pot', function potCleaner(done) {
-	return del(['./languages/*.pot'], done);
+	return del(['./languages/*.pot'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
@@ -521,7 +543,11 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:images`.
  */
 gulp.task('clean:images', function imagesCleaner(done) {
-	return del(['./assets/dist/images'], done);
+	return del(['./assets/dist/images'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
@@ -537,7 +563,11 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 - NPM script: `npm run clean`.
  */
 gulp.task('clean', function cleaner(done) {
-	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'], done);
+	return del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
+		.catch(function(err) {
+			console.error(err);
+			done();
+		});
 });
 
 /**
