@@ -17,6 +17,7 @@ const rename = require('gulp-rename');
 const wpPot = require('gulp-wp-pot');
 const eslint = require('gulp-eslint');
 const sassLint = require('gulp-sass-lint');
+const concat = require('gulp-concat');
 
 // Vendor Files
 const vendorCss = [];
