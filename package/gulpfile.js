@@ -503,11 +503,11 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
 });
 
 /**
- * Build Package README.
+ * Build Package README Header.
  *
  * Process:
  *	 1. Prepares the necessary data from the package.json file. 
- *	 2. Writes the README.md file formatted for WP Theme Repo. 
+ *	 2. Writes the `README.md` file formatted for WP Theme Repo. 
  *
  * Expected output: 
  *   Contributors:      ...
@@ -519,10 +519,10 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  *   Tags:              ...
  *
  * Run:
- *	 - Global command: `gulp build:package:readme`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme`.
+ *	 - Global command: `gulp build:package:readme:header`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme:header`.
  */
-gulp.task('build:package:readme', function packageReadmeBuilder(done) {
+gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	const pkgName = pkg.themeName || pkg.name || '';
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
@@ -552,6 +552,33 @@ gulp.task('build:package:readme', function packageReadmeBuilder(done) {
 		return done();
 	});
 });
+
+/**
+ * Build Package README.
+ *
+ * Process:
+ *	 1. Runs the `build:package:readme:header` task. 
+ *	 2. Concatenates the newly cleaned and updated README.md file with source md files in the right order. 
+ *	 3. Writes the concatenated files to the README.md file formatted for WP Theme Repo.
+ *	 4. Logs created files to the console.
+ *
+ * Expected output: 
+ *   Header (see `build:package:readme:header` task)
+ *   Description
+ *   Frequently Asked Questions
+ *   Copyright
+ *   Change Log
+ * 
+ * Run:
+ *	 - Global command: `gulp build:package:readme`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme`.
+ */
+gulp.task('build:package:readme', gulp.series('build:package:readme:header', function packageReadmeBuilder(done) {
+	return gulp.src(['./README.md', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'])
+		.pipe(concat('README.md'))
+		.pipe(gulp.dest('./'))
+		.pipe(debug({ title: 'build:package:readme' }));
+}));
 
 /**
  * Build Package.
@@ -641,7 +668,7 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  * Watch source files and build on change.
  *
  * Process:
- *	 1. Runs the `build:package` task when the package.json file changes.
+ *	 1. Runs the `build:package` task when the package.json file, or source md changes.
  *	 2. Runs the `build:pot` task when the source php changes.
  *	 3. Runs the `lint:sass` and `build:sass` tasks when the source SASS changes.
  *	 4. Runs the `lint:js` and `build:js` tasks when the source JS changes.
@@ -656,7 +683,7 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  *	 - NPM script: `npm run watch`.
  */
 gulp.task('watch', function watcher() {
-	gulp.watch(['./package.json'], gulp.series('build:package'));
+	gulp.watch(['./package.json', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'], gulp.series('build:package'));
 	gulp.watch(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
