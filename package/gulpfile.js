@@ -1,23 +1,24 @@
 'use-strict';
 
-const fs = require('fs');
-const del = require('del');
-const browserify = require('browserify');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const gulp = require('gulp');
-const debug = require('gulp-debug');
-const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
 const babel = require('babelify');
-const uglify = require('gulp-uglify');
+const browserify = require('browserify');
+const del = require('del');
+const fs = require('fs');
+const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
+const cache = require('gulp-cached');
+const concat = require('gulp-concat');
+const debug = require('gulp-debug');
+const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const rename = require('gulp-rename');
-const wpPot = require('gulp-wp-pot');
-const eslint = require('gulp-eslint');
+const sass = require('gulp-sass');
 const sassLint = require('gulp-sass-lint');
-const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const tap = require('gulp-tap');
+const uglify = require('gulp-uglify');
+const wpPot = require('gulp-wp-pot');
+const buffer = require('vinyl-buffer');
 
 // Vendor Files
 const vendorCss = [];
@@ -36,7 +37,7 @@ const vendorImages = [];
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean:package`.
  */
 gulp.task('clean:package', function packageCleaner(done) {
-	del(['./README.md', 'style.css'])
+	del(['./README.md', './style.css'])
 		.then(function(paths) {
 			return done();
 		}).catch(function(err) {
@@ -126,26 +127,21 @@ gulp.task('clean:images', function imagesCleaner(done) {
 });
 
 /**
- * Clean build assets.
+ * Clean All Built Assets.
  *
  * Process: 
- *	 1. Deletes the build directory.
- *	 2. Deletes the localization directory.
+ *	 1. Runs the `clean:js` task.
+ *	 2. Runs the `clean:css` task.
+ *	 3. Runs the `clean:images` task.
+ *	 4. Runs the `clean:pot` task.
+ *	 5. Runs the `clean:package` task.
  *
  * Run:
  *	 - Global command: `gulp clean`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp clean`.
  *	 - NPM script: `npm run clean`.
  */
-gulp.task('clean', function cleaner(done) {
-	del(['./assets/dist', './languages/*.pot', './README.md', 'style.css'])
-		.then(function(paths) {
-			return done();
-		}).catch(function(err) {
-			console.error(err);
-			return done();
-		});
-});
+gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package'));
 
 /**
  * Build CSS Vendor.
@@ -160,6 +156,7 @@ gulp.task('clean', function cleaner(done) {
 gulp.task('build:css:vendor', function VendorCssBuilder(done) {
 	if (vendorCss && (vendorCss.length > 0)) {
 		return gulp.src(vendorCss)
+			.pipe(cache('build:css:vendor'))
 			.pipe(gulp.dest('./assets/dist/css'))
 			.pipe(debug({ title: 'build:css:vendor' }));
 	} else {
@@ -180,6 +177,7 @@ gulp.task('build:css:vendor', function VendorCssBuilder(done) {
 gulp.task('build:js:vendor', function VendorJsBuilder(done) {
 	if (vendorJs && (vendorJs.length > 0)) {
 		return gulp.src(vendorJs)
+			.pipe(cache('build:js:vendor'))
 			.pipe(gulp.dest('./assets/dist/js'))
 			.pipe(debug({ title: 'build:js:vendor' }));
 	} else {
@@ -200,6 +198,7 @@ gulp.task('build:js:vendor', function VendorJsBuilder(done) {
 gulp.task('build:images:vendor', function VendorImagesBuilder(done) {
 	if (vendorImages && (vendorImages.length > 0)) {
 		return gulp.src(vendorImages)
+			.pipe(cache('build:images:vendor'))
 			.pipe(gulp.dest('./assets/dist/images'))
 			.pipe(debug({ title: 'build:images:vendor' }));
 	} else {
@@ -239,7 +238,8 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:sass`.
  */
 gulp.task('build:sass', function sassBuilder() {
-	return gulp.src(['./assets/src/sass/**/*.s+(a|c)ss'])
+	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
+		.pipe(cache('build:sass'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: 'compressed', cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
@@ -251,169 +251,36 @@ gulp.task('build:sass', function sassBuilder() {
 });
 
 /**
- * Build Site JS.
- *
- * Process:
- *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
- *	 3. Minifies the file.
- *	 4. Renames the compiled file to *.min.js.
- *	 5. Writes sourcemaps to initial content.
- *	 6. Writes created files to the build directory.
- *	 7. Logs created files to the console.
- *
- * Run:
- *	 - Global command: `gulp build:js:site`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:site`.
- */
-gulp.task('build:js:site', function siteJsBuilder() {
-	const bundler = browserify('./assets/src/js/site.js', { debug: true }).transform(babel, { presets: ['env'] });
-	return bundler.bundle()
-		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('site.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:site' }));
-});
-
-/**
- * Build Admin JS.
- *
- * Process:
- *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
- *	 3. Minifies the file.
- *	 4. Renames the compiled file to *.min.js.
- *	 5. Writes sourcemaps to initial content.
- *	 6. Writes created files to the build directory.
- *	 7. Logs created files to the console.
- *
- * Run:
- *	 - Global command: `gulp build:js:admin`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:admin`.
- */
-gulp.task('build:js:admin', function adminJsBuilder() {
-	const bundler = browserify('./assets/src/js/admin.js', { debug: true }).transform(babel, { presets: ['env'] });
-	return bundler.bundle()
-		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('admin.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:admin' }));
-});
-
-/**
- * Build Login JS.
- *
- * Process:
- *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
- *	 3. Minifies the file.
- *	 4. Renames the compiled file to *.min.js.
- *	 5. Writes sourcemaps to initial content.
- *	 6. Writes created files to the build directory.
- *	 7. Logs created files to the console.
- *
- * Run:
- *	 - Global command: `gulp build:js:login`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:login`.
- */
-gulp.task('build:js:login', function loginJsBuilder() {
-	const bundler = browserify('./assets/src/js/login.js', { debug: true }).transform(babel, { presets: ['env'] });
-	return bundler.bundle()
-		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('login.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:login' }));
-});
-
-/**
- * Build Customizer Preview JS.
- *
- * Process:
- *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
- *	 3. Minifies the file.
- *	 4. Renames the compiled file to *.min.js.
- *	 5. Writes sourcemaps to initial content.
- *	 6. Writes created files to the build directory.
- *	 7. Logs created files to the console.
- *
- * Run:
- *	 - Global command: `gulp build:js:customizer-preview`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:customizer-preview`.
- */
-gulp.task('build:js:customizer-preview', function customizerPreviewJsBuilder() {
-	const bundler = browserify('./assets/src/js/customizer-preview.js', { debug: true }).transform(babel, { presets: ['env'] });
-	return bundler.bundle()
-		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('customizer-preview.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:customizer-preview' }));
-});
-
-/**
- * Build Customizer Controls JS.
- *
- * Process:
- *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
- *	 3. Minifies the file.
- *	 4. Renames the compiled file to *.min.js.
- *	 5. Writes sourcemaps to initial content.
- *	 6. Writes created files to the build directory.
- *	 7. Logs created files to the console.
- *
- * Run:
- *	 - Global command: `gulp build:js:customizer-controls`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js:customizer-controls`.
- */
-gulp.task('build:js:customizer-controls', function customizerControlsJsBuilder() {
-	const bundler = browserify('./assets/src/js/customizer-controls.js', { debug: true }).transform(babel, { presets: ['env'] });
-	return bundler.bundle()
-		.on('error', function(err) { console.error(err); this.emit('end'); })
-		.pipe(source('customizer-controls.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./assets/dist/js'))
-		.pipe(debug({ title: 'build:js:customizer-controls' }));
-});
-
-/**
  * Build All JS.
  *
  * Process:
- *	 1. Runs the `build:js:site` task. 
- *	 2. Runs the `build:js:admin` task. 
- *	 3. Runs the `build:js:customizer-preview` task. 
- *	 4. Runs the `build:js:customizer-controls` task. 
+ *	 1. Imports JS modules to file. 
+ *	 2. Transpiles the file with Babel.
+ *	 3. Minifies the file.
+ *	 4. Renames the compiled file to *.min.js.
+ *	 5. Writes sourcemaps to initial content.
+ *	 6. Writes created files to the build directory.
+ *	 7. Logs created files to the console.
  *
  * Run:
  *	 - Global command: `gulp build:js`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js`.
  */
-gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:login', 'build:js:customizer-preview', 'build:js:customizer-controls'));
+gulp.task('build:js', function jsBuilder() {
+	return gulp.src('./assets/src/js/*.js', {read: false})
+		.pipe(tap(function (file) {
+			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['env'] });
+			file.contents = bundler.bundle();
+		}))
+	    .pipe(buffer())
+		.pipe(cache('build:js'))
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('./assets/dist/js'))
+		.pipe(debug({ title: 'build:js' }));
+});
 
 /**
  * Build localization files for translations.
@@ -431,6 +298,7 @@ gulp.task('build:js', gulp.series('build:js:site', 'build:js:admin', 'build:js:l
 gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
+		.pipe(cache('build:pot'))
 		.pipe(wpPot({ domain: pkg.name })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
@@ -451,6 +319,7 @@ gulp.task('build:pot', function potBuilder() {
  */
 gulp.task('build:images', function imageBuilder() {
 	return gulp.src(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'])
+		.pipe(cache('build:images'))
 		.pipe(imagemin()
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(gulp.dest('./assets/dist/images'))
@@ -499,7 +368,8 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
 		contents += key + ': ' + data[key] + '\n';
 	}
 	contents += '*/\n';
-	return fs.writeFile('./style.css', contents, done);
+	fs.writeFileSync('./style.css', contents);
+	return done();
 });
 
 /**
@@ -545,22 +415,17 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
 		contents += '**' + key + ':** ' + data[key] + '\n';
 	}
 	contents += '\n' + pkg.description + '\n';
-	fs.writeFile('./README.md', contents, function(err) {
-		if (err) { 
-			console.error(err);
-		}
-		return done();
-	});
+	fs.writeFileSync('./README.md', contents);
+	return done();
 });
 
 /**
- * Build Package README.
+ * Build Package README Content.
  *
  * Process:
- *	 1. Runs the `build:package:readme:header` task. 
- *	 2. Concatenates the newly cleaned and updated README.md file with source md files in the right order. 
- *	 3. Writes the concatenated files to the README.md file formatted for WP Theme Repo.
- *	 4. Logs created files to the console.
+ *	 1. Concatenates the README.md file with source md files in the right order. 
+ *	 2. Writes the concatenated files to the README.md file formatted for WP Theme Repo.
+ *	 3. Logs created files to the console.
  *
  * Expected output: 
  *   Header (see `build:package:readme:header` task)
@@ -570,15 +435,29 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *   Change Log
  * 
  * Run:
+ *	 - Global command: `gulp build:package:readme:content`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme:content`.
+ */
+gulp.task('build:package:readme:content', function packageReadmeContentBuilder(done) {
+	return gulp.src(['./README.md', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'])
+		.pipe(cache('build:package:readme:content'))
+		.pipe(concat('README.md'))
+		.pipe(gulp.dest('./'))
+		.pipe(debug({ title: 'build:package:readme:content' }));
+});
+
+/**
+ * Build Package README.
+ *
+ * Process:
+ *	 1. Runs the `build:package:readme:header` task. 
+ *	 2. Runs the `build:package:readme:content` task. 
+ *
+ * Run:
  *	 - Global command: `gulp build:package:readme`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme`.
  */
-gulp.task('build:package:readme', gulp.series('build:package:readme:header', function packageReadmeBuilder(done) {
-	return gulp.src(['./README.md', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'])
-		.pipe(concat('README.md'))
-		.pipe(gulp.dest('./'))
-		.pipe(debug({ title: 'build:package:readme' }));
-}));
+gulp.task('build:package:readme', gulp.series('build:package:readme:header', 'build:package:readme:content'));
 
 /**
  * Build Package.
@@ -597,11 +476,12 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
- *	 1. Runs the `build:package` task.
- *	 2. Runs the `build:sass` task.
- *	 3. Runs the `build:js` task.
- *	 4. Runs the `build:pot` task.
- *	 5. Runs the `build:images` task.
+ *	 1. Runs the `clean` task.
+ *	 2. Runs the `build:package` task.
+ *	 3. Runs the `build:sass` task.
+ *	 4. Runs the `build:js` task.
+ *	 5. Runs the `build:pot` task.
+ *	 6. Runs the `build:images` task.
  *
  * Run:
  *	 - Global command: `gulp build`.
