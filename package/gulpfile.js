@@ -270,7 +270,8 @@ gulp.task('build:js', function jsBuilder() {
 	return gulp.src('./assets/src/js/*.js', {read: false})
 		.pipe(tap(function (file) {
 			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['env'] });
-			file.contents = bundler.bundle();
+			file.contents = bundler.bundle()
+				.on('error', function(err) { console.error(err); this.emit('end'); });
 		}))
 	    .pipe(buffer())
 		.pipe(cache('build:js'))
