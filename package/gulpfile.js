@@ -10,7 +10,9 @@ const cache = require('gulp-cached');
 const concat = require('gulp-concat');
 const debug = require('gulp-debug');
 const eslint = require('gulp-eslint');
+const gulpIf = require('gulp-if');
 const imagemin = require('gulp-imagemin');
+const order = require('gulp-order');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass');
 const sassLint = require('gulp-sass-lint');
@@ -19,6 +21,7 @@ const tap = require('gulp-tap');
 const uglify = require('gulp-uglify');
 const wpPot = require('gulp-wp-pot');
 const buffer = require('vinyl-buffer');
+const args = require('minimist')(process.argv.slice(2));
 
 // Vendor Files
 const vendorCss = [];
@@ -226,7 +229,7 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
  * Process:
  *	 1. Imports all SASS modules to file.
  *	 2. Compiles the SASS to CSS.
- *	 3. Minifies the file.
+ *	 3. Minifies the file if the environment is production.
  *	 4. Adds all necessary vendor prefixes to CSS.
  *	 5. Renames the compiled file to *.min.css.
  *	 6. Writes sourcemaps to initial content.
@@ -238,10 +241,11 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:sass`.
  */
 gulp.task('build:sass', function sassBuilder() {
+	const outputStyle = (args.env === 'production') ? 'compressed' : 'expanded';
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
 		.pipe(cache('build:sass'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(sass({ includePaths: ['node_modules'], outputStyle: 'compressed', cascade: false })
+		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(autoprefixer({ browsers: ['last 5 versions', 'ie >= 9'] }))
 		.pipe(rename({ suffix: '.min' }))
@@ -275,7 +279,7 @@ gulp.task('build:js', function jsBuilder() {
 	    .pipe(buffer())
 		.pipe(cache('build:js'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
+		.pipe(gulpIf((args.env === 'production'), uglify()))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/js'))
@@ -439,8 +443,9 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:package:readme:content`.
  */
 gulp.task('build:package:readme:content', function packageReadmeContentBuilder(done) {
-	return gulp.src(['./README.md', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'])
+	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
 		.pipe(cache('build:package:readme:content'))
+		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
 		.pipe(gulp.dest('./'))
 		.pipe(debug({ title: 'build:package:readme:content' }));
@@ -562,7 +567,7 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  *	 - NPM script: `npm run watch`.
  */
 gulp.task('watch', function watcher() {
-	gulp.watch(['./package.json', './assets/src/md/DESCRIPTION.md', './assets/src/md/FAQ.md', './assets/src/md/COPYRIGHT.md', './assets/src/md/CHANGELOG.md'], gulp.series('build:package'));
+	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
 	gulp.watch(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
