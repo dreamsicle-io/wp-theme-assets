@@ -270,9 +270,8 @@ gulp.task('build:js', function jsBuilder() {
 	return gulp.src('./assets/src/js/*.js', {read: false}) // browserify reads file, don't read file twice.
 		.pipe(tap(function (file) {
 			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['env'] });
-			file.contents = bundler.bundle()
-				.on('error', function(err) { console.error(err); this.emit('end'); });
-		}))
+			file.contents = bundler.bundle();
+		}).on('error', function(err) { console.error(err); this.emit('end'); }))
 	    .pipe(buffer())
 		.pipe(cache('build:js'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
@@ -477,12 +476,11 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
- *	 1. Runs the `clean` task.
- *	 2. Runs the `build:package` task.
- *	 3. Runs the `build:sass` task.
- *	 4. Runs the `build:js` task.
- *	 5. Runs the `build:pot` task.
- *	 6. Runs the `build:images` task.
+ *	 1. Runs the `build:package` task.
+ *	 2. Runs the `build:sass` task.
+ *	 3. Runs the `build:js` task.
+ *	 4. Runs the `build:pot` task.
+ *	 5. Runs the `build:images` task.
  *
  * Run:
  *	 - Global command: `gulp build`.
