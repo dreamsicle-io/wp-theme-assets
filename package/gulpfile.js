@@ -267,7 +267,7 @@ gulp.task('build:sass', function sassBuilder() {
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:js`.
  */
 gulp.task('build:js', function jsBuilder() {
-	return gulp.src('./assets/src/js/*.js', {read: false})
+	return gulp.src('./assets/src/js/*.js', {read: false}) // browserify reads file, don't read file twice.
 		.pipe(tap(function (file) {
 			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['env'] });
 			file.contents = bundler.bundle()
