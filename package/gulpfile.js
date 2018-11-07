@@ -488,8 +488,8 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  *	 5. Runs the `build:images` task.
  *
  * Run:
- *	 - Global command: `gulp build`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp build`.
+ *	 - Global command: `gulp build --env production`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp build --env production`.
  *	 - NPM script: `npm run build`.
  */
 gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
