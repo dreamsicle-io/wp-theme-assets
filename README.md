@@ -134,17 +134,23 @@ root
 ―――― ―――― ―――― ―――― /modules 
 ―――― ―――― ―――― ―――― site.js 
 ―――― ―――― ―――― ―――― admin.js 
+―――― ―――― ―――― ―――― login.js 
 ―――― ―――― ―――― ―――― customizer-preview.js 
 ―――― ―――― ―――― ―――― customizer-controls.js 
+―――― ―――― ―――― /md 
+―――― ―――― ―――― ―――― DESCRIPTION.js 
+―――― ―――― ―――― ―――― FAQ.js 
+―――― ―――― ―――― ―――― COPYRIGHT.js 
+―――― ―――― ―――― ―――― CHANGELOG.js 
 ―――― ―――― ―――― /sass 
 ―――― ―――― ―――― ―――― /modules 
 ―――― ―――― ―――― ―――― site.scss 
 ―――― ―――― ―――― ―――― admin.scss 
+―――― ―――― ―――― ―――― login.scss 
 ―――― ―――― ―――― ―――― editor.scss 
 ―――― ―――― ―――― ―――― customizer-preview.scss 
 ―――― ―――― ―――― ―――― customizer-controls.scss 
 ―――― ―――― ―――― /images 
-―――― ―――― ―――― ―――― test-icon.svg 
 ``` 
 
 ### Build Files 
@@ -158,6 +164,8 @@ root
 ―――― ―――― ―――― ―――― site.min.js.map 
 ―――― ―――― ―――― ―――― admin.min.js 
 ―――― ―――― ―――― ―――― admin.min.js.map 
+―――― ―――― ―――― ―――― login.min.js 
+―――― ―――― ―――― ―――― login.min.js.map 
 ―――― ―――― ―――― ―――― customizer-preview.min.js 
 ―――― ―――― ―――― ―――― customizer-preview.min.js.map 
 ―――― ―――― ―――― ―――― customizer-controls.min.js 
@@ -167,6 +175,8 @@ root
 ―――― ―――― ―――― ―――― site.min.css.map 
 ―――― ―――― ―――― ―――― admin.min.css 
 ―――― ―――― ―――― ―――― admin.min.css.map 
+―――― ―――― ―――― ―――― login.min.css 
+―――― ―――― ―――― ―――― login.min.css.map 
 ―――― ―――― ―――― ―――― editor.min.css 
 ―――― ―――― ―――― ―――― editor.min.css.map 
 ―――― ―――― ―――― ―――― customizer-preview.min.css 
@@ -174,7 +184,6 @@ root
 ―――― ―――― ―――― ―――― customizer-controls.min.css 
 ―――― ―――― ―――― ―――― customizer-controls.min.css.map 
 ―――― ―――― ―――― /images 
-―――― ―――― ―――― ―――― test-icon.svg (optimized but not renamed) 
 ―――― /languages 
 ―――― ―――― {textdomain}.pot 
 ―――― README.md 
