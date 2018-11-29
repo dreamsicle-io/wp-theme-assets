@@ -132,6 +132,7 @@ root
 ―――― ―――― /src 
 ―――― ―――― ―――― /js 
 ―――― ―――― ―――― ―――― /modules 
+―――― ―――― ―――― ―――― ―――― README.md
 ―――― ―――― ―――― ―――― site.js 
 ―――― ―――― ―――― ―――― admin.js 
 ―――― ―――― ―――― ―――― login.js 
@@ -144,6 +145,7 @@ root
 ―――― ―――― ―――― ―――― CHANGELOG.js 
 ―――― ―――― ―――― /sass 
 ―――― ―――― ―――― ―――― /modules 
+―――― ―――― ―――― ―――― ―――― README.md 
 ―――― ―――― ―――― ―――― site.scss 
 ―――― ―――― ―――― ―――― admin.scss 
 ―――― ―――― ―――― ―――― login.scss 
@@ -151,6 +153,7 @@ root
 ―――― ―――― ―――― ―――― customizer-preview.scss 
 ―――― ―――― ―――― ―――― customizer-controls.scss 
 ―――― ―――― ―――― /images 
+―――― ―――― ―――― ―――― README.md
 ``` 
 
 ### Build Files 
