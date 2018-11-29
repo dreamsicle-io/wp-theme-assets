@@ -243,10 +243,10 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
 gulp.task('build:sass', function sassBuilder() {
 	const outputStyle = (args.env === 'production') ? 'compressed' : 'expanded';
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
+		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(cache('build:sass'))
-		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(autoprefixer({ browsers: ['last 5 versions', 'ie >= 9'] }))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
