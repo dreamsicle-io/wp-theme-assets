@@ -243,10 +243,10 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
 gulp.task('build:sass', function sassBuilder() {
 	const outputStyle = (args.env === 'production') ? 'compressed' : 'expanded';
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
-		.pipe(cache('build:sass'))
-		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
+		.pipe(cache('build:sass'))
+		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(autoprefixer({ browsers: ['last 5 versions', 'ie >= 9'] }))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
@@ -302,9 +302,9 @@ gulp.task('build:js', function jsBuilder() {
 gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
-		.pipe(cache('build:pot'))
 		.pipe(wpPot({ domain: pkg.name })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
+		.pipe(cache('build:pot'))
 		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
 		.pipe(debug({ title: 'build:pot' }));
 });
@@ -444,9 +444,9 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  */
 gulp.task('build:package:readme:content', function packageReadmeContentBuilder(done) {
 	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
-		.pipe(cache('build:package:readme:content'))
 		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
+		.pipe(cache('build:package:readme:content'))
 		.pipe(gulp.dest('./'))
 		.pipe(debug({ title: 'build:package:readme:content' }));
 });
