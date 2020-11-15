@@ -60,7 +60,7 @@ The included `WP_Theme_Assets` [php class](https://github.com/dreamsicle-io/wp-t
 
 ```php
 // Require the class-wp-theme-assets.php file.
-require get_template_directory_uri() . '/includes/class-wp-theme-assets.php';
+require get_template_directory() . '/includes/class-wp-theme-assets.php';
 
 // Hook the `WP_Theme_Assets` class's `init()` method to `after_setup_theme`. 
 add_action( 'after_setup_theme', array( new WP_Theme_Assets, 'init' ), 0 );
