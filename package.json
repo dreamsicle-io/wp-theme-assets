@@ -1,6 +1,6 @@
 {
   "name": "wp-theme-assets",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "WP Theme Assets",
   "main": "index.js",
   "scripts": {
