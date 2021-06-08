@@ -2,10 +2,6 @@
   "name": "wp-theme-assets",
   "version": "1.1.0",
   "description": "WP Theme Assets",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dreamsicle-io/wp-theme-assets.git"
@@ -15,5 +11,5 @@
   "bugs": {
     "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"
   },
-  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets#readme"
+  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets"
 }
