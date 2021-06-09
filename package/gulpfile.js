@@ -247,7 +247,7 @@ gulp.task('build:sass', function sassBuilder() {
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(cache('build:sass'))
-		.pipe(autoprefixer({ browsers: ['last 5 versions', 'ie >= 9'] }))
+		.pipe(autoprefixer())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/css'))
