@@ -488,7 +488,6 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Run:
  *	 - Global command: `gulp zip`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp zip`.
- *   - NPM script: `npm run zip`.
  */
  gulp.task('zip', function zipper(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
@@ -579,7 +578,6 @@ gulp.task('lint:js', function jsLinter() {
  * Run:
  *	 - Global command: `gulp lint`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp lint`.
- *	 - NPM script: `npm run lint`.
  */
 gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
 
