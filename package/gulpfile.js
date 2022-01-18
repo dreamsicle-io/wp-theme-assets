@@ -9,7 +9,7 @@ import autoPrefixer from 'gulp-autoprefixer';
 import cached from 'gulp-cached';
 import concat from 'gulp-concat';
 import debug from 'gulp-debug';
-import gulpEslint from 'gulp-eslint';
+import eslint from 'gulp-eslint';
 import gulpIf from 'gulp-if';
 import imagemin from 'gulp-imagemin';
 import order from 'gulp-order'
@@ -562,7 +562,7 @@ gulp.task('lint:sass', function sassLinter() {
  */
 gulp.task('lint:js', function jsLinter() {
 	return gulp.src(['./assets/src/js/**/*.js'])
-		.pipe(gulpEslint()
+		.pipe(eslint()
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(eslint.format())
 		.pipe(debug({ title: 'lint:js' }));
