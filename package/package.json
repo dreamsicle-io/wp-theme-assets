@@ -1,71 +1,73 @@
 {
-  "name": "wp-theme",
-  "themeName": "WP Theme",
-  "version": "0.0.1",
-  "description": "Just another WordPress theme.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://git.example.org/wp-theme.git"
-  },
-  "keywords": [
-    "accessibility-ready",
-    "translation-ready"
-  ],
-  "author": {
-    "name": "Example Org",
-    "email": "info@example.org",
-    "url": "https://www.example.org"
-  },
-  "contributors": [],
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://git.example.org/wp-theme/issues"
-  },
-  "homepage": "https://www.example.org",
-  "wordpress": {
-    "versionRequired": "4.9.4",
-    "versionTested": "4.9.4"
-  },
-  "browserslist": {
-    "development": [
-      "last 5 versions", 
-      "ie >= 9"
-    ],
-    "production": [
-      "last 5 versions", 
-      "ie >= 9"
-    ]
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.4",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "del": "^6.0.0",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^8.0.0",
-    "gulp-cached": "^1.1.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-debug": "^4.0.0",
-    "gulp-eslint": "^6.0.0",
-    "gulp-if": "^3.0.0",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-order": "^1.2.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sass-lint": "^1.4.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-tap": "^2.0.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-wp-pot": "^2.5.0",
-    "minimist": "^1.2.5",
-    "vinyl-buffer": "^1.0.1"
-  },
-  "scripts": {
-    "start": "node ./node_modules/gulp/bin/gulp",
-    "build": "node ./node_modules/gulp/bin/gulp build --env production",
-    "watch": "node ./node_modules/gulp/bin/gulp watch",
-    "clean": "node ./node_modules/gulp/bin/gulp clean",
-    "lint": "node ./node_modules/gulp/bin/gulp lint"
-  }
+	"type": "module",
+	"name": "wp-theme",
+	"themeName": "WP Theme",
+	"version": "0.0.1",
+	"description": "Just another WordPress theme.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://git.example.org/wp-theme.git"
+	},
+	"keywords": [
+		"accessibility-ready",
+		"translation-ready"
+	],
+	"author": {
+		"name": "Example Org",
+		"email": "info@example.org",
+		"url": "https://www.example.org"
+	},
+	"contributors": [],
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://git.example.org/wp-theme/issues"
+	},
+	"homepage": "https://www.example.org",
+	"wordpress": {
+		"versionRequired": "4.9.4",
+		"versionTested": "4.9.4"
+	},
+	"browserslist": {
+		"development": [
+			"last 1 versions"
+		],
+		"production": [
+			"last 5 versions",
+			"ie >= 9"
+		]
+	},
+	"devDependencies": {
+		"@babel/core": "~7.16.7",
+		"@babel/preset-env": "~7.16.8",
+		"babelify": "~10.0.0",
+		"browserify": "~17.0.0",
+		"del": "~6.0.0",
+		"gulp": "~4.0.2",
+		"gulp-autoprefixer": "~8.0.0",
+		"gulp-cached": "~1.1.1",
+		"gulp-concat": "~2.6.1",
+		"gulp-debug": "~4.0.0",
+		"gulp-eslint": "~6.0.0",
+		"gulp-if": "~3.0.0",
+		"gulp-imagemin": "~8.0.0",
+		"gulp-order": "~1.2.0",
+		"gulp-rename": "~2.0.0",
+		"gulp-sass": "~5.1.0",
+		"gulp-sass-lint": "~1.4.0",
+		"gulp-sourcemaps": "~3.0.0",
+		"gulp-tap": "~2.0.0",
+		"gulp-uglify": "~3.0.2",
+		"gulp-wp-pot": "~2.5.0",
+		"gulp-zip": "~5.1.0",
+		"sass": "~1.48.0",
+		"vinyl-buffer": "~1.0.1"
+	},
+	"scripts": {
+		"start": "NODE_ENV=development node ./node_modules/gulp/bin/gulp",
+		"lint": "NODE_ENV=development node ./node_modules/gulp/bin/gulp lint",
+		"build": "NODE_ENV=production node ./node_modules/gulp/bin/gulp build",
+		"zip": "NODE_ENV=production node ./node_modules/gulp/bin/gulp zip",
+		"deploy": "NODE_ENV=production node ./node_modules/gulp/bin/gulp deploy",
+		"clean": "node ./node_modules/gulp/bin/gulp clean"
+	}
 }
