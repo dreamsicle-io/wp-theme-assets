@@ -1,27 +1,29 @@
 'use-strict';
 
-const babel = require('babelify');
-const browserify = require('browserify');
-const del = require('del');
-const fs = require('fs');
-const gulp = require('gulp');
-const autoprefixer = require('gulp-autoprefixer');
-const cache = require('gulp-cached');
-const concat = require('gulp-concat');
-const debug = require('gulp-debug');
-const eslint = require('gulp-eslint');
-const gulpIf = require('gulp-if');
-const imagemin = require('gulp-imagemin');
-const order = require('gulp-order');
-const rename = require('gulp-rename');
-const sass = require('gulp-sass');
-const sassLint = require('gulp-sass-lint');
-const sourcemaps = require('gulp-sourcemaps');
-const tap = require('gulp-tap');
-const uglify = require('gulp-uglify');
-const wpPot = require('gulp-wp-pot');
-const buffer = require('vinyl-buffer');
-const args = require('minimist')(process.argv.slice(2));
+import babel from 'babelify';
+import browserify from 'browserify';
+import del from 'del';
+import fs from 'fs';
+import gulp from 'gulp';
+import autoPrefixer from 'gulp-autoprefixer';
+import cached from 'gulp-cached';
+import concat from 'gulp-concat';
+import debug from 'gulp-debug';
+import gulpEslint from 'gulp-eslint';
+import gulpIf from 'gulp-if';
+import imagemin from 'gulp-imagemin';
+import order from 'gulp-order'
+import rename from 'gulp-rename';
+import gulpSass from 'gulp-sass';
+import sassLint from 'gulp-sass-lint';
+import sassCompiler from 'sass';
+import sourcemaps from 'gulp-sourcemaps';
+import tap from 'gulp-tap';
+import GulpUglify from 'gulp-uglify';
+import gulpWPpot from 'gulp-wp-pot';
+import buffer from 'vinyl-buffer';
+import GulpZip from 'gulp-zip';
+const sass = gulpSass(sassCompiler);
 
 // Vendor Files
 const vendorCss = [];
@@ -159,7 +161,7 @@ gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:p
 gulp.task('build:css:vendor', function VendorCssBuilder(done) {
 	if (vendorCss && (vendorCss.length > 0)) {
 		return gulp.src(vendorCss)
-			.pipe(cache('build:css:vendor'))
+			.pipe(cached('build:css:vendor'))
 			.pipe(gulp.dest('./assets/dist/css'))
 			.pipe(debug({ title: 'build:css:vendor' }));
 	} else {
@@ -180,7 +182,7 @@ gulp.task('build:css:vendor', function VendorCssBuilder(done) {
 gulp.task('build:js:vendor', function VendorJsBuilder(done) {
 	if (vendorJs && (vendorJs.length > 0)) {
 		return gulp.src(vendorJs)
-			.pipe(cache('build:js:vendor'))
+			.pipe(cached('build:js:vendor'))
 			.pipe(gulp.dest('./assets/dist/js'))
 			.pipe(debug({ title: 'build:js:vendor' }));
 	} else {
@@ -201,7 +203,7 @@ gulp.task('build:js:vendor', function VendorJsBuilder(done) {
 gulp.task('build:images:vendor', function VendorImagesBuilder(done) {
 	if (vendorImages && (vendorImages.length > 0)) {
 		return gulp.src(vendorImages)
-			.pipe(cache('build:images:vendor'))
+			.pipe(cached('build:images:vendor'))
 			.pipe(gulp.dest('./assets/dist/images'))
 			.pipe(debug({ title: 'build:images:vendor' }));
 	} else {
@@ -241,13 +243,13 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build:sass`.
  */
 gulp.task('build:sass', function sassBuilder() {
-	const outputStyle = (args.env === 'production') ? 'compressed' : 'expanded';
+	const outputStyle = (process.env.NODE_ENV === 'production') ? 'compressed' : 'expanded';
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
-		.pipe(cache('build:sass'))
-		.pipe(autoprefixer())
+		.pipe(cached('build:sass'))
+		.pipe(autoPrefixer())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/css'))
@@ -273,13 +275,13 @@ gulp.task('build:sass', function sassBuilder() {
 gulp.task('build:js', function jsBuilder() {
 	return gulp.src('./assets/src/js/*.js', {read: false}) // browserify reads file, don't read file twice.
 		.pipe(tap(function (file) {
-			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['env'] });
+			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['@babel/preset-env'] });
 			file.contents = bundler.bundle();
 		}).on('error', function(err) { console.error(err); this.emit('end'); }))
 	    .pipe(buffer())
-		.pipe(cache('build:js'))
+		.pipe(cached('build:js'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(gulpIf((args.env === 'production'), uglify()))
+		.pipe(gulpIf((process.env.NODE_ENV === 'production'), GulpUglify()))
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/js'))
@@ -302,9 +304,9 @@ gulp.task('build:js', function jsBuilder() {
 gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
-		.pipe(wpPot({ domain: pkg.name })
+		.pipe(gulpWPpot({ domain: pkg.name })
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
-		.pipe(cache('build:pot'))
+		.pipe(cached('build:pot'))
 		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
 		.pipe(debug({ title: 'build:pot' }));
 });
@@ -323,7 +325,7 @@ gulp.task('build:pot', function potBuilder() {
  */
 gulp.task('build:images', function imageBuilder() {
 	return gulp.src(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'])
-		.pipe(cache('build:images'))
+		.pipe(cached('build:images'))
 		.pipe(imagemin()
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(gulp.dest('./assets/dist/images'))
@@ -381,7 +383,7 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  *
  * Process:
  *	 1. Prepares the necessary data from the package.json file. 
- *	 2. Writes the `README.md` file formatted for WP Theme Repo. 
+ *	 2. Writes the `README.md` file formatted for MNRK Repo. 
  *
  * Expected output: 
  *   Contributors:      ...
@@ -428,7 +430,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *
  * Process:
  *	 1. Concatenates the README.md file with source md files in the right order. 
- *	 2. Writes the concatenated files to the README.md file formatted for WP Theme Repo.
+ *	 2. Writes the concatenated files to the README.md file formatted for MNRK Repo.
  *	 3. Logs created files to the console.
  *
  * Expected output: 
@@ -446,7 +448,7 @@ gulp.task('build:package:readme:content', function packageReadmeContentBuilder(d
 	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
 		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
-		.pipe(cache('build:package:readme:content'))
+		.pipe(cached('build:package:readme:content'))
 		.pipe(gulp.dest('./'))
 		.pipe(debug({ title: 'build:package:readme:content' }));
 });
@@ -478,6 +480,25 @@ gulp.task('build:package:readme', gulp.series('build:package:readme:header', 'bu
 gulp.task('build:package', gulp.series('build:package:style', 'build:package:readme'));
 
 /**
+ * Zip.
+ *
+ * Process:
+ *	 1. Zips a WordPress friendly theme.
+ * 
+ * Run:
+ *	 - Global command: `gulp zip`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp zip`.
+ *   - NPM script: `npm run zip`.
+ */
+ gulp.task('zip', function zipper(done) {
+	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	return gulp.src(['./**', '!./*.zip', '!./package.json', '!./package-lock.json', '!./gulpfile.js', '!./.sasslintrc', '!./.gitignore', '!./.eslint', '!./.editorconfig', '!./node_modules/**'])
+		.pipe(GulpZip(pkg.name + '.zip'))
+		.pipe(gulp.dest('./'))
+		.pipe(debug({ title: 'zip' }));
+});
+
+/**
  * Build all assets.
  *
  * Process:
@@ -493,6 +514,20 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  *	 - NPM script: `npm run build`.
  */
 gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
+
+/**
+ * Deploy.
+ *
+ * Process:
+ *	 1. Runs a build.
+ *   2. Creates a zip file.
+ * 
+ * Run:
+ *	 - Global command: `gulp deploy`.
+ *	 - Local command: `node ./node_modules/gulp/bin/gulp deploy`.
+ *   - NPM script: `npm run deploy`.
+ */
+ gulp.task('deploy', gulp.series('build', 'zip'));
 
 /**
  * Lint all SCSS files.
@@ -528,7 +563,7 @@ gulp.task('lint:sass', function sassLinter() {
  */
 gulp.task('lint:js', function jsLinter() {
 	return gulp.src(['./assets/src/js/**/*.js'])
-		.pipe(eslint()
+		.pipe(gulpEslint()
 			.on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(eslint.format())
 		.pipe(debug({ title: 'lint:js' }));
@@ -564,7 +599,6 @@ gulp.task('lint', gulp.series('lint:sass', 'lint:js'));
  * Run: 
  *	 - Global command: `gulp watch`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp watch`.
- *	 - NPM script: `npm run watch`.
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
