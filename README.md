@@ -96,12 +96,12 @@ This command will start the `build` task, which runs the `build:package`, `build
 npm run build
 ```
 
-### Watch
+### Deploy
 
-This command will start the `watch` task, which watches for changes in source files and reruns relevant building and linting tasks when changes are detected.
+This command will start the `deploy` task, which will run the `build` and `deploy` tasks in series.
 
 ```shell
-npm run watch
+npm run deploy
 ```
 
 ### Clean
@@ -110,14 +110,6 @@ This command will start the `clean` task, which will delete all built assets inc
 
 ```shell
 npm run clean
-```
-
-### Lint
-
-This command will start the `lint` task, which will lint SASS files in `src/sass` according to `.sasslintrc` [config file](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/.sasslintrc); and JS files in `src/js` according to the `.eslintrc` [config file](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/.eslintrc).
-
-```shell
-npm run lint
 ```
 
 ## File structure 
