@@ -501,32 +501,20 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
+ *	 1. Runs the `clean` task.
  *	 1. Runs the `build:package` task.
  *	 2. Runs the `build:sass` task.
  *	 3. Runs the `build:js` task.
  *	 4. Runs the `build:pot` task.
  *	 5. Runs the `build:images` task.
+ *	 5. Runs the `zip` task.
  *
  * Run:
  *	 - Global command: `gulp build --env production`.
  *	 - Local command: `node ./node_modules/gulp/bin/gulp build --env production`.
  *	 - NPM script: `npm run build`.
  */
-gulp.task('build', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
-
-/**
- * Deploy.
- *
- * Process:
- *	 1. Runs a build.
- *   2. Creates a zip file.
- * 
- * Run:
- *	 - Global command: `gulp deploy`.
- *	 - Local command: `node ./node_modules/gulp/bin/gulp deploy`.
- *   - NPM script: `npm run deploy`.
- */
- gulp.task('deploy', gulp.series('build', 'zip'));
+gulp.task('build', gulp.series('clean', 'build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor', 'zip'));
 
 /**
  * Lint all SCSS files.
