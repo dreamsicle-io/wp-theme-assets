@@ -90,18 +90,18 @@ npm start
 
 ### Build
 
-This command will start the `build` task, which runs the `build:package`, `build:pot`, `build:sass`, `build:js`, and `build:images` tasks in series.
+This command will start the `build` task, which runs the `clean`, `build:package`, `build:pot`, `build:sass`, `build:js`, `build:images`, and `zip` tasks in series.
 
 ```shell
 npm run build
 ```
 
-### Deploy
+### Lint
 
-This command will start the `deploy` task, which will run the `build` and `deploy` tasks in series.
+This command will start the `lint` task, which runs the `lint:sass`, and `lint:js` tasks in series.
 
 ```shell
-npm run deploy
+npm run lint
 ```
 
 ### Clean
@@ -124,7 +124,7 @@ root
 ―――― ―――― /src 
 ―――― ―――― ―――― /js 
 ―――― ―――― ―――― ―――― /modules 
-―――― ―――― ―――― ―――― ―――― README.md
+―――― ―――― ―――― ―――― ―――― utils.js
 ―――― ―――― ―――― ―――― site.js 
 ―――― ―――― ―――― ―――― admin.js 
 ―――― ―――― ―――― ―――― login.js 
@@ -137,7 +137,7 @@ root
 ―――― ―――― ―――― ―――― CHANGELOG.js 
 ―――― ―――― ―――― /sass 
 ―――― ―――― ―――― ―――― /modules 
-―――― ―――― ―――― ―――― ―――― README.md 
+―――― ―――― ―――― ―――― ―――― .gitkeep 
 ―――― ―――― ―――― ―――― site.scss 
 ―――― ―――― ―――― ―――― admin.scss 
 ―――― ―――― ―――― ―――― login.scss 
@@ -145,7 +145,7 @@ root
 ―――― ―――― ―――― ―――― customizer-preview.scss 
 ―――― ―――― ―――― ―――― customizer-controls.scss 
 ―――― ―――― ―――― /images 
-―――― ―――― ―――― ―――― README.md
+―――― ―――― ―――― ―――― .gitkeep
 ``` 
 
 ### Build Files 
