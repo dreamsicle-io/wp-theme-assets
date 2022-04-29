@@ -406,11 +406,12 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  * Build all assets.
  *
  * Process:
- *	 2. Runs the `build:package` task.
+ *	 1. Runs the `build:package` task.
+ *	 2. Runs the `build:pot` task.
  *	 3. Runs the `build:sass` task.
  *	 4. Runs the `build:js` task.
- *	 5. Runs the `build:pot` task.
- *	 6. Runs the `build:images` task.
+ *	 5. Runs the `build:images` task.
+ *	 6. Runs the `build:vendor` task.
  */
 gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
 
