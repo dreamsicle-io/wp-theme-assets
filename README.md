@@ -82,7 +82,7 @@ npm install
 
 ### Start
 
-This command will start the `default` task, which runs the `lint`, `build`, and `watch` tasks in series.
+This command will start the `default` task, which runs the `lint`, `build:assets`, and `watch` tasks in series.
 
 ```shell
 npm start
@@ -90,7 +90,7 @@ npm start
 
 ### Build
 
-This command will start the `build` task, which runs the `clean`, `build:package`, `build:pot`, `build:sass`, `build:js`, `build:images`, and `zip` tasks in series.
+This command will start the `build` task, which runs the `clean`, `build:assets`, and `zip` tasks in series.
 
 ```shell
 npm run build

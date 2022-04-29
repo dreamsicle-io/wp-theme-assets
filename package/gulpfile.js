@@ -403,12 +403,25 @@ gulp.task('build:package:readme', gulp.series('build:package:readme:header', 'bu
 gulp.task('build:package', gulp.series('build:package:style', 'build:package:readme'));
 
 /**
+ * Build all assets.
+ *
+ * Process:
+ *	 1. Runs the `build:package` task.
+ *	 2. Runs the `build:pot` task.
+ *	 3. Runs the `build:sass` task.
+ *	 4. Runs the `build:js` task.
+ *	 5. Runs the `build:images` task.
+ *	 6. Runs the `build:vendor` task.
+ */
+gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
+
+/**
  * Zip.
  *
  * Process:
  *	 1. Zips a WordPress friendly theme.
  */
- gulp.task('zip', function zipper(done) {
+gulp.task('zip', function zipper(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**', '!./*.zip', '!./package.json', '!./package-lock.json', '!./gulpfile.js', '!./.sasslintrc', '!./.gitignore', '!./.eslint', '!./.editorconfig', '!./node_modules/**'])
 		.pipe(GulpZip(pkg.name + '.zip'))
@@ -417,18 +430,14 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
 });
 
 /**
- * Build all assets.
+ * Build.
  *
  * Process:
  *	 1. Runs the `clean` task.
- *	 2. Runs the `build:package` task.
- *	 3. Runs the `build:sass` task.
- *	 4. Runs the `build:js` task.
- *	 5. Runs the `build:pot` task.
- *	 6. Runs the `build:images` task.
+ *	 2. Runs the `build:assets` task.
  *	 7. Runs the `zip` task.
  */
-gulp.task('build', gulp.series('clean', 'build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor', 'zip'));
+gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
 
 /**
  * Lint all SCSS files.
@@ -503,4 +512,4 @@ gulp.task('watch', function watcher() {
  *	 2. Runs the `build` task.
  *	 3. Runs the `watch` task.
  */
-gulp.task('default', gulp.series('lint', 'build', 'watch'));
+gulp.task('default', gulp.series('lint', 'build:assets', 'watch'));
