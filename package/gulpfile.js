@@ -218,13 +218,13 @@ gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'bu
 gulp.task('build:sass', function sassBuilder() {
 	const outputStyle = (process.env.NODE_ENV === 'production') ? 'compressed' : 'expanded';
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
-		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(gulpIf((process.env.NODE_ENV === 'production'), sourcemaps.init({ loadMaps: true })))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
 			.on('error', function(err) { console.error(err.messageFormatted); this.emit('end'); }))
 		.pipe(cached('build:sass'))
 		.pipe(autoPrefixer())
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
+		.pipe(gulpIf((process.env.NODE_ENV === 'production'), sourcemaps.write('./')))
 		.pipe(gulp.dest('./assets/dist/css'))
 		.pipe(debug({ title: 'build:sass' }));
 });
@@ -249,10 +249,10 @@ gulp.task('build:js', function jsBuilder() {
 		}).on('error', function(err) { console.error(err); this.emit('end'); }))
 		.pipe(buffer())
 		.pipe(cached('build:js'))
-		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(gulpIf((process.env.NODE_ENV === 'production'), sourcemaps.init({ loadMaps: true })))
 		.pipe(gulpIf((process.env.NODE_ENV === 'production'), GulpUglify()))
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write('./'))
+		.pipe(gulpIf((process.env.NODE_ENV === 'production'), sourcemaps.write('./')))
 		.pipe(gulp.dest('./assets/dist/js'))
 		.pipe(debug({ title: 'build:js' }));
 });
