@@ -112,6 +112,23 @@ gulp.task('clean:images', function imagesCleaner(done) {
 });
 
 /**
+ * Clean zip.
+ *
+ * Process:
+ *	 1. Deletes the built zip file.
+ */
+gulp.task('clean:zip', function zipCleaner(done) {
+	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	del(['./' + pkg.name + '.zip'])
+		.then(function(paths) {
+			return done();
+		}).catch(function(err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
  * Clean All Built Assets.
  *
  * Process: 
@@ -120,8 +137,9 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 3. Runs the `clean:images` task.
  *	 4. Runs the `clean:pot` task.
  *	 5. Runs the `clean:package` task.
+ *	 6. Runs the `clean:zip` task.
  */
-gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package'));
+gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package', 'clean:zip'));
 
 /**
  * Build CSS Vendor.
@@ -202,7 +220,7 @@ gulp.task('build:sass', function sassBuilder() {
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
-			.on('error', function(err) { console.error(err); this.emit('end'); }))
+			.on('error', function(err) { console.error(err.messageFormatted); this.emit('end'); }))
 		.pipe(cached('build:sass'))
 		.pipe(autoPrefixer())
 		.pipe(rename({ suffix: '.min' }))
