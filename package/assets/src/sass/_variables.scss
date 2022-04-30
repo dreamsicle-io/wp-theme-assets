@@ -1,0 +1,90 @@
+// root
+$wp-theme-root--font-size: 16px;
+
+// contain
+$wp-theme-contain--max-width: 1300px;
+
+// gutter
+$wp-theme-gutter--phone: 16px;
+$wp-theme-gutter--tablet: 18px;
+$wp-theme-gutter--laptop: 20px;
+$wp-theme-gutter--desktop: 22px;
+
+// respond
+$wp-theme-respond--phone-max: 760px;
+$wp-theme-respond--tablet-min: 761px;
+$wp-theme-respond--tablet-max: 1024px;
+$wp-theme-respond--laptop-min: 1025px;
+$wp-theme-respond--laptop-max: 1280px;
+$wp-theme-respond--desktop-min: 1281px;
+$wp-theme-respond--wp-admin-bar-mobile-max: 782px;
+$wp-theme-respond--wp-admin-bar-non-mobile-min: 783px;
+
+// respond map
+$wp-theme-respond--map: (
+	'phone': (
+		'max': $wp-theme-respond--phone-max,
+	),
+	'tablet': (
+		'min': $wp-theme-respond--tablet-min,
+		'max': $wp-theme-respond--tablet-max,
+	),
+	'laptop': (
+		'min': $wp-theme-respond--laptop-min,
+		'max': $wp-theme-respond--laptop-max,
+	),
+	'desktop': (
+		'min': $wp-theme-respond--desktop-min,
+	),
+	'mobile': (
+		'max': $wp-theme-respond--tablet-max,
+	),
+	'non-mobile': (
+		'min': $wp-theme-respond--laptop-min,
+	),
+	'wp-admin-bar-mobile': (
+		'max': $wp-theme-respond--wp-admin-bar-mobile-max,
+	),
+	'wp-admin-bar-non-mobile': (
+		'min': $wp-theme-respond--wp-admin-bar-non-mobile-min,
+	),
+);
+
+// background colors
+$wp-theme-theme--background: #f5f5f5;
+$wp-theme-theme--surface: #ffffff;
+$wp-theme-theme--registration: #000000;
+
+// text colors
+$wp-theme-theme--on-background: #000000;
+$wp-theme-theme--on-surface: #000000;
+$wp-theme-theme--on-registration: #ffffff;
+
+// soft colors
+$wp-theme-theme--soft-on-background: rgba($wp-theme-theme--on-background, 0.5);
+$wp-theme-theme--soft-on-surface: rgba($wp-theme-theme--on-surface, 0.5);
+$wp-theme-theme--soft-on-registration: rgba($wp-theme-theme--on-registration, 0.5);
+
+// border colors
+$wp-theme-theme--border-on-background: rgba($wp-theme-theme--on-background, 0.15);
+$wp-theme-theme--border-on-surface: rgba($wp-theme-theme--on-surface, 0.15);
+$wp-theme-theme--border-on-registration: rgba($wp-theme-theme--on-registration, 0.15);
+
+// theme map
+$wp-theme-theme--map: (
+	// background
+	'background': $wp-theme-theme--background,
+	'on-background': $wp-theme-theme--on-background,
+	'soft-on-background': $wp-theme-theme--soft-on-background,
+	'border-on-background': $wp-theme-theme--border-on-background,
+	// surface
+	'surface': $wp-theme-theme--surface,
+	'on-surface': $wp-theme-theme--on-surface,
+	'soft-on-surface': $wp-theme-theme--soft-on-surface,
+	'border-on-surface': $wp-theme-theme--border-on-surface,
+	// registration
+	'registration': $wp-theme-theme--registration,
+	'on-registration': $wp-theme-theme--on-registration,
+	'soft-on-registration': $wp-theme-theme--soft-on-registration,
+	'border-on-registration': $wp-theme-theme--border-on-registration,
+);

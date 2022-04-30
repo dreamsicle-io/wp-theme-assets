@@ -1,0 +1,81 @@
+@use 'sass:math';
+
+#wpadminbar { // sass-lint:disable-line no-ids
+	position: fixed;
+
+	.ab-sub-wrapper {
+		max-width: unset;
+	}
+
+	.ab-submenu {
+		max-width: unset;
+	}
+}
+
+.gallery {
+	@include wp-theme-flex(row wrap, stretch, flex-start);
+	@include wp-theme-gutter(padding, 0.5);
+
+	@for $columns from 1 through 9 {
+		&.gallery-columns-#{$columns} {
+
+			.gallery-item {
+				width: math.div(100%, $columns);
+			}
+		}
+	}
+
+	.gallery-item {
+		@include wp-theme-flex(column, stretch, flex-start);
+		@include wp-theme-gutter(padding, 0.5);
+		margin: 0;
+	}
+
+	.gallery-icon {
+
+		> a {
+			display: block;
+		}
+
+		img {
+			width: 100%;
+		}
+	}
+
+	.gallery-caption {
+		@include wp-theme-gutter(padding-top, 0.5);
+		flex-grow: 1;
+	}
+}
+
+.post-nav-links {
+	clear: both;
+}
+
+.wp-caption {
+	margin: 0;
+}
+
+.alignnone {
+	float: none;
+	clear: both;
+}
+
+.aligncenter {
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+	clear: both;
+}
+
+.alignleft {
+	@include wp-theme-gutter(margin-right);
+	float: left;
+	clear: left;
+}
+
+.alignright {
+	@include wp-theme-gutter(margin-left);
+	float: right;
+	clear: right;
+}

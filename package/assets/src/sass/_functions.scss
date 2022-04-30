@@ -1,0 +1,5 @@
+@use 'sass:math';
+
+@function wp-theme-px-to-rem($px) {
+	@return math.div($px, $wp-theme-root--font-size) * 1rem;
+}

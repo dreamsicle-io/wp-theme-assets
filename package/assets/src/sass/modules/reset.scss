@@ -1,0 +1,150 @@
+// root variables
+:root {
+	@include wp-theme-theme-root-vars;
+}
+
+* {
+	-webkit-tap-highlight-color: transparent; // sass-lint:disable-line no-vendor-prefixes
+	-webkit-font-smoothing: antialiased; // sass-lint:disable-line no-vendor-prefixes
+}
+
+html {
+	font-size: $wp-theme-root--font-size;
+	font-family: sans-serif;
+}
+
+body {
+	@include wp-theme-theme(background-color, 'background');
+	@include wp-theme-theme(color, 'on-background');
+	@include wp-theme-theme(border-color, 'border-on-background');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 700;
+	line-height: 1.25;
+}
+
+body,
+header,
+footer,
+section,
+aside,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+figure,
+address,
+p,
+ul,
+ol,
+li {
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+figure,
+address,
+p,
+ul,
+ol {
+	@include wp-theme-gutter(margin-bottom);
+	display: block;
+	margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote {
+	word-wrap: break-word;
+}
+
+h1 {
+	@include wp-theme-font-size(48px);
+}
+
+h2 {
+	@include wp-theme-font-size(40px);
+}
+
+h3 {
+	@include wp-theme-font-size(32px);
+}
+
+h4 {
+	@include wp-theme-font-size(28px);
+}
+
+h5 {
+	@include wp-theme-font-size(24px);
+}
+
+h6 {
+	@include wp-theme-font-size(20px);
+}
+
+a {
+	@include wp-theme-theme(color, 'blue');
+	text-decoration: none;
+	font-weight: 600;
+
+	&:hover,
+	&:active,
+	&:focus {
+		@include wp-theme-theme(color, 'blue');
+		text-decoration: underline;
+	}
+}
+
+article {
+	@include wp-theme-clear-fix;
+}
+
+strong {
+	font-weight: bolder;
+}
+
+address,
+em {
+	font-style: italic;
+}
+
+video,
+img,
+svg {
+	display: block;
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	border: 0;
+}
+
+button,
+input[type='submit'], // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements
+input[type='reset'], // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements
+input[type='search']::-webkit-search-decoration, // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements, force-pseudo-nesting, no-vendor-prefixes
+input[type='search']::-webkit-search-cancel-button, // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements, force-pseudo-nesting, no-vendor-prefixes
+input[type='search']::-webkit-search-results-button, // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements, force-pseudo-nesting, no-vendor-prefixes
+input[type='search']::-webkit-search-results-decoration { // sass-lint:disable-line force-attribute-nesting, no-qualifying-elements, force-pseudo-nesting, no-vendor-prefixes
+	appearance: none;
+}
