@@ -17,6 +17,7 @@
   	}], 
   	"nesting-depth": [2, { 
   		"max-depth": 3 
-  	}]
+  	}],
+		"property-sort-order": 0
   }
 }
