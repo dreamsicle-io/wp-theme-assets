@@ -3,13 +3,9 @@
 class WP_Theme_Assets {
 
 	public $theme_directory_uri;
-
 	public $theme_textdomain;
-
 	public $theme_version;
-
 	public $assets_directory_uri;
-
 	public $languages_directory_uri;
 
 	function __construct() {
