@@ -12,7 +12,7 @@ import debug from 'gulp-debug';
 import eslint from 'gulp-eslint';
 import gulpIf from 'gulp-if';
 import imagemin from 'gulp-imagemin';
-import order from 'gulp-order'
+import order from 'gulp-order';
 import rename from 'gulp-rename';
 import gulpSass from 'gulp-sass';
 import sassLint from 'gulp-sass-lint';
@@ -39,7 +39,7 @@ const vendorImages = [];
  */
 gulp.task('clean:package', function packageCleaner(done) {
 	del(['./README.md', './style.css'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -55,7 +55,7 @@ gulp.task('clean:package', function packageCleaner(done) {
  */
 gulp.task('clean:css', function cssCleaner(done) {
 	del(['./assets/dist/css'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -71,7 +71,7 @@ gulp.task('clean:css', function cssCleaner(done) {
  */
 gulp.task('clean:js', function jsCleaner(done) {
 	del(['./assets/dist/js'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -87,7 +87,7 @@ gulp.task('clean:js', function jsCleaner(done) {
  */
 gulp.task('clean:pot', function potCleaner(done) {
 	del(['./languages/*.pot'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -103,7 +103,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  */
 gulp.task('clean:images', function imagesCleaner(done) {
 	del(['./assets/dist/images'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -120,7 +120,7 @@ gulp.task('clean:images', function imagesCleaner(done) {
 gulp.task('clean:zip', function zipCleaner(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	del(['./' + pkg.name + '.zip'])
-		.then(function(paths) {
+		.then(function(_paths) {
 			return done();
 		}).catch(function(err) {
 			console.error(err);
@@ -247,7 +247,7 @@ gulp.task('build:js', function jsBuilder() {
 			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['@babel/preset-env'] });
 			file.contents = bundler.bundle();
 		}).on('error', function(err) { console.error(err); this.emit('end'); }))
-	    .pipe(buffer())
+		.pipe(buffer())
 		.pipe(cached('build:js'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(gulpIf((process.env.NODE_ENV === 'production'), GulpUglify()))
@@ -356,7 +356,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
 	const pkgName = pkg.themeName || pkg.name || '';
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
 	if (pkg.contributors && pkg.contributors.length > 0) {
-		pkg.contributors.map(function(contributor, i) {
+		pkg.contributors.map(function(contributor) {
 			contributorNames.push(contributor.name);
 		});
 	}
@@ -393,7 +393,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *   Copyright
  *   Change Log
  */
-gulp.task('build:package:readme:content', function packageReadmeContentBuilder(done) {
+gulp.task('build:package:readme:content', function packageReadmeContentBuilder() {
 	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
 		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
@@ -439,7 +439,7 @@ gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass'
  * Process:
  *	 1. Zips a WordPress friendly theme.
  */
-gulp.task('zip', function zipper(done) {
+gulp.task('zip', function zipper() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**', '!./*.zip', '!./package.json', '!./package-lock.json', '!./gulpfile.js', '!./.sasslintrc', '!./.gitignore', '!./.eslint', '!./.editorconfig', '!./node_modules/**'])
 		.pipe(GulpZip(pkg.name + '.zip'))
