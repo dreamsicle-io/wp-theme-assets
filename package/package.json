@@ -39,6 +39,7 @@
 	"devDependencies": {
 		"@babel/core": "~7.16.7",
 		"@babel/preset-env": "~7.16.8",
+		"@ronilaukkarinen/gulp-stylelint": "~14.1.1",
 		"babelify": "~10.0.0",
 		"browserify": "~17.0.0",
 		"del": "~6.0.0",
@@ -51,21 +52,23 @@
 		"gulp-if": "~3.0.0",
 		"gulp-imagemin": "~8.0.0",
 		"gulp-order": "~1.2.0",
+		"gulp-phpcs": "~3.1.0",
 		"gulp-rename": "~2.0.0",
 		"gulp-sass": "~5.1.0",
-		"gulp-sass-lint": "~1.4.0",
 		"gulp-sourcemaps": "~3.0.0",
 		"gulp-tap": "~2.0.0",
 		"gulp-uglify": "~3.0.2",
 		"gulp-wp-pot": "~2.5.0",
 		"gulp-zip": "~5.1.0",
 		"sass": "~1.48.0",
+		"stylelint-config-standard-scss": "~10.0.0",
 		"vinyl-buffer": "~1.0.1"
 	},
 	"scripts": {
-		"start": "NODE_ENV=development node ./node_modules/gulp/bin/gulp",
-		"build": "NODE_ENV=production node ./node_modules/gulp/bin/gulp build",
-		"lint": "node ./node_modules/gulp/bin/gulp lint",
-		"clean": "node ./node_modules/gulp/bin/gulp clean"
+		"start": "NODE_ENV=development gulp",
+		"build": "NODE_ENV=production gulp build",
+		"lint": "gulp lint",
+		"fix": "gulp fix",
+		"clean": "gulp clean"
 	}
 }
