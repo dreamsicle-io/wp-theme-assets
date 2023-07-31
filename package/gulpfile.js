@@ -466,15 +466,14 @@ gulp.task('fix:php', function phpLinter(done) {
  *	 1. Fixes all JS files with eslint according to the standards defined in the `.eslintrc` file.
  *	 2. Logs the linting errors to the console.
  */
-gulp.task('fix:js', function phpLinter(done) {
-	childProcess.exec('node ./node_modules/eslint/bin/eslint.js --fix --color ./assets/src/js/**/*.js', function eslintReporter(error, report, e) {
-		if (error && !report) {
-			console.error(error);
-		} else {
-			console.info(report);
-		}
-		return done();
-	});
+gulp.task('fix:js', function jsLinter(done) {
+	return gulp.src(['./assets/src/js/**/*.js'])
+		.pipe(eslint({ fix: true })
+			.on('error', function (err) { console.error(err); this.emit('end'); }))
+		.pipe(eslint.format())
+		.pipe(cached('fix:js'))
+		.pipe(gulp.dest('./assets/dist/js'))
+		.pipe(debug({ title: 'fix:js' }));
 });
 
 /**
@@ -546,7 +545,7 @@ gulp.task('lint', gulp.series('lint:php', 'lint:sass', 'lint:js'));
  *
  * Process:
  *	 1. Runs the `build:package` task when the package.json file, or source md changes.
- *	 2. Runs the `build:pot` task when the source php changes.
+ *	 2. Runs the `lint:php` and `build:pot` task when the source php changes.
  *	 3. Runs the `lint:sass` and `build:sass` tasks when the source SASS changes.
  *	 4. Runs the `lint:js` and `build:js` tasks when the source JS changes.
  *	 5. Runs the `build:images` task when the source images change.
