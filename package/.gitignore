@@ -1,6 +1,7 @@
 # Deps
 
 /node_modules
+/vendor
 
 # Logs
 
