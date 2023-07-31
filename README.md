@@ -98,7 +98,7 @@ npm run build
 
 ### Lint
 
-This command will start the `lint` task, which runs the `lint:sass`, and `lint:js` tasks in series.
+This command will start the `lint` task, which runs the `lint:php`, `lint:sass`, and `lint:js` tasks in series.
 
 ```shell
 npm run lint
@@ -106,7 +106,7 @@ npm run lint
 
 ### Clean
 
-This command will start the `clean` task, which will delete all built assets including the `assets/dist` directory, as well as `languages/{textdomain}.pot`, `REAMDE.md`, and `style.css`.
+This command will start the `clean` task, which will delete all built assets including those inside the `assets/dist` directory, as well as `languages/{textdomain}.pot`, `REAMDE.md`, and `style.css`.
 
 ```shell
 npm run clean
@@ -124,7 +124,6 @@ root
 ―――― ―――― /src 
 ―――― ―――― ―――― /js 
 ―――― ―――― ―――― ―――― /modules 
-―――― ―――― ―――― ―――― ―――― utils.js
 ―――― ―――― ―――― ―――― site.js 
 ―――― ―――― ―――― ―――― admin.js 
 ―――― ―――― ―――― ―――― login.js 
@@ -137,7 +136,6 @@ root
 ―――― ―――― ―――― ―――― CHANGELOG.js 
 ―――― ―――― ―――― /sass 
 ―――― ―――― ―――― ―――― /modules 
-―――― ―――― ―――― ―――― ―――― .gitkeep 
 ―――― ―――― ―――― ―――― site.scss 
 ―――― ―――― ―――― ―――― admin.scss 
 ―――― ―――― ―――― ―――― login.scss 
@@ -145,7 +143,6 @@ root
 ―――― ―――― ―――― ―――― customizer-preview.scss 
 ―――― ―――― ―――― ―――― customizer-controls.scss 
 ―――― ―――― ―――― /images 
-―――― ―――― ―――― ―――― .gitkeep
 ``` 
 
 ### Build Files 
