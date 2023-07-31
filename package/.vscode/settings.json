@@ -1,11 +1,19 @@
 {
-	"phpSniffer.autoDetect": true,
-	"phpSniffer.run": "onType",
-	"phpSniffer.onTypeDelay": 500,
 	"[php]": {
 		"editor.defaultFormatter": "wongjn.php-sniffer",
 		"editor.formatOnSave": true
 	},
+	"[js]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.formatOnSave": true
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "stylelint.vscode-stylelint",
+		"editor.formatOnSave": true
+	},
+	"phpSniffer.autoDetect": true,
+	"phpSniffer.run": "onType",
+	"phpSniffer.onTypeDelay": 500,
 	"intelephense.environment.phpVersion": "7.4.1",
 	"intelephense.format.braces": "k&r",
 	"intelephense.stubs": [
