@@ -114,6 +114,23 @@ gulp.task('clean:images', function imagesCleaner(done) {
 });
 
 /**
+ * Clean zip.
+ *
+ * Process:
+ *	 1. Deletes the built zip file.
+ */
+ gulp.task('clean:zip', function imagesCleaner(done) {
+	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	del(['./' + pkg.name + '.zip'])
+		.then(function () {
+			return done();
+		}).catch(function (err) {
+			console.error(err);
+			return done();
+		});
+});
+
+/**
  * Clean All Built Assets.
  *
  * Process: 
@@ -123,7 +140,7 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 4. Runs the `clean:pot` task.
  *	 5. Runs the `clean:package` task.
  */
-gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package'));
+gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package', 'clean:zip'));
 
 /**
  * Build CSS Vendor.
