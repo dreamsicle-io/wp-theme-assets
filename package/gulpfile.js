@@ -41,7 +41,7 @@ const vendorImages = [];
  */
 gulp.task('clean:package', function packageCleaner(done) {
 	del(['./README.md', './style.css'])
-		.then(function (paths) {
+		.then(function () {
 			return done();
 		}).catch(function (err) {
 			console.error(err);
@@ -57,7 +57,7 @@ gulp.task('clean:package', function packageCleaner(done) {
  */
 gulp.task('clean:css', function cssCleaner(done) {
 	del(['./assets/dist/css'])
-		.then(function (paths) {
+		.then(function () {
 			return done();
 		}).catch(function (err) {
 			console.error(err);
@@ -73,7 +73,7 @@ gulp.task('clean:css', function cssCleaner(done) {
  */
 gulp.task('clean:js', function jsCleaner(done) {
 	del(['./assets/dist/js'])
-		.then(function (paths) {
+		.then(function () {
 			return done();
 		}).catch(function (err) {
 			console.error(err);
@@ -89,7 +89,7 @@ gulp.task('clean:js', function jsCleaner(done) {
  */
 gulp.task('clean:pot', function potCleaner(done) {
 	del(['./languages/*.pot'])
-		.then(function (paths) {
+		.then(function () {
 			return done();
 		}).catch(function (err) {
 			console.error(err);
@@ -105,7 +105,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  */
 gulp.task('clean:images', function imagesCleaner(done) {
 	del(['./assets/dist/images'])
-		.then(function (paths) {
+		.then(function () {
 			return done();
 		}).catch(function (err) {
 			console.error(err);
@@ -340,7 +340,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
 	const pkgName = pkg.themeName || pkg.name || '';
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
 	if (pkg.contributors && pkg.contributors.length > 0) {
-		pkg.contributors.map(function (contributor, i) {
+		pkg.contributors.map(function (contributor) {
 			contributorNames.push(contributor.name);
 		});
 	}
@@ -377,7 +377,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *   Copyright
  *   Change Log
  */
-gulp.task('build:package:readme:content', function packageReadmeContentBuilder(done) {
+gulp.task('build:package:readme:content', function packageReadmeContentBuilder() {
 	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
 		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
@@ -423,7 +423,7 @@ gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass'
  * Process:
  *	 1. Zips a WordPress friendly theme.
  */
-gulp.task('zip', function zipper(done) {
+gulp.task('zip', function zipper() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
 	return gulp.src(['./**', '!./assets/src/**', '!./**/.gitkeep', '!./*.zip', '!./composer.json', '!./composer.json', '!./package.json', '!./package-lock.json', '!./gulpfile.js', '!./.sasslintrc', '!./.gitignore', '!./.eslintrc', '!./.editorconfig', '!./.nvmrc', './.vscode/**', '!./node_modules/**'])
 		.pipe(GulpZip(pkg.name + '.zip'))
@@ -466,7 +466,7 @@ gulp.task('fix:php', function phpFixer(done) {
  *	 1. Fixes all JS files with eslint according to the standards defined in the `.eslintrc` file.
  *	 2. Logs the processed files to the console.
  */
-gulp.task('fix:js', function jsFixer(done) {
+gulp.task('fix:js', function jsFixer() {
 	return gulp.src(['./assets/src/js/**/*.js'])
 		.pipe(eslint({ fix: true })
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
@@ -507,7 +507,7 @@ gulp.task('fix', gulp.series('fix:php', 'fix:js', 'fix:sass'));
  *	 1. Lints all PHP files with PHPCS according to the standards defined in the `phpcs.xml` file.
  *	 2. Logs the linting errors to the console.
  */
-gulp.task('lint:php', function phpLinter(done) {
+gulp.task('lint:php', function phpLinter() {
 	return gulp.src(['./**/*.php', '!./+(.vscode|vendor|node_modules|assets|languages)/**'])
 		.pipe(phpcs({ bin: './vendor/bin/phpcs', standard: './phpcs.xml' })
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
