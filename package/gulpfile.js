@@ -446,9 +446,9 @@ gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
  *
  * Process:
  *	 1. Fixes all PHP files with PHPCBF according to the standards defined in the `phpcs.xml` file.
- *	 2. Logs the linting errors to the console.
+ *	 2. Logs the fixes to the console.
  */
-gulp.task('fix:php', function phpLinter(done) {
+gulp.task('fix:php', function phpFixer(done) {
 	childProcess.exec('php ./vendor/bin/phpcbf', function phpcbfReporter(error, report) {
 		if (error && !report) {
 			console.error(error);
@@ -464,16 +464,30 @@ gulp.task('fix:php', function phpLinter(done) {
  *
  * Process:
  *	 1. Fixes all JS files with eslint according to the standards defined in the `.eslintrc` file.
- *	 2. Logs the linting errors to the console.
+ *	 2. Logs the processed files to the console.
  */
-gulp.task('fix:js', function jsLinter(done) {
+gulp.task('fix:js', function jsFixer(done) {
 	return gulp.src(['./assets/src/js/**/*.js'])
 		.pipe(eslint({ fix: true })
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
 		.pipe(eslint.format())
-		.pipe(cached('fix:js'))
-		.pipe(gulp.dest('./assets/dist/js'))
+		.pipe(gulpIf(function (file) { return file.eslint?.fixed }, gulp.dest('./assets/src/js')))
 		.pipe(debug({ title: 'fix:js' }));
+});
+
+/**
+ * Fix all SASS files.
+ *
+ * Process:
+ *	 1. Fixes all SASS files with eslint according to the standards defined in the `.stylelintrc` file.
+ *	 2. Logs the processed files to the console.
+ */
+ gulp.task('fix:sass', function sassFixer(done) {
+	return gulp.src(['./assets/src/sass/**/*.scss'])
+		.pipe(styleLint({ fix: true, failAfterError: false, reporters: [{ formatter: 'string', console: true }] })
+			.on('error', function (err) { console.error(err); done(err); }))
+		.pipe(gulp.dest('./assets/src/sass'))
+		.pipe(debug({ title: 'fix:sass' }));
 });
 
 /**
@@ -482,8 +496,9 @@ gulp.task('fix:js', function jsLinter(done) {
  * Process:
  *	 1. Runs the `fix:php` task.
  *	 1. Runs the `fix:js` task.
+ *	 1. Runs the `fix:sass` task.
  */
-gulp.task('fix', gulp.series('fix:php', 'fix:js'));
+gulp.task('fix', gulp.series('fix:php', 'fix:js', 'fix:sass'));
 
 /**
  * Lint all PHP files.
