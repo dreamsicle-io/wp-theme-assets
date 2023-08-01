@@ -24,8 +24,8 @@
 	},
 	"homepage": "https://www.example.org",
 	"wordpress": {
-		"versionRequired": "4.9.4",
-		"versionTested": "4.9.4"
+		"versionRequired": "5.0.0",
+		"versionTested": "5.0.0"
 	},
 	"browserslist": {
 		"development": [
