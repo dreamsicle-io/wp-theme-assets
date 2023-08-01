@@ -1,9 +1,0 @@
-# Build
-
-/package/assets/dist/css
-/package/assets/dist/js
-/package/assets/dist/images
-/package/languages/*.pot
-/package/README.md
-/package/style.css
-/package/*.zip

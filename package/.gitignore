@@ -3,6 +3,14 @@
 /node_modules
 /vendor
 
+# Build
+
+/assets/dist
+/languages/*.pot
+/README.md
+/style.css
+/*.zip
+
 # Logs
 
 /logs
