@@ -1,7 +1,7 @@
 {
 	"stylelint.enable": true,
 	"stylelint.validate": [
-		"scss",
+		"scss"
 	],
 	"eslint.enable": true,
 	"phpSniffer.run": "onType",
