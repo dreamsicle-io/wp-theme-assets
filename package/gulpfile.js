@@ -50,29 +50,13 @@ gulp.task('clean:package', function packageCleaner(done) {
 });
 
 /**
- * Clean build CSS.
+ * Clean entire dist directory.
  *
  * Process:
- *	 1. Deletes the CSS build directory.
+ *	 1. Deletes the build dist.
  */
-gulp.task('clean:css', function cssCleaner(done) {
-	del(['./assets/dist/css'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
-});
-
-/**
- * Clean build JS.
- *
- * Process:
- *	 1. Deletes the JS build directory.
- */
-gulp.task('clean:js', function jsCleaner(done) {
-	del(['./assets/dist/js'])
+ gulp.task('clean:dist', function distCleaner(done) {
+	del(['./assets/dist'])
 		.then(function () {
 			return done();
 		}).catch(function (err) {
@@ -89,22 +73,6 @@ gulp.task('clean:js', function jsCleaner(done) {
  */
 gulp.task('clean:pot', function potCleaner(done) {
 	del(['./languages/*.pot'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
-});
-
-/**
- * Clean build images.
- *
- * Process:
- *	 1. Deletes the images build directory.
- */
-gulp.task('clean:images', function imagesCleaner(done) {
-	del(['./assets/dist/images'])
 		.then(function () {
 			return done();
 		}).catch(function (err) {
@@ -140,7 +108,7 @@ gulp.task('clean:images', function imagesCleaner(done) {
  *	 4. Runs the `clean:pot` task.
  *	 5. Runs the `clean:package` task.
  */
-gulp.task('clean', gulp.series('clean:js', 'clean:css', 'clean:images', 'clean:pot', 'clean:package', 'clean:zip'));
+gulp.task('clean', gulp.series('clean:dist', 'clean:pot', 'clean:package', 'clean:zip'));
 
 /**
  * Build CSS Vendor.
@@ -442,8 +410,29 @@ gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass'
  */
 gulp.task('zip', function zipper() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json'));
-	return gulp.src(['./**', '!./assets/src/**', '!./**/.gitkeep', '!./*.zip', '!./composer.json', '!./composer.json', '!./package.json', '!./package-lock.json', '!./gulpfile.js', '!./.sasslintrc', '!./.gitignore', '!./.eslintrc', '!./.editorconfig', '!./.nvmrc', './.vscode/**', '!./node_modules/**'])
-		.pipe(GulpZip(pkg.name + '.zip'))
+	const zipName = pkg.name + '.zip';
+	const zipSrc = [
+		'./**',
+		'!./assets/src/**',
+		'!./**/.gitkeep',
+		'!./composer.json',
+		'!./composer.lock',
+		'!./package.json',
+		'!./package-lock.json',
+		'!./gulpfile.js',
+		'!./phpcs.xml',
+		'!./.gitignore',
+		'!./.eslintrc',
+		'!./.stylelint',
+		'!./.editorconfig',
+		'!./.nvmrc',
+		'!./.vscode/**',
+		'!./.github/**',
+		'!./node_modules/**',
+		'!./' + zipName,
+	];
+	return gulp.src(zipSrc)
+		.pipe(GulpZip(zipName))
 		.pipe(gulp.dest('./'))
 		.pipe(debug({ title: 'zip' }));
 });
