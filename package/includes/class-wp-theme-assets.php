@@ -1,14 +1,63 @@
 <?php
+/**
+ * WP Theme Assets
+ *
+ * @since 0.0.1
+ */
 
+/**
+ * WP Theme Assets
+ *
+ * @since 0.0.1
+ */
 class WP_Theme_Assets {
 
+	/**
+	 * Theme Directory URI
+	 *
+	 * @since 0.0.1
+	 * @var string $theme_directory_uri
+	 */
 	public $theme_directory_uri;
+
+	/**
+	 * Theme Textdomain
+	 *
+	 * @since 0.0.1
+	 * @var string $theme_textdomain
+	 */
 	public $theme_textdomain;
+
+	/**
+	 * Theme Version
+	 *
+	 * @since 0.0.1
+	 * @var string $theme_version
+	 */
 	public $theme_version;
+
+	/**
+	 * Assets Directory URI
+	 *
+	 * @since 0.0.1
+	 * @var string $assets_directory_uri
+	 */
 	public $assets_directory_uri;
+
+	/**
+	 * Languages Directory URI
+	 *
+	 * @since 0.0.1
+	 * @var string $languages_directory_uri
+	 */
 	public $languages_directory_uri;
 
-	function __construct() {
+	/**
+	 * Construct
+	 *
+	 * @since 0.0.1
+	 */
+	public function __construct() {
 		$theme                         = wp_get_theme();
 		$this->theme_directory_uri     = get_template_directory_uri();
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
@@ -17,6 +66,11 @@ class WP_Theme_Assets {
 		$this->languages_directory_uri = $this->theme_directory_uri . '/languages';
 	}
 
+	/**
+	 * Init
+	 *
+	 * @since 0.0.1
+	 */
 	public function init() {
 		add_action( 'after_setup_theme', array( $this, 'load_languages' ), 10 );
 		add_action( 'after_setup_theme', array( $this, 'enqueue_editor_assets' ), 10 );
@@ -27,6 +81,11 @@ class WP_Theme_Assets {
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_customizer_controls_assets' ), 10 );
 	}
 
+	/**
+	 * Load Languages
+	 *
+	 * @since 0.0.1
+	 */
 	public function load_languages() {
 		load_theme_textdomain(
 			$this->theme_textdomain,
@@ -34,10 +93,20 @@ class WP_Theme_Assets {
 		);
 	}
 
+	/**
+	 * Enqueue Editor Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_editor_assets() {
 		add_editor_style( $this->assets_directory_uri . '/css/editor.min.css' );
 	}
 
+	/**
+	 * Enqueue Site Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_site_assets() {
 		wp_enqueue_style(
 			$this->theme_textdomain,
@@ -54,6 +123,11 @@ class WP_Theme_Assets {
 		);
 	}
 
+	/**
+	 * Enqueue Admin Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_admin_assets() {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-admin',
@@ -70,6 +144,11 @@ class WP_Theme_Assets {
 		);
 	}
 
+	/**
+	 * Enqueue Login Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_login_assets() {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-login',
@@ -86,6 +165,11 @@ class WP_Theme_Assets {
 		);
 	}
 
+	/**
+	 * Enqueue Customizer Preview Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_customizer_preview_assets() {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-preview',
@@ -102,6 +186,11 @@ class WP_Theme_Assets {
 		);
 	}
 
+	/**
+	 * Enqueue Customizer Controls Assets
+	 *
+	 * @since 0.0.1
+	 */
 	public function enqueue_customizer_controls_assets() {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-controls',
