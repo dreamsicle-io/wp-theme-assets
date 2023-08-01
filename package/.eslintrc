@@ -9,8 +9,16 @@
 		"ecmaVersion": 2020,
 		"sourceType": "module"
 	},
+	"overrides": [
+		{
+			"files": "./gulpfile.js",
+			"env": {
+				"node": true
+			}
+		}
+	],
 	"rules": {
-		
+		"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
 	}
 }
 
