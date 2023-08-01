@@ -51,7 +51,8 @@
 	Use the WordPress ruleset.
 	-->
 	<rule ref="WordPress">
-		<exclude name="Squiz.PHP.EmbeddedPhp"/>
+		<exclude name="Squiz.PHP.EmbeddedPhp" />
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
 		<exclude name="WordPress.PHP.YodaConditions" />
 		<exclude name="WordPress.PHP.StrictInArray" />
 		<exclude name="WordPress.WP.CapitalPDangit" />
