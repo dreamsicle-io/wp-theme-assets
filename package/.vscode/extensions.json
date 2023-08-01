@@ -5,5 +5,6 @@
 		"stylelint.vscode-stylelint",
 		"bmewburn.vscode-intelephense-client",
 		"wongjn.php-sniffer",
+		"github.vscode-github-actions"
 	]
 }
