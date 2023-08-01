@@ -31,12 +31,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       
-      # Installs dependencies and runs a build.
+      # Installs npm and composer dependencies.
+      - name: Install
+        id: install
+        run: npm install
+
+      # Runs a build.
       - name: Build
-        id: run_build
-        run: |
-          npm install
-          npm run build
+        id: build
+        run: npm run build
       
       # Creates a release draft.
       - name: Create Release
