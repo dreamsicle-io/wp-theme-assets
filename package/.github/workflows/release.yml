@@ -29,7 +29,7 @@ jobs:
         id: set_node_version
         run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
 
-      # Setup Node
+      # Setup Node.
       - name: Setup Node
         id: setup_node
         uses: actions/setup-node@v3
