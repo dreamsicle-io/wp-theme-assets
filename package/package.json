@@ -32,8 +32,7 @@
 			"last 1 versions"
 		],
 		"production": [
-			"last 5 versions",
-			"ie >= 9"
+			"last 5 versions"
 		]
 	},
 	"dependencies": {
