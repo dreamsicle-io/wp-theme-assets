@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [master]
 
 jobs:
   build:
@@ -53,6 +53,7 @@ jobs:
         with:
           name: ${{ env.THEME_VERSION }}
           tag: ${{ env.THEME_VERSION }}
+          commit: master
           draft: true
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
