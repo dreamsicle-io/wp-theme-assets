@@ -18,7 +18,7 @@ class WP_Theme_Assets {
 	 * @since 0.0.1
 	 * @var string $theme_directory_uri
 	 */
-	public $theme_directory_uri;
+	public string $theme_directory_uri;
 
 	/**
 	 * Theme Textdomain
@@ -26,7 +26,7 @@ class WP_Theme_Assets {
 	 * @since 0.0.1
 	 * @var string $theme_textdomain
 	 */
-	public $theme_textdomain;
+	public string $theme_textdomain;
 
 	/**
 	 * Theme Version
@@ -34,7 +34,7 @@ class WP_Theme_Assets {
 	 * @since 0.0.1
 	 * @var string $theme_version
 	 */
-	public $theme_version;
+	public string $theme_version;
 
 	/**
 	 * Assets Directory URI
@@ -42,7 +42,7 @@ class WP_Theme_Assets {
 	 * @since 0.0.1
 	 * @var string $assets_directory_uri
 	 */
-	public $assets_directory_uri;
+	public string $assets_directory_uri;
 
 	/**
 	 * Languages Directory URI
@@ -50,7 +50,7 @@ class WP_Theme_Assets {
 	 * @since 0.0.1
 	 * @var string $languages_directory_uri
 	 */
-	public $languages_directory_uri;
+	public string $languages_directory_uri;
 
 	/**
 	 * Construct
@@ -70,8 +70,9 @@ class WP_Theme_Assets {
 	 * Init
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		add_action( 'after_setup_theme', array( $this, 'load_languages' ), 10 );
 		add_action( 'after_setup_theme', array( $this, 'enqueue_editor_assets' ), 10 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_site_assets' ), 10 );
@@ -85,8 +86,9 @@ class WP_Theme_Assets {
 	 * Load Languages
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function load_languages() {
+	public function load_languages(): void {
 		load_theme_textdomain(
 			$this->theme_textdomain,
 			$this->languages_directory_uri
@@ -97,8 +99,9 @@ class WP_Theme_Assets {
 	 * Enqueue Editor Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_editor_assets() {
+	public function enqueue_editor_assets(): void {
 		add_editor_style( $this->assets_directory_uri . '/css/editor.min.css' );
 	}
 
@@ -106,8 +109,9 @@ class WP_Theme_Assets {
 	 * Enqueue Site Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_site_assets() {
+	public function enqueue_site_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain,
 			$this->assets_directory_uri . '/css/site.min.css',
@@ -127,8 +131,9 @@ class WP_Theme_Assets {
 	 * Enqueue Admin Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_admin_assets() {
+	public function enqueue_admin_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-admin',
 			$this->assets_directory_uri . '/css/admin.min.css',
@@ -148,8 +153,9 @@ class WP_Theme_Assets {
 	 * Enqueue Login Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_login_assets() {
+	public function enqueue_login_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-login',
 			$this->assets_directory_uri . '/css/login.min.css',
@@ -169,8 +175,9 @@ class WP_Theme_Assets {
 	 * Enqueue Customizer Preview Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_customizer_preview_assets() {
+	public function enqueue_customizer_preview_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-preview',
 			$this->assets_directory_uri . '/css/customizer-preview.min.css',
@@ -190,8 +197,9 @@ class WP_Theme_Assets {
 	 * Enqueue Customizer Controls Assets
 	 *
 	 * @since 0.0.1
+	 * @return void
 	 */
-	public function enqueue_customizer_controls_assets() {
+	public function enqueue_customizer_controls_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-controls',
 			$this->assets_directory_uri . '/css/customizer-controls.min.css',
