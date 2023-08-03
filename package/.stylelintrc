@@ -1,0 +1,12 @@
+{
+	"extends": [
+		"stylelint-config-standard-scss"
+	],
+	"rules": {
+		"color-hex-length": "long",
+		"color-named": "never",
+		"declaration-no-important": true,
+		"font-weight-notation": "numeric",
+		"no-empty-source": null
+	}
+}
