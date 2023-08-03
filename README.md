@@ -8,25 +8,19 @@ Finally, this package also includes a `WP_Theme_Assets` [php class](https://gith
 
 ## Getting Started
 
-In order to give complete control of the entire setup, this package comes "ejected," and is not abstracted into an npm module. This means that the theme has full control over all dependencies, scripts, Gulp tasks, and linting configurations. This, however, means that using this tool requires downloading it and dropping some files into a WordPress theme's root directory. 
+The best way to scaffold this project is to use [@dreamsicle.io/create-wp-theme](https://github.com/dreamsicle-io/create-wp-theme). This is a node command line utility that will allow walk you through a prompt in the command line.
 
-### 1. Download
+### 1. Scaffold a Theme
 
-Download the [latest release](https://github.com/dreamsicle-io/wp-theme-assets/releases) as a `.zip` file and extract the contents locally.
+**From the WordPress install's `wp-content/themes` directory, run `create-wp-theme`:**
 
-### 2. Include Files
+```shell
+npx @dreamsicle.io/create-wp-theme my-theme
+```
 
-Place all the files and directories inside the `/package` directory into the theme's root.
+### 2. Install Dependencies
 
-> **Note about includes:** If the theme already has an `/inc` or an `/includes` directory, add `class-wp-theme-assets.php` there.
-
-> **Note about licenses:** If the theme already has a `LICENSE` file, ignore the `LICENSE` from this package. If the theme's license is not GPL-3.0, make sure the correct license is listed in `package.json`.
-
-### 3. Install Dependencies
-
-Once the files have been included in the theme, it's time to install the dependencies.
-
-**From the command line, enter the directory that contains the theme being developed (the same directory where this package's files were dropped).**
+**Navigate to the newly created theme directory:**
 
 ```shell
 cd path/to/theme
@@ -38,11 +32,7 @@ cd path/to/theme
 npm install
 ```
 
-> **Note:** This will install all dependencies and log the command's progress. On some systems, logs may show "Skipping optional dependency" messages; these may be ignored.
-
-### 4. Create the first build
-
-Now that all files have been included, and all dependencies have been installed, it is time to create the first build.
+### 3. Run a production build.
 
 **From the theme's root, run the build command:**
 
@@ -51,6 +41,14 @@ npm run build
 ```
 
 > **Note:** This will create a directory at `assets/dist` and build all `.css` and `.js` files, as well as optimize all images. This will also create a `languages` directory and place a built `.pot` file inside of it. Lastly, this will build the required `style.css` and `README.md` files in the theme root.
+
+### 4. Run a development build and watch for changes.
+
+**From the theme's root, run the build command:**
+
+```shell
+npm start
+```
 
 ### 5. Initialize WP_Theme_Assets Class
 
@@ -97,6 +95,14 @@ npm run build
 ```
 
 ### Lint
+
+This command will start the `fix` task, which runs the `fix:php`, `fix:sass`, and `fix:js` tasks in series.
+
+```shell
+npm run fix
+```
+
+### Fix
 
 This command will start the `lint` task, which runs the `lint:php`, `lint:sass`, and `lint:js` tasks in series.
 
