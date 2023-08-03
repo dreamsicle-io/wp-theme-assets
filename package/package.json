@@ -68,12 +68,11 @@
 		"vinyl-buffer": "~1.0.1"
 	},
 	"scripts": {
+		"prepare": "composer update",
 		"start": "NODE_ENV=development gulp",
 		"build": "NODE_ENV=production gulp build",
 		"lint": "gulp lint",
 		"fix": "gulp fix",
-		"clean": "gulp clean",
-		"prepare": "composer update",
-		"postversion": "npm run build && git add . && git commit -m \"Built due to version change.\""
+		"clean": "gulp clean"
 	}
 }
