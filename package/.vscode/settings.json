@@ -7,7 +7,7 @@
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,
-	"intelephense.environment.phpVersion": "7.4.1",
+	"intelephense.environment.phpVersion": "8.1.23",
 	"intelephense.format.braces": "k&r",
 	"intelephense.stubs": [
 		"apache",

@@ -24,8 +24,8 @@
 	},
 	"homepage": "https://www.example.org",
 	"wordpress": {
-		"versionRequired": "5.0.0",
-		"versionTested": "5.0.0"
+		"versionRequired": "6.0.0",
+		"versionTested": "6.0.0"
 	},
 	"browserslist": {
 		"development": [
@@ -35,13 +35,11 @@
 			"last 5 versions"
 		]
 	},
-	"dependencies": {
-
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@babel/core": "~7.16.7",
 		"@babel/preset-env": "~7.16.8",
-		"@ronilaukkarinen/gulp-stylelint": "~14.1.1",
+		"@ronilaukkarinen/gulp-stylelint": "~14.1.2",
 		"babelify": "~10.0.0",
 		"browserify": "~17.0.0",
 		"del": "~6.0.0",
