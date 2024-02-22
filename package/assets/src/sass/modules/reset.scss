@@ -1,0 +1,255 @@
+@import './utils';
+
+:root {
+	@include dream-theme-root-vars;
+}
+
+*[title] {
+	cursor: help;
+}
+
+*:focus-visible {
+	@include dream-focus-ring;
+}
+
+html {
+	@include dream-root-font-size;
+}
+
+body {
+	@include dream-theme(background-color, 'background');
+	@include dream-theme(color, 'on-background');
+	font-weight: 400;
+	font-family: sans-serif;
+	font-size: 1rem;
+	line-height: 1.25;
+	max-width: 100%;
+}
+
+input[type="range"] {
+	width: 100%;
+}
+
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="range"]:not(:disabled),
+select,
+label {
+	cursor: pointer;
+}
+
+input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"], [type="reset"], [type="range"], [type="color"], [type="date"], [type="month"], [type="week"], [type="datetime-local"]),
+textarea {
+	text-indent: 0.5em;
+	padding: 0;
+}
+
+figure {
+	max-width: 100%;
+}
+
+select {
+	background-image: url('/wp-content/themes/wp-theme/assets/dist/images/expand.svg');
+	background-repeat: no-repeat;
+	background-size: 1.5em;
+	background-position: calc(100% - 0.25em) 50%;
+	padding-right: 2em;
+
+	optgroup {
+		color: initial;
+		background-color: initial;
+		font: initial;
+		font-family: sans-serif;
+		font-weight: 700;
+	}
+
+	option {
+		color: initial;
+		background-color: initial;
+		font: initial;
+		font-family: sans-serif;
+		font-weight: 400;
+	}
+}
+
+body,
+header,
+footer,
+section,
+nav,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+blockquote,
+figure,
+figcaption,
+address,
+label,
+p,
+ul,
+ol,
+li,
+input:not([type='checkbox'], [type='radio'], [type='button'], [type='submit'], [type='reset'], [type="range"], [type="color"]),
+textarea,
+select {
+	box-sizing: border-box;
+}
+
+input:not([type='checkbox'], [type='radio'], [type='button'], [type='submit'], [type='reset'], [type="range"], [type="color"]),
+textarea,
+select {
+	@include dream-font-size(20px);
+	@include dream-theme(background-color, 'surface');
+	@include dream-theme(color, 'on-surface');
+	@include dream-border(border, 1px, 'border-on-surface');
+	@include dream-placeholder('surface');
+	appearance: none;
+	border-radius: 4px;
+	padding: 0 0.5em;
+	line-height: 1.75;
+	box-shadow: none;
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	text-overflow: ellipsis;
+
+	&::-webkit-search-cancel-button {
+		appearance: none;
+	}
+
+	&::-ms-expand {
+		display: none;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+	}
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+	border: 1px solid;
+	border-radius: 4px;
+}
+
+label {
+	font-weight: 600;
+}
+
+img,
+svg,
+video,
+audio {
+	display: block;
+	max-width: 100%;
+}
+
+img {
+	height: auto;
+}
+
+video {
+	width: auto;
+	height: auto;
+	background: #000000;
+}
+
+iframe {
+	overflow: auto;
+	border: 1px solid;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+figure,
+address,
+p,
+ul,
+ol {
+	margin: 0 0 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1.25;
+	word-wrap: break-word;
+	font-weight: 800;
+}
+
+sup,
+sub {
+	line-height: 0.5;
+}
+
+strong {
+	font-weight: 600;
+}
+
+a {
+	@include dream-theme(color, 'primary');
+	font-weight: 600;
+
+	&:not(:hover, :active, :focus) {
+		text-decoration: none;
+	}
+
+	&:not([aria-disabled="true"]) {
+		cursor: pointer;
+	}
+}
+
+code,
+pre {
+	position: relative;
+	font-family: monospace;
+	border-radius: 4px;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	font-weight: 400;
+	border: 1px solid;
+}
+
+pre {
+	display: block;
+	overflow: auto;
+}
+
+code {
+	display: inline-block;
+	vertical-align: baseline;
+	font-size: 0.9em;
+	line-height: inherit;
+}
+
+table {
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	position: relative;
+}
+
+td,
+th {
+	text-align: initial;
+	padding: 0;
+}
+
+p {
+	line-height: 1.5;
+}
