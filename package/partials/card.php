@@ -11,9 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <article <?php post_class(); ?>>
 
-	<a href="<?php the_permalink(); ?>">
-		<?php the_post_thumbnail( 'medium' ); ?>
-	</a>
+	<?php if ( has_post_thumbnail() ) { ?>
+
+		<a href="<?php the_permalink(); ?>">
+			<?php the_post_thumbnail( 'medium' ); ?>
+		</a>
+
+	<?php } ?>
 
 	<a href="<?php the_permalink(); ?>">
 		<?php the_title( '<h2>', '</h2>' ); ?>
@@ -25,13 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { ?>
 
-			<a href="<?php comments_link(); ?>">
-				<?php printf(
-					/* translators: 1: comment count number. */
-					esc_html( _n( '%1$s comment', '%1$s comments', get_comments_number(), 'wp-theme' ) ),
-					esc_html( number_format_i18n( get_comments_number() ) ),
-				); ?>
-			</a>
+			<?php wp_theme_comment_count_link(); ?>
 
 		<?php } ?>
 
