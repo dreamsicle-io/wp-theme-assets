@@ -25,7 +25,7 @@ if ( post_password_required() || ! post_type_supports( get_post_type(), 'comment
 
 	<?php if ( have_comments() ) { ?>
 
-		<h2 class="gigs-comments__title">
+		<h2>
 
 			<?php printf(
 				/* translators: 1: comment count number. */
@@ -45,7 +45,7 @@ if ( post_password_required() || ! post_type_supports( get_post_type(), 'comment
 
 		</ol>
 
-		<div class="gigs-comments__footer">
+		<div>
 
 			<?php the_comments_navigation(); ?>
 
