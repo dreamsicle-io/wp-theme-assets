@@ -1,0 +1,81 @@
+@import '../utils';
+
+.screen-reader-only,
+.screen-reader-text {
+	@include dream-screen-reader-only;
+}
+
+.gallery {
+	@include dream-flex(row wrap, flex-start, flex-start);
+
+	@for $columns from 1 through 9 {
+		&.gallery-columns-#{$columns} {
+			@include dream-grid($columns);
+		}
+	}
+
+	.gallery-item {
+		margin: 0;
+	}
+
+	.gallery-icon {
+
+		> a {
+			display: block;
+		}
+
+		img {
+			width: 100%;
+		}
+	}
+}
+
+.pagination {
+
+	.nav-links {
+		@include dream-flex(row wrap, center, center);
+		@include dream-gutter(gap, 0.05);
+		text-align: center;
+	}
+
+	.page-numbers {
+		padding: 0.5em;
+		display: block;
+		line-height: 1;
+		min-width: 1em;
+		font-weight: 600;
+
+		&.current {
+			opacity: 0.5;
+		}
+
+		&:is(a) {
+			text-decoration: none;
+
+			&:hover,
+			&:active,
+			&:focus {
+				text-decoration: none;
+				color: inherit;
+			}
+		}
+	}
+}
+
+.alignnone,
+.aligncenter {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.alignleft {
+	float: left;
+}
+
+.alignright {
+	float: right;
+}
+
+.textwidget {
+	@include dream-flatten-children;
+}

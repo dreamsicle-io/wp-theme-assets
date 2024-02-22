@@ -1,0 +1,382 @@
+@use 'sass:map';
+@use 'sass:list';
+@import './variables';
+@import './functions';
+
+@mixin dream-root-font-size {
+  font-size: $dream-root-font-size;
+}
+
+@mixin dream-theme-root-vars {
+  @each $key, $value in $dream-theme-map {
+    @include dream-theme(--dream-theme-#{$key}, $key, false);
+  }
+}
+
+@mixin dream-theme($prop: color, $color: 'surface', $has-var: true) {
+  $theme-color: map.get($dream-theme-map, $color);
+
+  #{$prop}: $theme-color;
+
+  @if $has-var {
+    #{$prop}: var(--dream-theme-#{$color}, $theme-color);
+  }
+}
+
+@mixin dream-font-size($px) {
+  font-size: dream-px-to-rem($px);
+}
+
+@mixin dream-flatten-children($horizontal: false, $include-padding: false) {
+  @if $horizontal {
+
+    > *:first-child {
+      margin-left: 0 !important; /* stylelint-disable-line declaration-no-important */
+
+      @if $include-padding {
+        padding-left: 0 !important; /* stylelint-disable-line declaration-no-important */
+      }
+    }
+
+    > *:last-child {
+      margin-right: 0 !important; /* stylelint-disable-line declaration-no-important */
+
+      @if $include-padding {
+        padding-right: 0 !important; /* stylelint-disable-line declaration-no-important */
+      }
+    }
+  } @else {
+
+    > *:first-child {
+      margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
+
+      @if $include-padding {
+        padding-top: 0 !important; /* stylelint-disable-line declaration-no-important */
+      }
+    }
+
+    > *:last-child {
+
+      margin-bottom: 0 !important; /* stylelint-disable-line declaration-no-important */
+
+      @if $include-padding {
+        padding-bottom: 0 !important; /* stylelint-disable-line declaration-no-important */
+      }
+    }
+  }
+}
+
+@mixin dream-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
+  align-items: $align-items;
+  display: flex;
+  flex-flow: $flex-flow;
+  justify-content: $justify-content;
+  min-width: 0;
+  min-height: 0;
+}
+
+@mixin dream-inline-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
+  align-items: $align-items;
+  display: inline-flex;
+  flex-flow: $flex-flow;
+  justify-content: $justify-content;
+}
+
+@mixin dream-overlay($position: absolute) {
+  position: $position;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@mixin dream-respond($device: 'mobile') {
+  $device-map: map.get($dream-respond-map, $device);
+  $min: map.get($device-map, 'min');
+  $max: map.get($device-map, 'max');
+
+  @if $min and $max {
+    @media screen and (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $min {
+    @media screen and (min-width: $min) {
+      @content;
+    }
+  } @else if $max {
+    @media screen and (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+@mixin dream-gutter($props: margin, $multiplier: 1) {
+  @include dream-respond('desktop') {
+    @each $prop in $props {
+      #{$prop}: $dream-gutter-desktop * $multiplier;
+    }
+  }
+
+  @include dream-respond('laptop') {
+    @each $prop in $props {
+      #{$prop}: $dream-gutter-laptop * $multiplier;
+    }
+  }
+
+  @include dream-respond('tablet') {
+    @each $prop in $props {
+      #{$prop}: $dream-gutter-tablet * $multiplier;
+    }
+  }
+
+  @include dream-respond('phone') {
+    @each $prop in $props {
+      #{$prop}: $dream-gutter-phone * $multiplier;
+    }
+  }
+}
+
+@mixin dream-border($prop: border, $size: 1px, $color: 'border-on-background') {
+  @include dream-theme(#{$prop}-color, $color);
+
+  #{$prop}-style: solid;
+  #{$prop}-width: #{$size};
+}
+
+@mixin dream-cover-background($position: center) {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: $position;
+}
+
+@mixin dream-transition($props: all, $duration: 125ms, $delay: 0ms, $function: ease-out) {
+  transition-property: list.zip($props);
+  transition-duration: $duration;
+  transition-delay: $delay;
+  transition-timing-function: $function; /* stylelint-disable-line declaration-block-no-redundant-longhand-properties */
+}
+
+@mixin dream-contain($max-width: $dream-contain-max-width) {
+  width: 100%;
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin dream-unlist {
+	display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    display: block;
+  }
+}
+
+@mixin dream-grid($columns: 1, $gutter: 1, $equal-height: false) {
+	@include dream-gutter(gap, $gutter);
+	display: grid;
+	grid-template-columns: repeat($columns, 1fr);
+
+	@if $equal-height {
+		grid-auto-rows: 1fr;
+	}
+
+	> * {
+		width: auto !important; /* stylelint-disable-line declaration-no-important */
+	}
+}
+
+@mixin dream-vertical-list($justify: flex-start, $gutter: 1) {
+	@include dream-unlist;
+  @include dream-flex(column, stretch, $justify);
+  @include dream-gutter(gap, $gutter);
+}
+
+@mixin dream-horizontal-list($justify: flex-start, $gutter: 1) {
+	@include dream-unlist;
+  @include dream-flex(row wrap, center, $justify);
+  @include dream-gutter(gap, $gutter);
+}
+
+@mixin dream-background-video {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  max-width: unset;
+  max-height: unset;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@mixin dream-unbutton {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: unset;
+  text-shadow: unset;
+  background: unset;
+  box-shadow: none;
+	border-radius: 0;
+  display: inline;
+  vertical-align: text-bottom;
+}
+
+@mixin dream-screen-reader-only {
+  border: 0 !important; /* stylelint-disable-line declaration-no-important */
+  clip: rect(1px, 1px, 1px, 1px) !important; /* stylelint-disable-line declaration-no-important */
+  clip-path: inset(50%) !important; /* stylelint-disable-line declaration-no-important */
+  height: 1px !important; /* stylelint-disable-line declaration-no-important */
+  margin: -1px !important; /* stylelint-disable-line declaration-no-important */
+  overflow: hidden !important; /* stylelint-disable-line declaration-no-important */
+  padding: 0 !important; /* stylelint-disable-line declaration-no-important */
+  position: absolute !important; /* stylelint-disable-line declaration-no-important */
+  width: 1px !important; /* stylelint-disable-line declaration-no-important */
+  word-wrap: normal !important; /* stylelint-disable-line declaration-no-important */
+}
+
+@mixin dream-clearfix {
+
+  &::before,
+  &::after {
+    content: '';
+    display: table;
+    width: 100%;
+    clear: both;
+  }
+}
+
+@mixin dream-focus-ring {
+  outline-width: $dream-focus-ring-width;
+  outline-offset: $dream-focus-ring-offset;
+  outline-color: currentcolor;
+  outline-style: solid; /* stylelint-disable-line declaration-block-no-redundant-longhand-properties */
+}
+
+@mixin dream-remove-tap-hightlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@mixin dream-scrollbar($color: 'background', $gutter: 0, $show-track: true) {
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+		top: 20px;
+		margin-top: 20px;
+		padding-top: 20px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include dream-theme(background, 'accent-on-#{$color}');
+    border-radius: 0;
+
+    &:hover {
+      @include dream-theme(background, 'accent-on-#{$color}');
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+		@include dream-gutter(margin, $gutter);
+
+		@if $show-track {
+			@include dream-theme(background, 'border-on-#{$color}');
+		} @else {
+			background: transparent;
+		}
+  }
+}
+
+@mixin dream-hide-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@mixin dream-box-shadow($x: 0, $y: 4px, $blur: 64px, $opacity: 0.1, $inset: false) {
+	@if $inset {
+		box-shadow: $x $y $blur rgba(0, 0, 0, $opacity) inset;
+	} @else {
+		box-shadow: $x $y $blur rgba(0, 0, 0, $opacity);
+	}
+}
+
+@mixin dream-ripple {
+  position: relative;
+
+	&::before {
+		@include dream-overlay(absolute);
+		@include dream-transition(opacity);
+		content: '';
+		background-color: currentcolor;
+		opacity: 0;
+	}
+
+	&:focus-visible {
+
+		&::before {
+			opacity: 0.1;
+		}
+	}
+
+	&:hover {
+
+		&::before {
+			opacity: 0.15;
+		}
+	}
+
+	&:active {
+
+		&::before {
+			opacity: 0.2;
+		}
+	}
+}
+
+@mixin dream-transparency {
+	background-color: #ffffff;
+	background-image:
+		linear-gradient(45deg, #b0b0b0 25%, transparent 25%),
+		linear-gradient(-45deg, #b0b0b0 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #b0b0b0 75%),
+		linear-gradient(-45deg, transparent 75%, #b0b0b0 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+
+@mixin dream-placeholder($color: 'background') {
+
+	&::-webkit-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
+		@include dream-theme(color, 'soft-on-#{$color}');
+	}
+
+	
+	&:-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
+		@include dream-theme(color, 'soft-on-#{$color}');
+		opacity: 1;
+	}
+
+	
+	&::-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
+		@include dream-theme(color, 'soft-on-#{$color}');
+		opacity: 1;
+	}
+
+	
+	&:-ms-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
+		@include dream-theme(color, 'soft-on-#{$color}');
+	}
+}
