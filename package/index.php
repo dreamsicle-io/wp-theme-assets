@@ -15,13 +15,19 @@ get_header(); ?>
 
 		<?php if ( is_singular() ) { ?>
 
-			<?php get_template_part( 'partials/singular', get_post_type() ); ?>
+			<?php while ( have_posts() ) { ?>
 
-			<?php wp_link_pages(); ?>
+				<?php the_post(); ?>
 
-			<?php comments_template(); ?>
+				<?php get_template_part( 'partials/singular', get_post_type() ); ?>
 
-			<?php the_post_navigation(); ?>
+				<?php wp_link_pages(); ?>
+
+				<?php comments_template(); ?>
+
+				<?php the_post_navigation(); ?>
+
+			<?php } ?>
 
 		<?php } else { ?>
 
