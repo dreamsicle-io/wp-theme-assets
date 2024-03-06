@@ -57,7 +57,6 @@ class WP_Theme_SEO {
 	public function manage_meta_tags() {
 		$domain                = $this->get_domain();
 		$site_name             = $this->get_site_name();
-		$home_url              = $this->get_home_url();
 		$url                   = $this->get_current_url();
 		$description           = $this->get_description();
 		$og_type               = $this->get_og_type();
