@@ -9,6 +9,8 @@
 		"font-weight-notation": "numeric",
 		"no-empty-source": null,
 		"declaration-empty-line-before": null,
-		"rule-empty-line-before": "always"
+		"rule-empty-line-before": "always",
+		"selector-class-pattern": null,
+		"number-max-precision": 5
 	}
 }
