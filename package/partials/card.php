@@ -13,15 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( has_post_thumbnail() ) { ?>
 
-		<a href="<?php the_permalink(); ?>">
-			<?php the_post_thumbnail( 'medium' ); ?>
-		</a>
+		<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium' ); ?></a>
 
 	<?php } ?>
 
-	<a href="<?php the_permalink(); ?>">
-		<?php the_title( '<h2>', '</h2>' ); ?>
-	</a>
+	<a href="<?php the_permalink(); ?>"><?php the_title( '<h2>', '</h2>' ); ?></a>
 
 	<div><?php the_excerpt(); ?></div>
 
@@ -41,8 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	</div>
 
-	<a href="<?php the_permalink(); ?>">
-		<?php esc_html_e( 'Read more', 'wp-theme' ); ?>
-	</a>
+	<a href="<?php the_permalink(); ?>"><?php esc_html_e( 'Read more', 'wp-theme' ); ?></a>
 
 </article>
