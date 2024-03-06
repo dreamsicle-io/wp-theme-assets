@@ -28,6 +28,9 @@ class WP_Theme_Setup {
 		add_action( 'comment_form_before', array( $this, 'enqueue_comment_reply_script' ), 10 );
 		add_action( 'admin_notices', array( $this, 'print_admin_notices' ), 10 );
 		add_action( 'admin_head', array( $this, 'manage_front_page_editor' ), 50 );
+		add_action( 'wp_head', array( $this, 'add_head_tracking_codes' ), 9999 );
+		add_action( 'wp_body_open', array( $this, 'add_body_top_tracking_codes' ), 0 );
+		add_action( 'wp_footer', array( $this, 'add_body_bottom_tracking_codes' ), 9999 );
 	}
 
 	/**
@@ -40,7 +43,6 @@ class WP_Theme_Setup {
 			array(
 				'header' => __( 'Header', 'wp-theme' ),
 				'footer' => __( 'Footer', 'wp-theme' ),
-				'social' => __( 'Social', 'wp-theme' ),
 				'legal'  => __( 'Legal', 'wp-theme' ),
 				'error'  => __( 'Error', 'wp-theme' ),
 			)
@@ -190,5 +192,35 @@ class WP_Theme_Setup {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Add Head Tracking Codes
+	 *
+	 * @since 0.0.1
+	 */
+	public function add_head_tracking_codes() {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo get_option( 'wp_theme_tracking_codes_head' );
+	}
+
+	/**
+	 * Add Body Top Tracking Codes
+	 *
+	 * @since 0.0.1
+	 */
+	public function add_body_top_tracking_codes() {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo get_option( 'wp_theme_tracking_codes_body_top' );
+	}
+
+	/**
+	 * Add Body Bottom Tracking Codes
+	 *
+	 * @since 0.0.1
+	 */
+	public function add_body_bottom_tracking_codes() {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo get_option( 'wp_theme_tracking_codes_body_bottom' );
 	}
 }
