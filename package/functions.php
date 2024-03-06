@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WP_THEME_TEMPLATE_DIRECTORY', get_template_directory() );
 
 // Require files.
+require WP_THEME_TEMPLATE_DIRECTORY . '/vendor/autoload.php';
 require WP_THEME_TEMPLATE_DIRECTORY . '/includes/template-tags.php';
 require WP_THEME_TEMPLATE_DIRECTORY . '/includes/class-wp-theme-backstage.php';
 require WP_THEME_TEMPLATE_DIRECTORY . '/includes/class-wp-theme-setup.php';
