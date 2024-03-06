@@ -35,14 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php wp_nav_menu(
 		array(
-			'theme_location' => 'social',
-			'container'      => 'nav',
-			'fallback_cb'    => false,
-		)
-	); ?>
-
-	<?php wp_nav_menu(
-		array(
 			'theme_location' => 'legal',
 			'container'      => 'nav',
 			'fallback_cb'    => false,
