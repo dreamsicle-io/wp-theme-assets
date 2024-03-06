@@ -39,7 +39,7 @@ jobs:
       # Installs npm and composer dependencies.
       - name: Install
         id: install
-        run: npm install
+        run: npm ci
 
       # Runs a build.
       - name: Build
@@ -59,4 +59,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           skipIfReleaseExists: true
-          artifacts: ${{ secrets.THEME_NAME }}.zip
+          artifacts: ${{ env.THEME_NAME }}.zip

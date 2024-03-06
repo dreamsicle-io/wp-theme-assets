@@ -59,6 +59,14 @@
 	</rule>
 
 	<!-- 
+	Template partials have compartmentalized scope, so remove
+	the prefix globals rule to avoid having to prefix variables.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>/partials/*</exclude-pattern>
+	</rule>
+
+	<!-- 
 	Verify that the text_domain is set to the desired text-domain.
 	Multiple valid text domains can be provided as a comma-delimited list. 
 	-->

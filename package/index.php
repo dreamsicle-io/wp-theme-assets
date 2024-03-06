@@ -13,52 +13,29 @@ get_header(); ?>
 
 	<main id="content">
 
-		<?php if ( is_archive() ) { ?>
-
-			<?php the_archive_title( '<h1>', '</h1>' ); ?>
-
-			<?php the_archive_description( '<div>', '</div>' ); ?>
-
-		<?php } ?>
-
-		<?php if ( have_posts() ) { ?>
+		<?php if ( is_singular() ) { ?>
 
 			<?php while ( have_posts() ) { ?>
 
 				<?php the_post(); ?>
 
-				<?php if ( is_singular() ) { ?>
+				<?php get_template_part( 'partials/singular', get_post_type() ); ?>
 
-					<?php get_template_part( 'partials/singular', get_post_type() ); ?>
+				<?php wp_link_pages(); ?>
 
-					<?php wp_link_pages(
-						array(
-							'before' => '<nav>',
-							'after'  => '</nav>',
-						)
-					); ?>
+				<?php comments_template(); ?>
 
-					<?php comments_template(); ?>
-
-					<?php the_post_navigation(); ?>
-
-				<?php } else { ?>
-
-					<?php get_template_part( 'partials/card', get_post_type() ); ?>
-
-				<?php } ?>
-
-			<?php } ?>
-
-			<?php if ( ! is_singular() ) { ?>
-
-				<?php the_posts_pagination(); ?>
+				<?php the_post_navigation(); ?>
 
 			<?php } ?>
 
 		<?php } else { ?>
 
-			<?php get_template_part( 'partials/error' ); ?>
+			<?php get_template_part( 'partials/list-header' ); ?>
+
+			<?php get_template_part( 'partials/list' ); ?>
+
+			<?php the_posts_pagination(); ?>
 
 		<?php } ?>
 

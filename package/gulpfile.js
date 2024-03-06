@@ -9,13 +9,11 @@ import autoPrefixer from 'gulp-autoprefixer';
 import cached from 'gulp-cached';
 import concat from 'gulp-concat';
 import debug from 'gulp-debug';
-import eslint from 'gulp-eslint';
 import gulpIf from 'gulp-if';
 import imagemin from 'gulp-imagemin';
 import order from 'gulp-order';
 import rename from 'gulp-rename';
 import gulpSass from 'gulp-sass';
-import styleLint from '@ronilaukkarinen/gulp-stylelint';
 import sassCompiler from 'sass';
 import sourcemaps from 'gulp-sourcemaps';
 import tap from 'gulp-tap';
@@ -23,8 +21,6 @@ import GulpUglify from 'gulp-uglify';
 import gulpWPpot from 'gulp-wp-pot';
 import buffer from 'vinyl-buffer';
 import GulpZip from 'gulp-zip';
-import phpcs from 'gulp-phpcs';
-import * as childProcess from 'child_process';
 const sass = gulpSass(sassCompiler);
 
 // Vendor Files
@@ -88,7 +84,7 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 1. Deletes the built zip file.
  */
  gulp.task('clean:zip', function imagesCleaner(done) {
-	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	del(['./' + pkg.name + '.zip'])
 		.then(function () {
 			return done();
@@ -109,67 +105,6 @@ gulp.task('clean:pot', function potCleaner(done) {
  *	 5. Runs the `clean:package` task.
  */
 gulp.task('clean', gulp.series('clean:dist', 'clean:pot', 'clean:package', 'clean:zip'));
-
-/**
- * Build CSS Vendor.
- *
- * Process:
- *	 1. Moves all vendor CSS to `assets/dist/css` directory.
- */
-gulp.task('build:css:vendor', function VendorCssBuilder(done) {
-	if (vendorCss && (vendorCss.length > 0)) {
-		return gulp.src(vendorCss)
-			.pipe(cached('build:css:vendor'))
-			.pipe(gulp.dest('./assets/dist/css'))
-			.pipe(debug({ title: 'build:css:vendor' }));
-	} else {
-		return done();
-	}
-});
-
-/**
- * Build JS Vendor.
- *
- * Process:
- *	 1. Moves all vendor JS to `assets/dist/js` directory.
- */
-gulp.task('build:js:vendor', function VendorJsBuilder(done) {
-	if (vendorJs && (vendorJs.length > 0)) {
-		return gulp.src(vendorJs)
-			.pipe(cached('build:js:vendor'))
-			.pipe(gulp.dest('./assets/dist/js'))
-			.pipe(debug({ title: 'build:js:vendor' }));
-	} else {
-		return done();
-	}
-});
-
-/**
- * Build Vendor Images.
- *
- * Process:
- *	 1. Moves all vendor images to `assets/dist/images` directory.
- */
-gulp.task('build:images:vendor', function VendorImagesBuilder(done) {
-	if (vendorImages && (vendorImages.length > 0)) {
-		return gulp.src(vendorImages)
-			.pipe(cached('build:images:vendor'))
-			.pipe(gulp.dest('./assets/dist/images'))
-			.pipe(debug({ title: 'build:images:vendor' }));
-	} else {
-		return done();
-	}
-});
-
-/**
- * Build Vendor.
- *
- * Process:
- *	 1. Runs the `build:css:vendor` task. 
- *	 2. Runs the `build:js:vendor` task. 
- *	 3. Runs the `build:images:vendor` task.
- */
-gulp.task('build:vendor', gulp.series('build:css:vendor', 'build:js:vendor', 'build:images:vendor'));
 
 /**
  * Build SASS.
@@ -203,7 +138,7 @@ gulp.task('build:sass', function sassBuilder() {
  *
  * Process:
  *	 1. Imports JS modules to file. 
- *	 2. Transpiles the file with Babel.
+ *	 2. Transpiles the file with Babel including ESM.
  *	 3. Minifies the file.
  *	 4. Renames the compiled file to *.min.js.
  *	 5. Writes sourcemaps to initial content.
@@ -213,7 +148,7 @@ gulp.task('build:sass', function sassBuilder() {
 gulp.task('build:js', function jsBuilder() {
 	return gulp.src('./assets/src/js/*.js', { read: false }) // browserify reads file, don't read file twice.
 		.pipe(tap(function (file) {
-			const bundler = browserify(file.path, { debug: true }).transform(babel, { presets: ['@babel/preset-env'] });
+			const bundler = browserify(file.path, { debug: true, plugin: [ [esmify, {}] ] }).transform(babel, { presets: ['@babel/preset-env'] });
 			file.contents = bundler.bundle();
 		}).on('error', function (err) { console.error(err); this.emit('end'); }))
 		.pipe(buffer())
@@ -236,7 +171,7 @@ gulp.task('build:js', function jsBuilder() {
  *	 4. Logs created files to the console.
  */
 gulp.task('build:pot', function potBuilder() {
-	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
 		.pipe(gulpWPpot({ domain: pkg.name })
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
@@ -256,7 +191,9 @@ gulp.task('build:pot', function potBuilder() {
 gulp.task('build:images', function imageBuilder() {
 	return gulp.src(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'])
 		.pipe(cached('build:images'))
-		.pipe(imagemin()
+		.pipe(imagemin([
+			svgo({ plugins: [{ name: 'cleanupIDs', active: false }] })
+		])
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
 		.pipe(gulp.dest('./assets/dist/images'))
 		.pipe(debug({ title: 'build:images' }));
@@ -282,7 +219,7 @@ gulp.task('build:images', function imageBuilder() {
  *   Tags:        ...
  */
 gulp.task('build:package:style', function packageStyleBuilder(done) {
-	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	const data = {
 		'Theme Name': pkg.themeName || pkg.name || '',
 		'Theme URI': pkg.homepage || '',
@@ -321,11 +258,11 @@ gulp.task('build:package:style', function packageStyleBuilder(done) {
  *   Tags:              ...
  */
 gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(done) {
-	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	const pkgName = pkg.themeName || pkg.name || '';
 	var contributorNames = pkg.author.name ? [pkg.author.name] : [];
 	if (pkg.contributors && pkg.contributors.length > 0) {
-		pkg.contributors.map(function (contributor) {
+		pkg.contributors.forEach((contributor) => {
 			contributorNames.push(contributor.name);
 		});
 	}
@@ -409,7 +346,7 @@ gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass'
  *	 1. Zips a WordPress friendly theme.
  */
 gulp.task('zip', function zipper() {
-	const pkg = JSON.parse(fs.readFileSync('./package.json'));
+	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	const zipName = pkg.name + '.zip';
 	const zipSrc = [
 		'./**',
@@ -420,6 +357,7 @@ gulp.task('zip', function zipper() {
 		'!./package.json',
 		'!./package-lock.json',
 		'!./gulpfile.js',
+		'!./prepare.js',
 		'!./phpcs.xml',
 		'!./.gitignore',
 		'!./.eslintrc',
@@ -448,120 +386,6 @@ gulp.task('zip', function zipper() {
 gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
 
 /**
- * Fix all PHP files.
- *
- * Process:
- *	 1. Fixes all PHP files with PHPCBF according to the standards defined in the `phpcs.xml` file.
- *	 2. Logs the fixes to the console.
- */
-gulp.task('fix:php', function phpFixer(done) {
-	childProcess.exec('php ./vendor/bin/phpcbf', function phpcbfReporter(error, report) {
-		if (error && !report) {
-			console.error(error);
-		} else {
-			console.info(report);
-		}
-		return done();
-	});
-});
-
-/**
- * Fix all JS files.
- *
- * Process:
- *	 1. Fixes all JS files with eslint according to the standards defined in the `.eslintrc` file.
- *	 2. Logs the processed files to the console.
- */
-gulp.task('fix:js', function jsFixer() {
-	return gulp.src(['./assets/src/js/**/*.js'])
-		.pipe(eslint({ fix: true })
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
-		.pipe(eslint.format())
-		.pipe(gulpIf(function (file) { return file.eslint?.fixed }, gulp.dest('./assets/src/js')))
-		.pipe(debug({ title: 'fix:js' }));
-});
-
-/**
- * Fix all SASS files.
- *
- * Process:
- *	 1. Fixes all SASS files with eslint according to the standards defined in the `.stylelintrc` file.
- *	 2. Logs the processed files to the console.
- */
- gulp.task('fix:sass', function sassFixer(done) {
-	return gulp.src(['./assets/src/sass/**/*.scss'])
-		.pipe(styleLint({ fix: true, failAfterError: false, reporters: [{ formatter: 'string', console: true }] })
-			.on('error', function (err) { console.error(err); done(err); }))
-		.pipe(gulp.dest('./assets/src/sass'))
-		.pipe(debug({ title: 'fix:sass' }));
-});
-
-/**
- * Fix.
- *
- * Process:
- *	 1. Runs the `fix:php` task.
- *	 1. Runs the `fix:js` task.
- *	 1. Runs the `fix:sass` task.
- */
-gulp.task('fix', gulp.series('fix:php', 'fix:js', 'fix:sass'));
-
-/**
- * Lint all PHP files.
- *
- * Process:
- *	 1. Lints all PHP files with PHPCS according to the standards defined in the `phpcs.xml` file.
- *	 2. Logs the linting errors to the console.
- */
-gulp.task('lint:php', function phpLinter() {
-	return gulp.src(['./**/*.php', '!./+(.vscode|vendor|node_modules|assets|languages)/**'])
-		.pipe(phpcs({ bin: './vendor/bin/phpcs', standard: './phpcs.xml' })
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
-		.pipe(phpcs.reporter('log'))
-		.pipe(debug({ title: 'lint:php' }));
-});
-
-/**
- * Lint all SASS files.
- *
- * Process:
- *	 1. Lints all SCSS and SASS files. 
- *	 2. Logs the linting errors to the console.
- *	 3. Logs processed files to the console.
- */
-gulp.task('lint:sass', function sassLinter() {
-	return gulp.src(['./assets/src/sass/**/*.s+(a|c)ss'])
-		.pipe(styleLint({ failAfterError: false, reporters: [{ formatter: 'string', console: true }] })
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
-		.pipe(debug({ title: 'lint:sass' }));
-});
-
-/**
- * Lint all JS files.
- *
- * Process:
- *	 1. Lints all JS files. 
- *	 2. Logs the linting errors to the console.
- *	 3. Logs processed files to the console.
- */
-gulp.task('lint:js', function jsLinter() {
-	return gulp.src(['./assets/src/js/**/*.js'])
-		.pipe(eslint()
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
-		.pipe(eslint.format())
-		.pipe(debug({ title: 'lint:js' }));
-});
-
-/**
- * Lint all assets.
- *
- * Process:
- *	 1. Runs the `lint:sass` task. 
- *	 2. Runs the `lint:js` task.
- */
-gulp.task('lint', gulp.series('lint:php', 'lint:sass', 'lint:js'));
-
-/**
  * Watch source files and build on change.
  *
  * Process:
@@ -576,13 +400,10 @@ gulp.task('lint', gulp.series('lint:php', 'lint:sass', 'lint:js'));
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
-	gulp.watch(['./**/*.php', '!./+(.vscode|vendor|node_modules|assets|languages)/**'], gulp.series('lint:php', 'build:pot'));
-	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('lint:sass', 'build:sass'));
-	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('lint:js', 'build:js'));
+	gulp.watch(['./**/*.php', '!./+(.vscode|vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
+	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('build:sass'));
+	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('build:js'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
-	gulp.watch(vendorCss, gulp.series('build:css:vendor'));
-	gulp.watch(vendorJs, gulp.series('build:js:vendor'));
-	gulp.watch(vendorImages, gulp.series('build:images:vendor'));
 });
 
 /**
@@ -593,4 +414,4 @@ gulp.task('watch', function watcher() {
  *	 2. Runs the `build:assets` task.
  *	 3. Runs the `watch` task.
  */
-gulp.task('default', gulp.series('lint', 'build:assets', 'watch'));
+gulp.task('default', gulp.series('build:assets', 'watch'));

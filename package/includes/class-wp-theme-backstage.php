@@ -23,39 +23,6 @@ class WP_Theme_Backstage {
 	 */
 	public function init() {
 		$this->init_options();
-		add_action( 'wp_head', array( $this, 'add_head_tracking_codes' ), 9999 );
-		add_action( 'wp_body_open', array( $this, 'add_body_top_tracking_codes' ), 0 );
-		add_action( 'wp_footer', array( $this, 'add_body_bottom_tracking_codes' ), 9999 );
-	}
-
-	/**
-	 * Add Head Tracking Codes
-	 *
-	 * @since 0.0.1
-	 */
-	public function add_head_tracking_codes() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo get_option( 'wp_theme_tracking_codes_head' );
-	}
-
-	/**
-	 * Add Body Top Tracking Codes
-	 *
-	 * @since 0.0.1
-	 */
-	public function add_body_top_tracking_codes() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo get_option( 'wp_theme_tracking_codes_body_top' );
-	}
-
-	/**
-	 * Add Body Bottom Tracking Codes
-	 *
-	 * @since 0.0.1
-	 */
-	public function add_body_bottom_tracking_codes() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo get_option( 'wp_theme_tracking_codes_body_bottom' );
 	}
 
 	/**
