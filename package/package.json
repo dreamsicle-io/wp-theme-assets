@@ -41,14 +41,18 @@
 	"scripts": {
 		"prepare": "node scripts/prepare.mjs",
 		"start": "wp-scripts start --webpack-no-externals",
-		"build": "wp-scripts build --webpack-no-externals",
+		"build": "npm run build:package && npm run build:assets && npm run build:zip",
 		"build:package": "node scripts/build-package.mjs",
-		"b": "npm run build:package && npm run build",
-		"lint:styles": "wp-scripts lint-style",
-		"lint:scripts": "wp-scripts lint-js",
-		"lint:md:docs": "wp-scripts lint-md-docs",
-		"lint:pkg-json": "wp-scripts lint-pkg-json",
-		"format": "wp-scripts format"
+		"build:assets": "wp-scripts build --webpack-no-externals",
+		"build:zip": "node scripts/build-package.mjs",
+		"lint": "npm run lint:php && npm run lint:styles && npm run lint:scripts",
+		"lint:php": "./vendor/bin/phpcs",
+		"lint:styles": "wp-scripts lint-style './**/*.+(css|scss)'",
+		"lint:scripts": "wp-scripts lint-js './**/*.+(js|jsx|ts|tsx|mjs|json)'",
+		"format": "npm run format:php && npm run format:styles && npm run format:scripts",
+		"format:php": "./vendor/bin/phpcbf",
+		"format:styles": "wp-scripts format './**/*.+(css|scss)'",
+		"format:scripts": "wp-scripts format './**/*.+(js|jsx|ts|tsx|mjs|json)'"
 	},
 	"dependencies": {
 		"normalize.css": "~8.0.1"

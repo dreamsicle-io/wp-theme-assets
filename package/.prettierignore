@@ -1,0 +1,13 @@
+# Deps
+
+/node_modules
+/vendor
+
+# Build
+
+/build
+/languages
+
+# Logs
+
+/logs
