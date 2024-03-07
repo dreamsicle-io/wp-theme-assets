@@ -23,11 +23,6 @@ import buffer from 'vinyl-buffer';
 import GulpZip from 'gulp-zip';
 const sass = gulpSass(sassCompiler);
 
-// Vendor Files
-const vendorCss = [];
-const vendorJs = [];
-const vendorImages = [];
-
 /**
  * Clean package files.
  *
@@ -35,76 +30,21 @@ const vendorImages = [];
  *	 1. Deletes the default style.css file containing generated theme header.
  *	 2. Deletes the README.md file containing generated documentation.
  */
-gulp.task('clean:package', function packageCleaner(done) {
-	del(['./README.md', './style.css'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
-});
-
-/**
- * Clean entire dist directory.
- *
- * Process:
- *	 1. Deletes the build dist.
- */
- gulp.task('clean:dist', function distCleaner(done) {
-	del(['./assets/dist'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
-});
-
-/**
- * Clean localization build files.
- *
- * Process:
- *	 1. Deletes the localization build directory.
- */
-gulp.task('clean:pot', function potCleaner(done) {
-	del(['./languages/*.pot'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
-});
-
-/**
- * Clean zip.
- *
- * Process:
- *	 1. Deletes the built zip file.
- */
- gulp.task('clean:zip', function imagesCleaner(done) {
+gulp.task('clean', function packageCleaner(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
-	del(['./' + pkg.name + '.zip'])
-		.then(function () {
-			return done();
-		}).catch(function (err) {
-			console.error(err);
-			return done();
-		});
+	del([
+		'./README.md',
+		'./style.css',
+		'./assets/dist',
+		'./languages/*.pot',
+		'./' + pkg.name + '.zip'
+	]).then(function () {
+		return done();
+	}).catch(function (err) {
+		console.error(err);
+		return done();
+	});
 });
-
-/**
- * Clean All Built Assets.
- *
- * Process: 
- *	 1. Runs the `clean:js` task.
- *	 2. Runs the `clean:css` task.
- *	 3. Runs the `clean:images` task.
- *	 4. Runs the `clean:pot` task.
- *	 5. Runs the `clean:package` task.
- */
-gulp.task('clean', gulp.series('clean:dist', 'clean:pot', 'clean:package', 'clean:zip'));
 
 /**
  * Build SASS.
@@ -335,9 +275,8 @@ gulp.task('build:package', gulp.series('build:package:style', 'build:package:rea
  *	 3. Runs the `build:sass` task.
  *	 4. Runs the `build:js` task.
  *	 5. Runs the `build:images` task.
- *	 6. Runs the `build:vendor` task.
  */
-gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images', 'build:vendor'));
+gulp.task('build:assets', gulp.series('build:package', 'build:pot', 'build:sass', 'build:js', 'build:images'));
 
 /**
  * Zip.
@@ -381,7 +320,7 @@ gulp.task('zip', function zipper() {
  * Process:
  *	 1. Runs the `clean` task.
  *	 2. Runs the `build:assets` task.
- *	 7. Runs the `zip` task.
+ *	 3. Runs the `zip` task.
  */
 gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
 
@@ -390,13 +329,9 @@ gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
  *
  * Process:
  *	 1. Runs the `build:package` task when the package.json file, or source md changes.
- *	 2. Runs the `lint:php` and `build:pot` task when the source php changes.
- *	 3. Runs the `lint:sass` and `build:sass` tasks when the source SASS changes.
- *	 4. Runs the `lint:js` and `build:js` tasks when the source JS changes.
- *	 5. Runs the `build:images` task when the source images change.
- *	 6. Runs the `build:css:vendor` task when the vendor css changes.
- *	 7. Runs the `build:js:vendor` task when the vendor js changes.
- *	 8. Runs the `build:images:vendor` task when the vendor images change.
+ *	 2. Runs the `build:pot` task when the source php changes.
+ *	 3. Runs the `build:js` tasks when the source JS changes.
+ *	 4. Runs the `build:images` task when the source images change.
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
@@ -410,8 +345,7 @@ gulp.task('watch', function watcher() {
  * Build all assets (default task). 
  *
  * Process:
- *	 1. Runs the `lint` task.
- *	 2. Runs the `build:assets` task.
- *	 3. Runs the `watch` task.
+ *	 1. Runs the `build:assets` task.
+ *	 2. Runs the `watch` task.
  */
 gulp.task('default', gulp.series('build:assets', 'watch'));
