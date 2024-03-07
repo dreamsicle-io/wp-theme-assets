@@ -1,6 +1,5 @@
 import babel from 'babelify';
 import browserify from 'browserify';
-import esmify from 'esmify';
 import del from 'del';
 import fs from 'fs';
 import gulp from 'gulp';
@@ -20,7 +19,13 @@ import GulpUglify from 'gulp-uglify';
 import gulpWPpot from 'gulp-wp-pot';
 import buffer from 'vinyl-buffer';
 import GulpZip from 'gulp-zip';
+import tsify from 'tsify';
 const sass = gulpSass(sassCompiler);
+
+function swallowError(err) {
+	console.error(err);
+	this.emit('end');
+}
 
 /**
  * Clean package files.
@@ -31,12 +36,13 @@ const sass = gulpSass(sassCompiler);
  */
 gulp.task('clean', function packageCleaner(done) {
 	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
+	const zipName = pkg.name + '.zip';
 	del([
 		'./README.md',
 		'./style.css',
 		'./assets/dist',
 		'./languages/*.pot',
-		'./' + pkg.name + '.zip'
+		'./' + zipName,
 	]).then(function () {
 		return done();
 	}).catch(function (err) {
@@ -63,7 +69,7 @@ gulp.task('build:sass', function sassBuilder() {
 	return gulp.src(['./assets/src/sass/*.s+(a|c)ss'])
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sass({ includePaths: ['node_modules'], outputStyle: outputStyle, cascade: false })
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
+			.on('error', swallowError))
 		.pipe(cached('build:sass'))
 		.pipe(autoPrefixer())
 		.pipe(rename({ suffix: '.min' }))
@@ -85,16 +91,18 @@ gulp.task('build:sass', function sassBuilder() {
  *	 7. Logs created files to the console.
  */
 gulp.task('build:js', function jsBuilder() {
-	return gulp.src('./assets/src/js/*.js', { read: false }) // browserify reads file, don't read file twice.
+	return gulp.src('./assets/src/js/*.+(j|t)s', { read: false }) // browserify reads file, don't read file twice.
 		.pipe(tap(function (file) {
-			const bundler = browserify(file.path, { debug: true, plugin: [ [esmify, {}] ] }).transform(babel, { presets: ['@babel/preset-env'] });
-			file.contents = bundler.bundle();
-		}).on('error', function (err) { console.error(err); this.emit('end'); }))
+			file.contents = browserify(file.path, { debug: true })
+				.plugin(tsify)
+				.transform(babel, { presets: ['@babel/preset-env'] })
+				.bundle()
+		}))
 		.pipe(buffer())
 		.pipe(cached('build:js'))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(gulpIf((process.env.NODE_ENV === 'production'), GulpUglify()))
-		.pipe(rename({ suffix: '.min' }))
+		.pipe(rename({ suffix: '.min', extname: '.js' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('./assets/dist/js'))
 		.pipe(debug({ title: 'build:js' }));
@@ -113,7 +121,7 @@ gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
 	return gulp.src(['./**/*.php', '!./+(.vscode|.github|vendor|node_modules|assets|languages)/**'])
 		.pipe(gulpWPpot({ domain: pkg.name })
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
+			.on('error', swallowError))
 		.pipe(cached('build:pot'))
 		.pipe(gulp.dest('./languages/' + pkg.name + '.pot'))
 		.pipe(debug({ title: 'build:pot' }));
@@ -133,7 +141,7 @@ gulp.task('build:images', function imageBuilder() {
 		.pipe(imagemin([
 			svgo({ plugins: [{ name: 'cleanupIDs', active: false }] })
 		])
-			.on('error', function (err) { console.error(err); this.emit('end'); }))
+			.on('error', swallowError))
 		.pipe(gulp.dest('./assets/dist/images'))
 		.pipe(debug({ title: 'build:images' }));
 });
@@ -239,7 +247,7 @@ gulp.task('build:package:readme:header', function packageReadmeHeaderBuilder(don
  *   Change Log
  */
 gulp.task('build:package:readme:content', function packageReadmeContentBuilder() {
-	return gulp.src(['./README.md', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'])
+	return gulp.src(['./README.md', './assets/src/md/*.md'])
 		.pipe(order(['README.md', 'DESCRIPTION.md', 'FAQ.md', 'COPYRIGHT.md', 'CHANGELOG.md']))
 		.pipe(concat('README.md'))
 		.pipe(cached('build:package:readme:content'))
@@ -305,7 +313,7 @@ gulp.task('zip', function zipper() {
 		'!./.vscode/**',
 		'!./.github/**',
 		'!./node_modules/**',
-		'!./' + zipName,
+		'!./*.zip',
 	];
 	return gulp.src(zipSrc)
 		.pipe(GulpZip(zipName))
@@ -333,10 +341,10 @@ gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
  *	 4. Runs the `build:images` task when the source images change.
  */
 gulp.task('watch', function watcher() {
-	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
+	gulp.watch(['./package.json', './assets/src/md/*.md'], gulp.series('build:package'));
 	gulp.watch(['./**/*.php', '!./+(.vscode|.github|vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('build:sass'));
-	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('build:js'));
+	gulp.watch(['./assets/src/js/**/*.+(j|t)s'], gulp.series('build:js'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
 });
 
