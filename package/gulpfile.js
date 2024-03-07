@@ -112,7 +112,7 @@ gulp.task('build:js', function jsBuilder() {
  */
 gulp.task('build:pot', function potBuilder() {
 	const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
-	return gulp.src(['./**/*.php', '!./+(vendor|node_modules|assets|languages)/**'])
+	return gulp.src(['./**/*.php', '!./+(.vscode|.github|vendor|node_modules|assets|languages)/**'])
 		.pipe(gulpWPpot({ domain: pkg.name })
 			.on('error', function (err) { console.error(err); this.emit('end'); }))
 		.pipe(cached('build:pot'))
@@ -335,7 +335,7 @@ gulp.task('build', gulp.series('clean', 'build:assets', 'zip'));
  */
 gulp.task('watch', function watcher() {
 	gulp.watch(['./package.json', './assets/src/md/+(DESCRIPTION|FAQ|COPYRIGHT|CHANGELOG).md'], gulp.series('build:package'));
-	gulp.watch(['./**/*.php', '!./+(.vscode|vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
+	gulp.watch(['./**/*.php', '!./+(.vscode|.github|vendor|node_modules|assets|languages)/**'], gulp.series('build:pot'));
 	gulp.watch(['./assets/src/sass/**/*.s+(a|c)ss'], gulp.series('build:sass'));
 	gulp.watch(['./assets/src/js/**/*.js'], gulp.series('build:js'));
 	gulp.watch(['./assets/src/images/**/*.+(jpg|jpeg|png|svg|gif)'], gulp.series('build:images'));
