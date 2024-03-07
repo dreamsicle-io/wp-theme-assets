@@ -5,6 +5,10 @@
  * @since 0.0.1
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * WP Theme Assets
  *
@@ -16,7 +20,7 @@ class WP_Theme_Assets {
 	 * Theme Directory URI
 	 *
 	 * @since 0.0.1
-	 * @var string $theme_directory_uri
+	 * @var string
 	 */
 	public string $theme_directory_uri;
 
@@ -24,7 +28,7 @@ class WP_Theme_Assets {
 	 * Theme Textdomain
 	 *
 	 * @since 0.0.1
-	 * @var string $theme_textdomain
+	 * @var string
 	 */
 	public string $theme_textdomain;
 
@@ -32,15 +36,23 @@ class WP_Theme_Assets {
 	 * Theme Version
 	 *
 	 * @since 0.0.1
-	 * @var string $theme_version
+	 * @var string
 	 */
 	public string $theme_version;
+
+	/**
+	 * Assets Directory Relative
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
+	public string $assets_directory_rel;
 
 	/**
 	 * Assets Directory URI
 	 *
 	 * @since 0.0.1
-	 * @var string $assets_directory_uri
+	 * @var string
 	 */
 	public string $assets_directory_uri;
 
@@ -48,7 +60,7 @@ class WP_Theme_Assets {
 	 * Languages Directory URI
 	 *
 	 * @since 0.0.1
-	 * @var string $languages_directory_uri
+	 * @var string
 	 */
 	public string $languages_directory_uri;
 
@@ -62,7 +74,8 @@ class WP_Theme_Assets {
 		$this->theme_directory_uri     = get_template_directory_uri();
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
 		$this->theme_version           = $theme->get( 'Version' );
-		$this->assets_directory_uri    = $this->theme_directory_uri . '/assets/dist';
+		$this->assets_directory_rel    = '/assets/dist';
+		$this->assets_directory_uri    = $this->theme_directory_uri . $this->assets_directory_rel;
 		$this->languages_directory_uri = $this->theme_directory_uri . '/languages';
 	}
 
@@ -102,7 +115,11 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_editor_assets(): void {
-		add_editor_style( $this->assets_directory_uri . '/css/editor.min.css' );
+		add_editor_style(
+			array(
+				$this->assets_directory_rel . '/css/editor.min.css',
+			)
+		);
 	}
 
 	/**
