@@ -5,6 +5,10 @@
  * @since 0.0.1
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * WP Theme Assets
  *
