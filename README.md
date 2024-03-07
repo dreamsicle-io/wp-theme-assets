@@ -1,10 +1,10 @@
 # WP Theme Assets 
 
-A simple, zero configuration [Gulp](https://gulpjs.com) build &amp; lint setup for developing modern [WordPress](https://wordpress.org) themes.
+A simple, zero configuration [Gulp](https://gulpjs.com) build &amp; setup for developing modern [WordPress](https://wordpress.org) themes.
 
-This package contains a task runner built entirely on Gulp 4, and will lint `.php` according to the WordPress coding standards, build and optimize `.js`, `.scss` assets, generate a `.pot` language localization file, and optimize images. This package will also create the required `style.css` file and its formatted header comment, as well as the required, [theme directory](https://wordpress.org/themes) friendly `README.md` file with all it's content. This package also comes bundled with utilities to automatically fix code issues, GitHub actions for automatically building release assets and creating releases, and contains recommended extensions and settings for the [VSCode](https://code.visualstudio.com/) IDE.
+This package contains a task runner built entirely on Gulp 4, and will build and optimize `.js`, `.scss` assets, generate a `.pot` language localization file, and optimize images. This package will also create the required `style.css` file and its formatted header comment, as well as the required, [theme directory](https://wordpress.org/themes) friendly `README.md` file with all it's content. This package also comes bundled with utilities to automatically fix code issues, GitHub actions for automatically building release assets and creating releases, and contains recommended extensions and settings for the [VSCode](https://code.visualstudio.com/) IDE.
 
-Finally, this package also includes a `WP_Theme_Assets` [php class](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/includes/class-wp-theme-assets.php), located in `includes/class-wp-theme-assets.php`. This class beautifully handles all script and stylesheet enqueues of built assets automatically. 
+This package comes with just the right amount of boilerplate and templating. Included is also a `WP_Theme_Assets` [php class](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/includes/class-wp-theme-assets.php), located in `includes/class-wp-theme-assets.php`. This class beautifully handles all script and stylesheet enqueues of built assets automatically.
 
 ## Getting Started
 
@@ -50,6 +50,14 @@ npm start
 
 The included [gulpfile](https://github.com/dreamsicle-io/wp-theme-assets/blob/master/package/gulpfile.js) contains all tasks that handle linting and building this package.
 
+### Set Node Version
+
+Uses `nvm` to set the node version as defined in the `.nvmrc` file.
+
+```shell
+nvm use
+```
+
 ### Install
 
 Install all `npm` and `composer` dependencies.
@@ -74,22 +82,6 @@ Run a production build.
 npm run build
 ```
 
-### Lint
-
-Find and report code errors and issues.
-
-```shell
-npm run lint
-```
-
-### Fix
-
-Correct all fixable code issues.
-
-```shell
-npm run fix
-```
-
 ### Clean
 
 Clean all built files.
@@ -98,7 +90,7 @@ Clean all built files.
 npm run clean
 ```
 
-## File structure 
+## Build File Structure 
 
 This gulp setup expects that the project root's `package.json` is setup properly, and that an [opinionated file structure](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package) is followed. The localization tasks are handled by the built in WordPress localization functions in all theme `.php` files, but the [source assets](https://github.com/dreamsicle-io/wp-theme-assets/tree/master/package/assets) should be structured accordingly.
 
