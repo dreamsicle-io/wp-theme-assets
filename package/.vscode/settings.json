@@ -1,8 +1,8 @@
 {
 	"[php]": {
-    "editor.defaultFormatter": "wongjn.php-sniffer",
-		"editor.formatOnSave": true,
-  },
+		"editor.defaultFormatter": "wongjn.php-sniffer",
+		"editor.formatOnSave": true
+	},
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
 		"editor.formatOnSave": true,
@@ -17,27 +17,24 @@
 			"source.fixAll.eslint": "explicit"
 		}
 	},
-	 "[css]": {
+	"[css]": {
 		"editor.defaultFormatter": "stylelint.vscode-stylelint",
 		"editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": "explicit"
-    }
-  },
+		"editor.codeActionsOnSave": {
+			"source.fixAll.stylelint": "explicit"
+		}
+	},
 	"[scss]": {
 		"editor.defaultFormatter": "stylelint.vscode-stylelint",
 		"editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": "explicit"
-    }
-  },
+		"editor.codeActionsOnSave": {
+			"source.fixAll.stylelint": "explicit"
+		}
+	},
 	"eslint.enable": true,
 	"eslint.format.enable": true,
 	"stylelint.enable": true,
-	"stylelint.validate": [
-		"scss",
-		"css"
-	],
+	"stylelint.validate": [ "scss", "css" ],
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,

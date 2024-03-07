@@ -74,7 +74,7 @@ class WP_Theme_Assets {
 		$this->theme_directory_uri     = get_template_directory_uri();
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
 		$this->theme_version           = $theme->get( 'Version' );
-		$this->assets_directory_rel    = '/assets/dist';
+		$this->assets_directory_rel    = '/build';
 		$this->assets_directory_uri    = $this->theme_directory_uri . $this->assets_directory_rel;
 		$this->languages_directory_uri = $this->theme_directory_uri . '/languages';
 	}

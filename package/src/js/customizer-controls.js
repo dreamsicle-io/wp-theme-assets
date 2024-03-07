@@ -1,3 +1,3 @@
 import { announceEnqueued } from './modules/utils';
 
-announceEnqueued('admin.js');
+announceEnqueued( 'customizer-controls.js' );

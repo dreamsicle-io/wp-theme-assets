@@ -1,5 +1,4 @@
 {
-	"type": "module",
 	"name": "wp-theme",
 	"themeName": "WP Theme",
 	"version": "0.0.1",
@@ -35,39 +34,23 @@
 			"last 5 versions"
 		]
 	},
-	"dependencies": {},
 	"devDependencies": {
-		"@babel/core": "~7.23.9",
-		"@babel/preset-env": "~7.23.9",
-		"babelify": "~10.0.0",
-		"browserify": "~17.0.0",
-		"del": "~6.0.0",
-		"eslint": "~8.57.0",
-		"esmify": "~2.1.1",
-		"gulp": "~4.0.2",
-		"gulp-autoprefixer": "~8.0.0",
-		"gulp-cached": "~1.1.1",
-		"gulp-concat": "~2.6.1",
-		"gulp-debug": "~4.0.0",
-		"gulp-if": "~3.0.0",
-		"gulp-imagemin": "~9.0.0",
-		"gulp-order": "~1.2.0",
-		"gulp-rename": "~2.0.0",
-		"gulp-sass": "~5.1.0",
-		"gulp-sourcemaps": "~3.0.0",
-		"gulp-tap": "~2.0.0",
-		"gulp-uglify": "~3.0.2",
-		"gulp-wp-pot": "~2.5.0",
-		"gulp-zip": "~5.1.0",
-		"sass": "~1.48.0",
-		"stylelint": "~15.11.0",
-		"stylelint-config-standard-scss": "~10.0.0",
-		"vinyl-buffer": "~1.0.1"
+		"@wordpress/scripts": "~27.4.0",
+		"webpack-remove-empty-scripts": "~1.0.4"
 	},
 	"scripts": {
-		"prepare": "node prepare.js",
-		"start": "NODE_ENV=development gulp",
-		"build": "NODE_ENV=production gulp build",
-		"clean": "gulp clean"
+		"prepare": "node scripts/prepare.mjs",
+		"start": "wp-scripts start --webpack-no-externals",
+		"build": "wp-scripts build --webpack-no-externals",
+		"build:package": "node scripts/build-package.mjs",
+		"b": "npm run build:package && npm run build",
+		"lint:styles": "wp-scripts lint-style",
+		"lint:scripts": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"format": "wp-scripts format"
+	},
+	"dependencies": {
+		"normalize.css": "~8.0.1"
 	}
 }

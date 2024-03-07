@@ -5,9 +5,9 @@
 
 # Build
 
-/assets/dist
+/build
 /languages/*.pot
-/README.md
+/README.txt
 /style.css
 /*.zip
 

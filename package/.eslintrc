@@ -1,24 +1,24 @@
 {
+  "extends": [
+		"plugin:@wordpress/eslint-plugin/recommended"
+	],
   "env": {
     "browser": true
   },
-  "extends": [
-		"eslint:recommended"
-	],
-	"parserOptions": {
-		"ecmaVersion": 2020,
-		"sourceType": "module"
-	},
 	"overrides": [
 		{
-			"files": "./gulpfile.js",
+			"files": ["./scripts/**/*.+(mjs|js)", "./webpack.config.js"],
 			"env": {
 				"node": true
 			}
 		}
 	],
 	"rules": {
-		"no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+		"no-console": [
+			"error",
+			{
+				"allow": ["info", "warn", "error"]
+			}
+		]
 	}
 }
-
