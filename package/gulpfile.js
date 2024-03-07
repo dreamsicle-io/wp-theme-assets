@@ -1,7 +1,6 @@
-'use-strict';
-
 import babel from 'babelify';
 import browserify from 'browserify';
+import esmify from 'esmify';
 import del from 'del';
 import fs from 'fs';
 import gulp from 'gulp';
@@ -10,7 +9,7 @@ import cached from 'gulp-cached';
 import concat from 'gulp-concat';
 import debug from 'gulp-debug';
 import gulpIf from 'gulp-if';
-import imagemin from 'gulp-imagemin';
+import imagemin, { svgo } from 'gulp-imagemin';
 import order from 'gulp-order';
 import rename from 'gulp-rename';
 import gulpSass from 'gulp-sass';
