@@ -6,7 +6,10 @@ const themeDirectory = process.cwd();
 
 module.exports = {
 	...wpConfig,
-	plugins: [...wpConfig.plugins, new RemoveEmptyScriptsPlugin()],
+	plugins: [
+		...wpConfig.plugins,
+		new RemoveEmptyScriptsPlugin()
+	],
 	entry: {
 		// Scripts.
 		'js/site.min': path.resolve(themeDirectory, 'src/js/site.ts'),
