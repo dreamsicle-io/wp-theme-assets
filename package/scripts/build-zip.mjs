@@ -7,13 +7,14 @@ const pkgPath = path.join(themeDirectory, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(pkgPath).toString());
 
 try {
+	// Don't use leading or slashes.
 	const ignores = [
-		'.github/',
-		'.vscode/',
-		'node_modules/',
-		'vendor/',
-		'scripts/',
-		'src/',
+		'.github',
+		'.vscode',
+		'node_modules',
+		'vendor',
+		'scripts',
+		'src',
 		'.editorconfig',
 		'.eslintrc',
 		'.gitignore',
@@ -27,8 +28,9 @@ try {
 		'phpcs.xml',
 		'README.md',
 		'webpack.config.js',
+		`${pkg.name}.zip`,
 	];
-	const zipCommand = `zip -r ${pkg.name}.zip . -X ${ignores.map(ignore => `"${ignore}"`).join(' ')}`;
+	const zipCommand = `dir-archiver --src . --dest ./${pkg.name}.zip . --exclude ${ignores.map(ignore => `"${ignore}"`).join(' ')}`;
 	execSync(zipCommand, { stdio: 'inherit' });
 	console.info('Success: Zip file successfully generated.');
 	process.exit();

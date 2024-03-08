@@ -7,7 +7,7 @@ const isCI = process.env.npm_command === 'ci';
 
 try {
 	// Ignore dev composer deps when running `npm ci`.
-	const composerCommand = isCI ? 'composer update --no-dev' : 'composer update';
+	const composerCommand = isCI ? 'composer install' : 'composer update';
 	execSync(composerCommand, { stdio: 'inherit' });
 	process.exit();
 } catch (error) {

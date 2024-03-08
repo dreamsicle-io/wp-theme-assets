@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import path from 'path';
 
@@ -5,9 +6,6 @@ const themeDirectory = process.cwd();
 const pkgPath = path.join(themeDirectory, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(pkgPath).toString());
 
-/**
- * Build Style Header
- */
 function buildStyleHeader() {
 	const data = {
 		'Theme Name': pkg.themeName || pkg.name || '',
@@ -29,9 +27,6 @@ function buildStyleHeader() {
 	fs.writeFileSync('./style.css', contents);
 }
 
-/**
- * Build README Headers
- */
 function buildReadMeHeader() {
 	const pkgName = pkg.themeName || pkg.name || '';
 	const contributorNames = pkg.author.name ? [pkg.author.name] : [];
