@@ -1,4 +1,7 @@
 {
+	"require": {
+		"php": "^8"
+	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~3.7.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "~0.7.2",
@@ -11,6 +14,8 @@
 		}
 	},
 	"scripts": {
-		"build:pot": "wp i18n make-pot"
+		"build:pot": "wp i18n make-pot",
+		"lint:php": "./vendor/bin/phpcs",
+		"fix:php": "./vendor/bin/phpcbf"
 	}
 }
