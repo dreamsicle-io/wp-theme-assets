@@ -1,3 +1,3 @@
 import { announceEnqueued } from './modules/utils';
 
-announceEnqueued( 'login.js' );
+announceEnqueued('customizer-preview.js');
