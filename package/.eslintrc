@@ -5,6 +5,13 @@
   "env": {
     "browser": true
   },
+	"ignorePatterns": [
+		"build/**/*",
+		"vendor/**/*",
+		"node_modules/**/*",
+		"package-lock.json",
+		"composer.lock"
+	],
 	"overrides": [
 		{
 			"files": ["./scripts/**/*.+(mjs|js)", "./webpack.config.js"],

@@ -29,6 +29,7 @@
 
 @mixin dream-flatten-children($horizontal: false, $include-padding: false) {
 	@if $horizontal {
+
 		> *:first-child {
 			margin-left: 0 !important; /* stylelint-disable-line declaration-no-important */
 
@@ -45,6 +46,7 @@
 			}
 		}
 	} @else {
+
 		> *:first-child {
 			margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
 
@@ -243,15 +245,8 @@
 
 @mixin dream-screen-reader-only {
 	border: 0 !important; /* stylelint-disable-line declaration-no-important */
-	clip: rect(
-		1px,
-		1px,
-		1px,
-		1px
-	) !important; /* stylelint-disable-line declaration-no-important */
-	clip-path: inset(
-		50%
-	) !important; /* stylelint-disable-line declaration-no-important */
+	clip: rect(1px, 1px, 1px, 1px) !important; /* stylelint-disable-line declaration-no-important */
+	clip-path: inset(50%) !important; /* stylelint-disable-line declaration-no-important */
 	height: 1px !important; /* stylelint-disable-line declaration-no-important */
 	margin: -1px !important; /* stylelint-disable-line declaration-no-important */
 	overflow: hidden !important; /* stylelint-disable-line declaration-no-important */
@@ -262,6 +257,7 @@
 }
 
 @mixin dream-clearfix {
+
 	&::before,
 	&::after {
 		content: "";
@@ -283,6 +279,7 @@
 }
 
 @mixin dream-scrollbar($color: "background", $gutter: 0, $show-track: true) {
+
 	&::-webkit-scrollbar {
 		width: 8px;
 		height: 8px;
@@ -346,18 +343,21 @@
 	}
 
 	&:focus-visible {
+
 		&::before {
 			opacity: 0.1;
 		}
 	}
 
 	&:hover {
+
 		&::before {
 			opacity: 0.15;
 		}
 	}
 
 	&:active {
+
 		&::before {
 			opacity: 0.2;
 		}
@@ -365,11 +365,12 @@
 }
 
 @mixin dream-transparency {
-	background-color: #ffffff;
-	background-image: linear-gradient(45deg, #b0b0b0 25%, transparent 25%),
-		linear-gradient(-45deg, #b0b0b0 25%, transparent 25%),
-		linear-gradient(45deg, transparent 75%, #b0b0b0 75%),
-		linear-gradient(-45deg, transparent 75%, #b0b0b0 75%);
+	background-color: #FFFFFF;
+	background-image:
+		linear-gradient(45deg, #B0B0B0 25%, transparent 25%),
+		linear-gradient(-45deg, #B0B0B0 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #B0B0B0 75%),
+		linear-gradient(-45deg, transparent 75%, #B0B0B0 75%);
 	background-size: 20px 20px;
 	background-position:
 		0 0,
@@ -379,25 +380,30 @@
 }
 
 @mixin dream-placeholder($color: "background") {
+
 	&::-webkit-input-placeholder {
 		/* stylelint-disable-line selector-no-vendor-prefix */
+
 		@include dream-theme(color, "soft-on-#{$color}");
 	}
 
 	&:-moz-placeholder {
 		/* stylelint-disable-line selector-no-vendor-prefix */
+
 		@include dream-theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
 	&::-moz-placeholder {
 		/* stylelint-disable-line selector-no-vendor-prefix */
+
 		@include dream-theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
 	&:-ms-input-placeholder {
 		/* stylelint-disable-line selector-no-vendor-prefix */
+
 		@include dream-theme(color, "soft-on-#{$color}");
 	}
 }

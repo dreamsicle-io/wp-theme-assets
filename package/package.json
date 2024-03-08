@@ -48,11 +48,11 @@
 		"lint": "npm run lint:php && npm run lint:styles && npm run lint:scripts",
 		"lint:php": "./vendor/bin/phpcs",
 		"lint:styles": "wp-scripts lint-style './**/*.+(css|scss)'",
-		"lint:scripts": "wp-scripts lint-js './**/*.+(js|jsx|ts|tsx|mjs|json)'",
-		"format": "npm run format:php && npm run format:styles && npm run format:scripts",
-		"format:php": "./vendor/bin/phpcbf",
-		"format:styles": "wp-scripts format './**/*.+(css|scss)'",
-		"format:scripts": "wp-scripts format './**/*.+(js|jsx|ts|tsx|mjs|json)'"
+		"lint:scripts": "wp-scripts lint-js './**/*.+(js|ts|jsx|tsx|mjs|json)'",
+		"fix": "npm run fix:php && npm run fix:styles && npm run fix:scripts",
+		"fix:php": "./vendor/bin/phpcbf",
+		"fix:styles": "stylelint --fix './**/*.+(css|scss)'",
+		"fix:scripts": "eslint --fix './**/*.+(js|ts|jsx|tsx|mjs|json)'"
 	},
 	"dependencies": {
 		"normalize.css": "~8.0.1"
