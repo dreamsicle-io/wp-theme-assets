@@ -24,26 +24,13 @@ $dream-respond-desktop-min: 1280.001px;
 
 // respond map
 $dream-respond-map: (
-	"phone": (
-		"max": $dream-respond-phone-max,
-	),
-	"tablet": (
-		"min": $dream-respond-tablet-min,
-		"max": $dream-respond-tablet-max,
-	),
-	"laptop": (
-		"min": $dream-respond-laptop-min,
-		"max": $dream-respond-laptop-max,
-	),
-	"desktop": (
-		"min": $dream-respond-desktop-min,
-	),
-	"mobile": (
-		"max": $dream-respond-tablet-max,
-	),
-	"non-mobile": (
-		"min": $dream-respond-laptop-min,
-	),
+	"phone": ("max": $dream-respond-phone-max),
+	"tablet": ("min": $dream-respond-tablet-min, "max": $dream-respond-tablet-max),
+	"laptop": ("min": $dream-respond-laptop-min, "max": $dream-respond-laptop-max),
+	"desktop": ("min": $dream-respond-desktop-min),
+	"mobile": ("max": $dream-respond-tablet-max),
+	"tablet-up": ("min": $dream-respond-tablet-min),
+	"non-mobile": ("min": $dream-respond-laptop-min),
 );
 
 // background theme

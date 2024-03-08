@@ -65,11 +65,7 @@
 	}
 }
 
-@mixin dream-flex(
-	$flex-flow: column,
-	$align-items: flex-start,
-	$justify-content: flex-start
-) {
+@mixin dream-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
 	align-items: $align-items;
 	display: flex;
 	flex-flow: $flex-flow;
@@ -78,11 +74,7 @@
 	min-height: 0;
 }
 
-@mixin dream-inline-flex(
-	$flex-flow: column,
-	$align-items: flex-start,
-	$justify-content: flex-start
-) {
+@mixin dream-inline-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
 	align-items: $align-items;
 	display: inline-flex;
 	flex-flow: $flex-flow;
@@ -317,13 +309,7 @@
 	}
 }
 
-@mixin dream-box-shadow(
-	$x: 0,
-	$y: 4px,
-	$blur: 64px,
-	$opacity: 0.1,
-	$inset: false
-) {
+@mixin dream-box-shadow($x: 0, $y: 4px, $blur: 64px, $opacity: 0.1, $inset: false) {
 	@if $inset {
 		box-shadow: $x $y $blur rgba(0, 0, 0, $opacity) inset;
 	} @else {

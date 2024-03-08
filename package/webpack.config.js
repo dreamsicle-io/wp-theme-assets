@@ -1,16 +1,64 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const wpConfig = require('@wordpress/scripts/config/webpack.config');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const path = require('path');
+const execSync = require('child_process').execSync;
 
 const themeDirectory = process.cwd();
 
+const wpConfigWatchIgnore = [];
+if (wpConfig.watchOptions?.ignored) {
+	const ignored = Array.isArray(wpConfig.watchOptions.ignored) ? wpConfig.watchOptions.ignored : [wpConfig.watchOptions.ignored];
+	wpConfigWatchIgnore.push(...ignored);
+}
+
 module.exports = {
 	...wpConfig,
+	watchOptions: {
+		...wpConfig.watchOptions,
+		ignored: [
+			...wpConfigWatchIgnore,
+			// These globs must begin with '**/'.
+			// See: https://webpack.js.org/configuration/watch/#watchoptionsignored
+			'**/.github/**/*',
+			'**/.vscode/**/*',
+			'**/build/**/*',
+			'**/languages/**/*',
+			'**/node_modules/**/*',
+			'**/scripts/**/*',
+			'**/vendor/**/*',
+			'**/.editorconfig',
+			'**/.eslintrc',
+			'**/.gitignore',
+			'**/.nvmrc',
+			'**/.prettierignore',
+			'**/.stylelintrc',
+			'**/composer.json',
+			'**/composer.lock',
+			'**/LICENSE',
+			'**/package.json',
+			'**/package-lock.json',
+			'**/phpcs.xml',
+			'**/README.md',
+			'**/README.txt',
+			'**/style.css',
+			'**/webpack.config.js',
+		],
+	},
 	plugins: [
 		...wpConfig.plugins,
-		new RemoveEmptyScriptsPlugin()
+		new RemoveEmptyScriptsPlugin(),
+		{
+			apply: (compiler) => {
+				compiler.hooks.beforeCompile.tap('BeforeCompilePlugin', () => {
+					execSync('node scripts/package.mjs', { stdio: 'inherit' });
+					execSync('node scripts/translate.mjs', { stdio: 'inherit' });
+				});
+			},
+		},
 	],
 	entry: {
+		...wpConfig.entry,
 		// Scripts.
 		'js/site.min': path.resolve(themeDirectory, 'src/js/site.ts'),
 		'js/admin.min': path.resolve(themeDirectory, 'src/js/admin.ts'),

@@ -14,8 +14,8 @@
 		}
 	},
 	"scripts": {
-		"build:pot": "wp i18n make-pot",
-		"lint:php": "./vendor/bin/phpcs",
-		"fix:php": "./vendor/bin/phpcbf"
+		"lint": "./vendor/bin/phpcs",
+		"fix": "./vendor/bin/phpcbf",
+		"translate": "wp i18n make-pot"
 	}
 }

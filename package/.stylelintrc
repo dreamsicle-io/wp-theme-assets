@@ -12,9 +12,14 @@
 		"color-hex-length": "long",
 		"at-rule-empty-line-before": [
 			"always",
-			{ 
-				"except": ["first-nested", "blockless-after-blockless"],
-				"ignoreAtRules": ["else"]
+			{
+				"except": [
+					"first-nested",
+					"blockless-after-blockless"
+				],
+				"ignoreAtRules": [
+					"else"
+				]
 			}
 		]
 	}

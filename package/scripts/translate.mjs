@@ -8,8 +8,8 @@ const pkgPath = path.join(themeDirectory, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(pkgPath).toString());
 
 try {
-	const potCommand = `composer run build:pot . languages/${pkg.name}.pot`;
-	execSync(potCommand, { stdio: 'inherit' });
+	const translateCommand = `composer run translate . languages/${pkg.name}.pot`;
+	execSync(translateCommand, { stdio: 'inherit' });
 	process.exit();
 } catch (error) {
 	console.error(error);

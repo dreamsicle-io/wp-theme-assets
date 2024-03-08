@@ -3,20 +3,18 @@
 		"editor.defaultFormatter": "wongjn.php-sniffer",
 		"editor.formatOnSave": true
 	},
-	"[javascript][typescript][javascriptreact][typescriptreact][json]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
-		"editor.formatOnSave": true,
+	"[javascript][typescript][javascriptreact][typescriptreact]": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit"
 		}
 	},
 	"[css][scss]": {
-		"editor.defaultFormatter": "stylelint.vscode-stylelint",
-		"editor.formatOnSave": true,
 		"editor.codeActionsOnSave": {
 			"source.fixAll.stylelint": "explicit"
 		}
 	},
+	"files.insertFinalNewline": true,
+	"eslint.validate": ["js", "jsx", "ts", "tsx", "mjs"],
 	"eslint.enable": true,
 	"eslint.format.enable": true,
 	"stylelint.enable": true,
@@ -24,7 +22,7 @@
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,
-	"intelephense.environment.phpVersion": "8.1.23",
+	"intelephense.environment.phpVersion": "8",
 	"intelephense.format.braces": "k&r",
 	"intelephense.stubs": [
 		"apache",
