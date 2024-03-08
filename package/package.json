@@ -34,6 +34,9 @@
 			"last 5 versions"
 		]
 	},
+	"dependencies": {
+		"normalize.css": "~8.0.1"
+	},
 	"devDependencies": {
 		"@wordpress/scripts": "~27.4.0",
 		"webpack-remove-empty-scripts": "~1.0.4"
@@ -47,14 +50,11 @@
 		"build:zip": "node scripts/build-package.mjs",
 		"lint": "npm run lint:php && npm run lint:styles && npm run lint:scripts",
 		"lint:php": "./vendor/bin/phpcs",
-		"lint:styles": "wp-scripts lint-style './**/*.+(css|scss)'",
-		"lint:scripts": "wp-scripts lint-js './**/*.+(js|ts|jsx|tsx|mjs|json)'",
+		"lint:styles": "wp-scripts lint-style",
+		"lint:scripts": "wp-scripts lint-js",
 		"fix": "npm run fix:php && npm run fix:styles && npm run fix:scripts",
 		"fix:php": "./vendor/bin/phpcbf",
-		"fix:styles": "stylelint --fix './**/*.+(css|scss)'",
-		"fix:scripts": "eslint --fix './**/*.+(js|ts|jsx|tsx|mjs|json)'"
-	},
-	"dependencies": {
-		"normalize.css": "~8.0.1"
+		"fix:styles": "wp-scripts lint-style --fix",
+		"fix:scripts": "wp-scripts lint-js --fix"
 	}
 }

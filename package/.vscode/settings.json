@@ -20,7 +20,7 @@
 	"eslint.enable": true,
 	"eslint.format.enable": true,
 	"stylelint.enable": true,
-	"stylelint.validate": [ "scss", "css" ],
+	"stylelint.validate": ["scss", "css"],
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,

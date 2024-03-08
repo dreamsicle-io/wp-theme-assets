@@ -381,29 +381,21 @@
 
 @mixin dream-placeholder($color: "background") {
 
-	&::-webkit-input-placeholder {
-		/* stylelint-disable-line selector-no-vendor-prefix */
-
+	&::-webkit-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
 		@include dream-theme(color, "soft-on-#{$color}");
 	}
 
-	&:-moz-placeholder {
-		/* stylelint-disable-line selector-no-vendor-prefix */
-
+	&:-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
 		@include dream-theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
-	&::-moz-placeholder {
-		/* stylelint-disable-line selector-no-vendor-prefix */
-
+	&::-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
 		@include dream-theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
-	&:-ms-input-placeholder {
-		/* stylelint-disable-line selector-no-vendor-prefix */
-
+	&:-ms-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
 		@include dream-theme(color, "soft-on-#{$color}");
 	}
 }
