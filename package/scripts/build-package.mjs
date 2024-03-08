@@ -65,5 +65,12 @@ function buildReadMeHeader() {
 	fs.writeFileSync('./README.md', mdContent);
 }
 
-buildStyleHeader();
-buildReadMeHeader();
+try {
+	buildStyleHeader();
+	buildReadMeHeader();
+	console.info('Success: Package files successfully generated.');
+	process.exit();
+} catch (error) {
+	console.error(error);
+	process.exit(1);
+}

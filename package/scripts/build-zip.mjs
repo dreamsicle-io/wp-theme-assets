@@ -30,6 +30,7 @@ try {
 	];
 	const zipCommand = `zip -r ${pkg.name}.zip . -X ${ignores.map(ignore => `"${ignore}"`).join(' ')}`;
 	execSync(zipCommand, { stdio: 'inherit' });
+	console.info('Success: Zip file successfully generated.');
 	process.exit();
 } catch (error) {
 	console.error(error);
