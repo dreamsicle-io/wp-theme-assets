@@ -1,61 +1,73 @@
 name: Release
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    release:
-        runs-on: ubuntu-latest
-        steps:
-            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
-            - name: Checkout Repo
-              id: checkout_repo
-              uses: actions/checkout@v2
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Checkout Repo
+        id: checkout_repo
+        uses: actions/checkout@v2
 
-            # Gets the name from package.json and sets it as an environment variable.
-            - name: Set Theme Name
-              id: set_theme_name
-              run: echo "THEME_NAME=$(jq -r '.name' package.json)" >> $GITHUB_ENV
+      # Gets the name from package.json and sets it as an environment variable.
+      - name: Set Theme Name
+        id: set_theme_name
+        run: echo "THEME_NAME=$(jq -r '.name' package.json)" >> $GITHUB_ENV
 
-            # Gets the version from package.json and sets it as an environment variable.
-            - name: Set Theme Version
-              id: set_theme_version
-              run: echo "THEME_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+      # Gets the version from package.json and sets it as an environment variable.
+      - name: Set Theme Version
+        id: set_theme_version
+        run: echo "THEME_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+      
+      # Gets the PHP version from composer.json and sets it as an environment variable.
+      - name: Set PHP Version
+        id: set_php_version
+        run: echo "PHP_VERSION=8 >> $GITHUB_ENV
 
-            # Gets the Node version from .nvmrc and sets it as an environment variable.
-            - name: Set Node Version
-              id: set_node_version
-              run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+      # Gets the Node version from .nvmrc and sets it as an environment variable.
+      - name: Set Node Version
+        id: set_node_version
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+      
+      # Setup PHP.
+      - name: Setup PHP
+        id: setup_php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
 
-            # Setup Node.
-            - name: Setup Node
-              id: setup_node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
+      # Setup Node.
+      - name: Setup Node
+        id: setup_node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-            # Installs npm and composer dependencies.
-            - name: Install
-              id: install
-              run: npm ci
+      # Installs npm and composer dependencies.
+      - name: Install
+        id: install
+        run: npm ci
 
-            # Runs a build.
-            - name: Build
-              id: build
-              run: npm run build
+      # Runs a build.
+      - name: Build
+        id: build
+        run: npm run build
 
-            # Creates a release draft.
-            - name: Create Release
-              id: create_release
-              uses: ncipollo/release-action@v1
-              with:
-                  name: ${{ env.THEME_VERSION }}
-                  tag: ${{ env.THEME_VERSION }}
-                  commit: main
-                  draft: true
-                  prerelease: false
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  generateReleaseNotes: true
-                  skipIfReleaseExists: true
-                  artifacts: ${{ env.THEME_NAME }}.zip
+      # Creates a release draft.
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.THEME_VERSION }}
+          tag: ${{ env.THEME_VERSION }}
+          commit: main
+          draft: true
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          skipIfReleaseExists: true
+          artifacts: ${{ env.THEME_NAME }}.zip
