@@ -21,6 +21,7 @@
 		}
 	],
 	"rules": {
+		"eol-last": ["error", "always"],
 		"no-console": [
 			"error",
 			{

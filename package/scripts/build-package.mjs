@@ -5,6 +5,9 @@ const themeDirectory = process.cwd();
 const pkgPath = path.join(themeDirectory, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(pkgPath).toString());
 
+/**
+ * Build Style Header
+ */
 function buildStyleHeader() {
 	const data = {
 		'Theme Name': pkg.themeName || pkg.name || '',
@@ -26,6 +29,9 @@ function buildStyleHeader() {
 	fs.writeFileSync('./style.css', contents);
 }
 
+/**
+ * Build README Headers
+ */
 function buildReadMeHeader() {
 	const pkgName = pkg.themeName || pkg.name || '';
 	const contributorNames = pkg.author.name ? [pkg.author.name] : [];
@@ -43,12 +49,20 @@ function buildReadMeHeader() {
 		'License URI': 'LICENSE',
 		'Tags': Array.isArray(pkg.keywords) ? pkg.keywords.join(', ') : '',
 	};
-	let contents = `=== ${pkgName} ===\n\n`;
+	// Build README.txt header.
+	let txtContent = `=== ${pkgName} ===\n\n`;
 	for (const key in data) {
-		contents += `${key}: ${data[key]}\n`;
+		txtContent += `${key}: ${data[key]}\n`;
 	}
-	contents += `\n${pkg.description}\n`;
-	fs.writeFileSync('./README.txt', contents);
+	txtContent += `\n${pkg.description}\n`;
+	fs.writeFileSync('./README.txt', txtContent);
+	// Build README.md header.
+	let mdContent = `# ${pkgName}\n\n`;
+	for (const key in data) {
+		mdContent += `**${key}:** ${data[key]}\n`;
+	}
+	mdContent += `\n${pkg.description}\n`;
+	fs.writeFileSync('./README.md', mdContent);
 }
 
 buildStyleHeader();
