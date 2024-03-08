@@ -2,3 +2,7 @@
 
 /package/package-lock.json
 /package/composer.lock
+
+# README files
+
+/package/README.md
