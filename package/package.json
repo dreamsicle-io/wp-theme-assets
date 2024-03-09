@@ -1,4 +1,5 @@
 {
+	"type": "module",
 	"name": "wp-theme",
 	"themeName": "WP Theme",
 	"version": "0.0.1",
@@ -43,24 +44,10 @@
 		"webpack-remove-empty-scripts": "~1.0.4"
 	},
 	"scripts": {
-		"prepare": "node scripts/prepare.mjs",
-		"info": "node scripts/info.mjs",
-		"preinstall": "npm run info",
-		"prestart": "npm run info",
+		"prepare": "composer install",
 		"start": "wp-scripts start --webpack-no-externals --webpack-src-dir='.'",
-		"prebuild": "npm run info",
-		"build": "wp-scripts build --webpack-no-externals --webpack-src-dir='.' && npm run zip",
-		"translate": "node scripts/translate.mjs",
-		"zip": "node scripts/zip.mjs",
-		"prelint": "npm run info",
-		"lint": "npm run lint:php && npm run lint:styles && npm run lint:scripts",
-		"lint:php": "composer run lint",
-		"lint:styles": "wp-scripts lint-style",
-		"lint:scripts": "wp-scripts lint-js",
-		"prefix": "npm run info",
-		"fix": "npm run fix:php && npm run fix:styles && npm run fix:scripts",
-		"fix:php": "composer run fix",
-		"fix:styles": "wp-scripts lint-style --fix",
-		"fix:scripts": "wp-scripts lint-js --fix"
+		"build": "wp-scripts build --webpack-no-externals --webpack-src-dir='.'",
+		"lint": "composer run lint && wp-scripts lint-style && wp-scripts lint-js",
+		"fix": "composer run fix && wp-scripts lint-style --fix && wp-scripts lint-js --fix",
 	}
 }
