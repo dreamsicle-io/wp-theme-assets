@@ -14,6 +14,7 @@
 		}
 	},
 	"files.insertFinalNewline": true,
+	"files.eol": "\n",
 	"eslint.validate": ["js", "jsx", "ts", "tsx", "mjs"],
 	"eslint.enable": true,
 	"eslint.format.enable": true,

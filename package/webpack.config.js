@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack'; /* eslint-disable-line import/no-extraneous-dependencies */
 import wpConfig from '@wordpress/scripts/config/webpack.config.js';
-import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 import DirArchiver from 'dir-archiver';
+import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 import { execSync } from 'child_process';
 
 const themePath = process.cwd();
