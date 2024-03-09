@@ -8,9 +8,7 @@ import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 import DirArchiver from 'dir-archiver';
 import { execSync } from 'child_process';
 
-const themeDirectory = process.cwd();
-const pkgPath = path.join(themeDirectory, 'package.json');
-const pkg = JSON.parse(fs.readFileSync(pkgPath).toString());
+const themePath = process.cwd();
 
 class ThemePackageBuilderPlugin {
 
@@ -25,92 +23,41 @@ class ThemePackageBuilderPlugin {
 	defaults = {};
 
 	/**
+	 * @type {string}
+	 */
+	themePath = '';
+
+	/**
+	 * @type {string}
+	 */
+	zipPath = '';
+
+	/**
+	 * @type {Record<string, any>}
+	 */
+	pkg = {};
+	
+	/**
+	 * Don't use leading or slashes.
+	 *
+	 * @type {string[]}
+	 */
+	zipIgnore = [];
+
+	/**
 	 * @param {Record<string, any> | undefined} options
 	 */
 	constructor(options = {}) {
 		this.options = { ...this.defaults, ...options };
-	}
-	
-	/**
-	 * @param {webpack.Compiler} compiler
-	 */
-  apply(compiler) {
-    compiler.hooks.beforeRun.tap('ThemePackageBuilderPlugin', () => {
-			this.buildStyleHeader();
-			this.buildReadMeHeaders();
-			this.buildPot();
-		});
-		compiler.hooks.done.tap('ThemePackageBuilderPlugin', () => {
-			this.buildZip();
-		});
-  }
-
-	buildStyleHeader() {
-		const data = {
-			'Theme Name': pkg.themeName || pkg.name || '',
-			'Theme URI': pkg.homepage || '',
-			'Author': pkg.author.name || '',
-			'Author URI': pkg.author.url || '',
-			'Description': pkg.description || '',
-			'Version': pkg.version || '',
-			'License': pkg.license || '',
-			'License URI': 'LICENSE',
-			'Text Domain': pkg.name || '',
-			'Tags': Array.isArray(pkg.keywords) ? pkg.keywords.join(', ') : '',
-		};
-		let contents = '/*!\n';
-		for (const key in data) {
-			contents += `${key}: ${data[key]}\n`;
-		}
-		contents += '*/\n';
-		fs.writeFileSync('./style.css', contents);
-	}
-	
-	buildReadMeHeaders() {
-		const pkgName = pkg.themeName || pkg.name || '';
-		const contributorNames = pkg.author.name ? [pkg.author.name] : [];
-		if (Array.isArray(pkg.contributors)) {
-			pkg.contributors.forEach((contributor) => {
-				contributorNames.push(contributor.name);
-			});
-		}
-		const data = {
-			'Contributors': contributorNames.join(', '),
-			'Version': pkg.version,
-			'Requires at least': 'WordPress ' + pkg.wordpress.versionRequired,
-			'Tested up to': 'WordPress ' + pkg.wordpress.versionTested,
-			'License': pkg.license,
-			'License URI': 'LICENSE',
-			'Tags': Array.isArray(pkg.keywords) ? pkg.keywords.join(', ') : '',
-		};
-		// Build README.txt header.
-		let txtContent = `=== ${pkgName} ===\n\n`;
-		for (const key in data) {
-			txtContent += `${key}: ${data[key]}\n`;
-		}
-		txtContent += `\n${pkg.description}\n`;
-		fs.writeFileSync('./README.txt', txtContent);
-		// Build README.md header.
-		let mdContent = `# ${pkgName}\n\n`;
-		for (const key in data) {
-			mdContent += `**${key}:** ${data[key]}\n`;
-		}
-		mdContent += `\n${pkg.description}\n`;
-		fs.writeFileSync('./README.md', mdContent);
-	}
-
-	buildPot() {
-		execSync(`composer run translate . languages/${pkg.name}.pot`, { stdio: 'inherit' });
-	}
-
-	buildZip() {
-		// Don't use leading or slashes.
-		const ignores = [
+		this.themePath = process.cwd();
+		this.pkg = this.readPackage();
+		this.zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
+		this.translateCommand = `composer run translate . languages/${this.pkg.name}.pot`;
+		this.zipIgnore = [
 			'.github',
 			'.vscode',
 			'node_modules',
 			'vendor',
-			'scripts',
 			'src',
 			'.editorconfig',
 			'.eslintrc',
@@ -125,9 +72,81 @@ class ThemePackageBuilderPlugin {
 			'phpcs.xml',
 			'README.md',
 			'webpack.config.js',
-			`${pkg.name}.zip`,
+			`${this.pkg.name}.zip`,
 		];
-		const zipper = new DirArchiver(themeDirectory, path.join(themeDirectory, `${pkg.name}.zip`), false, ignores);
+	}
+	
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+  apply(compiler) {
+    compiler.hooks.beforeRun.tap('ThemePackageBuilderPlugin', () => {
+			this.buildStyleHeader();
+			this.buildReadMeHeader();
+			this.buildPot();
+		});
+		compiler.hooks.done.tap('ThemePackageBuilderPlugin', () => {
+			this.buildZip();
+		});
+  }
+
+	/**
+	 * @return {Record<string, any>} The parsed `package.json` file data.
+	 */
+	readPackage() {
+		const pkgPath = path.join(this.themePath, 'package.json');
+		return JSON.parse(fs.readFileSync(pkgPath).toString());
+	}
+
+	buildStyleHeader() {
+		const data = {
+			'Theme Name': this.pkg.themeName || this.pkg.name || '',
+			'Theme URI': this.pkg.homepage || '',
+			'Author': this.pkg.author.name || '',
+			'Author URI': this.pkg.author.url || '',
+			'Description': this.pkg.description || '',
+			'Version': this.pkg.version || '',
+			'License': this.pkg.license || '',
+			'License URI': 'LICENSE',
+			'Text Domain': this.pkg.name || '',
+			'Tags': Array.isArray(this.pkg.keywords) ? this.pkg.keywords.join(', ') : '',
+		};
+		let contents = '/*!\n';
+		for (const key in data) {
+			contents += `${key}: ${data[key]}\n`;
+		}
+		contents += '*/\n';
+		fs.writeFileSync('./style.css', contents);
+	}
+	
+	buildReadMeHeader() {
+		const contributorNames = this.pkg.author.name ? [this.pkg.author.name] : [];
+		if (Array.isArray(this.pkg.contributors)) {
+			this.pkg.contributors.forEach((contributor) => contributorNames.push(contributor.name));
+		}
+		const data = {
+			'Contributors': contributorNames.join(', '),
+			'Version': this.pkg.version,
+			'Requires at least': 'WordPress ' + this.pkg.wordpress.versionRequired,
+			'Tested up to': 'WordPress ' + this.pkg.wordpress.versionTested,
+			'License': this.pkg.license,
+			'License URI': 'LICENSE',
+			'Tags': Array.isArray(this.pkg.keywords) ? this.pkg.keywords.join(', ') : '',
+		};
+		let content = `=== ${this.pkg.themeName || this.pkg.name || ''} ===\n\n`;
+		for (const key in data) {
+			content += `${key}: ${data[key]}\n`;
+		}
+		content += `\n${this.pkg.description}\n`;
+		fs.writeFileSync('./README.txt', content);
+	}
+
+	buildPot() {
+		execSync(this.translateCommand, { stdio: 'inherit' });
+	}
+
+	buildZip() {
+		const zipper = new DirArchiver(this.themePath, this.zipPath, false, this.zipIgnore);
 		zipper.createZip();
 	}
 }
@@ -148,7 +167,6 @@ const config = {
 			'**/build/**/*',
 			'**/languages/**/*',
 			'**/node_modules/**/*',
-			'**/scripts/**/*',
 			'**/vendor/**/*',
 			'**/.editorconfig',
 			'**/.eslintrc',
@@ -176,18 +194,18 @@ const config = {
 	entry: {
 		...((typeof wpConfig.entry === 'object') ? wpConfig.entry : {}),
 		// Scripts.
-		'js/site.min': path.resolve(themeDirectory, 'src/js/site.ts'),
-		'js/admin.min': path.resolve(themeDirectory, 'src/js/admin.ts'),
-		'js/login.min': path.resolve(themeDirectory, 'src/js/login.ts'),
-		'js/customizer-preview.min': path.resolve(themeDirectory, 'src/js/customizer-preview.ts'),
-		'js/customizer-controls.min': path.resolve(themeDirectory, 'src/js/customizer-controls.ts'),
+		'js/site.min': path.resolve(themePath, 'src/js/site.ts'),
+		'js/admin.min': path.resolve(themePath, 'src/js/admin.ts'),
+		'js/login.min': path.resolve(themePath, 'src/js/login.ts'),
+		'js/customizer-preview.min': path.resolve(themePath, 'src/js/customizer-preview.ts'),
+		'js/customizer-controls.min': path.resolve(themePath, 'src/js/customizer-controls.ts'),
 		// Styles.
-		'css/site.min': path.resolve(themeDirectory, 'src/scss/site.scss'),
-		'css/admin.min': path.resolve(themeDirectory, 'src/scss/admin.scss'),
-		'css/login.min': path.resolve(themeDirectory, 'src/scss/login.scss'),
-		'css/editor.min': path.resolve(themeDirectory, 'src/scss/editor.scss'),
-		'css/customizer-preview.min': path.resolve(themeDirectory, 'src/scss/customizer-preview.scss'),
-		'css/customizer-controls.min': path.resolve(themeDirectory, 'src/scss/customizer-controls.scss'),
+		'css/site.min': path.resolve(themePath, 'src/scss/site.scss'),
+		'css/admin.min': path.resolve(themePath, 'src/scss/admin.scss'),
+		'css/login.min': path.resolve(themePath, 'src/scss/login.scss'),
+		'css/editor.min': path.resolve(themePath, 'src/scss/editor.scss'),
+		'css/customizer-preview.min': path.resolve(themePath, 'src/scss/customizer-preview.scss'),
+		'css/customizer-controls.min': path.resolve(themePath, 'src/scss/customizer-controls.scss'),
 	}
 };
 
