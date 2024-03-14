@@ -14,16 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.0.1
  */
-function wp_theme_comment_count_link() {
+function wp_theme_comment_count_message() {
 
 	$count = get_comments_number();
 
-	$message = sprintf(
+	printf(
 		/* translators: 1: comment count number. */
-		_n( '%1$s comment', '%1$s comments', $count, 'wp-theme' ),
-		number_format_i18n( $count ),
-	); ?>
+		esc_html( _n( '%1$s comment', '%1$s comments', $count, 'wp-theme' ) ),
+		esc_html( number_format_i18n( $count ) ),
+	);
 
-	<a href="<?php comments_link(); ?>"><?php echo esc_html( $message ); ?></a>
-
-<?php }
+}

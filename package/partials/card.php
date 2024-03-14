@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { ?>
 
-			<?php wp_theme_comment_count_link(); ?>
+			<a href="<?php comments_link(); ?>"><?php wp_theme_comment_count_message(); ?></a>
 
 		<?php } ?>
 

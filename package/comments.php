@@ -18,15 +18,7 @@ if ( post_password_required() || ! post_type_supports( get_post_type(), 'comment
 
 	<?php if ( have_comments() ) { ?>
 
-		<h2>
-
-			<?php printf(
-				/* translators: 1: comment count number. */
-				esc_html( _n( '%1$s comment', '%1$s comments', get_comments_number(), 'wp-theme' ) ),
-				esc_html( number_format_i18n( get_comments_number() ) ),
-			); ?>
-
-		</h2>
+		<h2><?php wp_theme_comment_count_message(); ?></h2>
 
 		<ol>
 
