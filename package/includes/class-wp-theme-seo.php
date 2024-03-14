@@ -33,14 +33,6 @@ class WP_Theme_SEO {
 	public $image_size = 'medium';
 
 	/**
-	 * Related Count
-	 *
-	 * @since 0.0.1
-	 * @var string
-	 */
-	public $related_count = 6;
-
-	/**
 	 * Init
 	 *
 	 * @since 0.0.1
