@@ -38,7 +38,7 @@ class ThemePackageBuilderPlugin {
 	pkg = {};
 	
 	/**
-	 * Don't use leading or slashes.
+	 * Don't use leading or trailing slashes.
 	 *
 	 * @type {string[]}
 	 */
@@ -184,6 +184,7 @@ const config = {
 			'**/README.txt',
 			'**/style.css',
 			'**/webpack.config.js',
+			'**/*.zip',
 		],
 	},
 	plugins: [
