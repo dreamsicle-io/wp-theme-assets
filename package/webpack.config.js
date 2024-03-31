@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack'; /* eslint-disable-line import/no-extraneous-dependencies */
-import wpConfig from '@wordpress/scripts/config/webpack.config.js';
+import wpConfig from '@wordpress/scripts/config/webpack.config.js'; 
 import DirArchiver from 'dir-archiver';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 import { execSync } from 'child_process';
@@ -33,6 +33,11 @@ class ThemePackageBuilderPlugin {
 	zipPath = '';
 
 	/**
+	 * @type {string}
+	 */
+	pkgPath = '';
+
+	/**
 	 * @type {Record<string, any>}
 	 */
 	pkg = {};
@@ -48,8 +53,10 @@ class ThemePackageBuilderPlugin {
 	 * @param {Record<string, any> | undefined} options
 	 */
 	constructor(options = {}) {
+		this.pluginName = 'ThemePackageBuilderPlugin';
 		this.options = { ...this.defaults, ...options };
 		this.themePath = process.cwd();
+		this.pkgPath = path.join(this.themePath, 'package.json');
 		this.pkg = this.readPackage();
 		this.zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
 		this.translateCommand = `composer run translate . languages/${this.pkg.name}.pot`;
@@ -80,15 +87,42 @@ class ThemePackageBuilderPlugin {
 	 * @param {webpack.Compiler} compiler
 	 */
   apply(compiler) {
-    compiler.hooks.beforeRun.tap('ThemePackageBuilderPlugin', () => {
-			this.buildStyleHeader();
-			this.buildReadMeHeader();
-			this.buildPot();
+		// On watch
+    compiler.hooks.watchRun.tap(this.pluginName, () => {
+			if (compiler.modifiedFiles) {
+				if (compiler.modifiedFiles.has(this.pkgPath)) {
+					this.buildStyleHeader(compiler);
+					this.buildReadMeHeader(compiler);
+					this.buildPot(compiler);
+				} else if (this.isModifiedFilePHP(compiler)) {
+					this.buildPot(compiler);
+				}
+			} else {
+				this.buildStyleHeader(compiler);
+				this.buildReadMeHeader(compiler);
+				this.buildPot(compiler);
+			}
 		});
-		compiler.hooks.done.tap('ThemePackageBuilderPlugin', () => {
-			this.buildZip();
+		// On build
+    compiler.hooks.beforeRun.tap(this.pluginName, () => {
+			this.buildStyleHeader(compiler);
+			this.buildReadMeHeader(compiler);
+			this.buildPot(compiler);
+		});
+		compiler.hooks.afterEmit.tap(this.pluginName, () => {
+			if (process.env.NODE_ENV === 'production') {
+				this.buildZip(compiler);
+			}
 		});
   }
+
+	/**
+	 * @param {webpack.Compiler} compiler
+	 * @return {boolean} Whether php files were detected in the changed files or not.
+	 */
+	isModifiedFilePHP(compiler) {
+		return (Array.from(compiler.modifiedFiles || []).length === 1);
+	}
 
 	/**
 	 * @return {Record<string, any>} The parsed `package.json` file data.
@@ -98,7 +132,11 @@ class ThemePackageBuilderPlugin {
 		return JSON.parse(fs.readFileSync(pkgPath).toString());
 	}
 
-	buildStyleHeader() {
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+	buildStyleHeader(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
 		const data = {
 			'Theme Name': this.pkg.themeName || this.pkg.name || '',
 			'Theme URI': this.pkg.homepage || '',
@@ -117,9 +155,14 @@ class ThemePackageBuilderPlugin {
 		}
 		contents += '*/\n';
 		fs.writeFileSync('./style.css', contents);
+		logger.info('Style header built successfully');
 	}
 	
-	buildReadMeHeader() {
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+	buildReadMeHeader(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
 		const contributorNames = this.pkg.author.name ? [this.pkg.author.name] : [];
 		if (Array.isArray(this.pkg.contributors)) {
 			this.pkg.contributors.forEach((contributor) => contributorNames.push(contributor.name));
@@ -139,13 +182,34 @@ class ThemePackageBuilderPlugin {
 		}
 		content += `\n${this.pkg.description}\n`;
 		fs.writeFileSync('./README.txt', content);
+		logger.info('README header built successfully');
 	}
 
-	buildPot() {
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+	buildPot(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
 		execSync(this.translateCommand, { stdio: 'inherit' });
+		logger.info('POT file built successfully');
 	}
 
-	buildZip() {
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+	buildZip(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
+		// Override DirArchiver create zip function to be able to hook
+		// into the output's `on('close', ...)` event.
+		/* @ts-ignore */
+		DirArchiver.prototype._createZip = DirArchiver.prototype.createZip;
+		DirArchiver.prototype.createZip = function() {
+			/* @ts-ignore */
+			this._createZip();
+			this.output?.on('close', function() {
+				logger.info('Theme zipped successfully');
+			});
+		}
 		const zipper = new DirArchiver(this.themePath, this.zipPath, false, this.zipIgnore);
 		zipper.createZip();
 	}
@@ -177,7 +241,6 @@ const config = {
 			'**/composer.json',
 			'**/composer.lock',
 			'**/LICENSE',
-			'**/package.json',
 			'**/package-lock.json',
 			'**/phpcs.xml',
 			'**/README.md',
