@@ -45,6 +45,7 @@
 	},
 	"scripts": {
 		"prepare": "composer update",
+		"prestart": "npm install",
 		"start": "wp-scripts start --webpack-no-externals --webpack-src-dir='.'",
 		"build": "wp-scripts build --webpack-no-externals --webpack-src-dir='.'",
 		"lint": "composer run lint && wp-scripts lint-style && wp-scripts lint-js",
