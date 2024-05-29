@@ -10,6 +10,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * WP Theme Branding
+ *
+ * @since 0.0.1
+ */
+function wp_theme_branding() {
+
+	if ( has_custom_logo() ) {
+
+		the_custom_logo();
+
+	} else {
+
+		printf(
+			'<a href="%1$s">%2$s</a>',
+			esc_url( home_url( '/' ) ),
+			esc_html( get_bloginfo( 'name' ) )
+		);
+
+	}
+
+}
+
+/**
  * WP Theme Comment Count Message
  *
  * @since 0.0.1
