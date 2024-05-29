@@ -10,22 +10,10 @@ Just another WordPress site.
 nvm use
 ```
 
-### Install dependencies
-
-```shell
-npm install
-```
-
 ### Run a development build and watch for changes
 
 ```shell
 npm start
-```
-
-### Run a production build
-
-```shell
-npm run build
 ```
 
 ## Development Commands
@@ -50,7 +38,7 @@ npm install
 
 ### Start
 
-Run a development build and watch for changes.
+Run a development build and watch for changes. This command will run `npm install` on the `prestart` hook.
 
 ```shell
 npm start
@@ -82,7 +70,7 @@ npm run fix
 
 ## Build File Structure 
 
-This gulp setup expects that the project root's `package.json` is setup properly, and that an opinionated file structure is followed.
+This Webpack setup expects that the project root's `package.json`, and `composer.json` is setup properly, and that an opinionated file structure is followed.
 
 ### Source Files 
 
@@ -124,16 +112,22 @@ root
 ―――― ―――― ―――― customizer-controls.min.js.map 
 ―――― ―――― /css 
 ―――― ―――― ―――― site.min.css 
+―――― ―――― ―――― site.min-rtl.css 
 ―――― ―――― ―――― site.min.css.map 
 ―――― ―――― ―――― admin.min.css 
+―――― ―――― ―――― admin.min-rtl.css 
 ―――― ―――― ―――― admin.min.css.map 
 ―――― ―――― ―――― login.min.css 
+―――― ―――― ―――― login.min-rtl.css 
 ―――― ―――― ―――― login.min.css.map 
 ―――― ―――― ―――― editor.min.css 
+―――― ―――― ―――― editor.min-rtl.css 
 ―――― ―――― ―――― editor.min.css.map 
 ―――― ―――― ―――― customizer-preview.min.css 
+―――― ―――― ―――― customizer-preview.min-rtl.css 
 ―――― ―――― ―――― customizer-preview.min.css.map 
 ―――― ―――― ―――― customizer-controls.min.css 
+―――― ―――― ―――― customizer-controls.min-rtl.css 
 ―――― ―――― ―――― customizer-controls.min.css.map 
 ―――― /languages 
 ―――― ―――― {textdomain}.pot 
