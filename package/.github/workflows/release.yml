@@ -26,7 +26,7 @@ jobs:
       # Gets the PHP version from composer.json and sets it as an environment variable.
       - name: Set PHP Version
         id: set_php_version
-        run: echo "PHP_VERSION=8 >> $GITHUB_ENV
+        run: echo "PHP_VERSION=$(jq -r '.require["php"]' composer.json) >> $GITHUB_ENV
 
       # Gets the Node version from .nvmrc and sets it as an environment variable.
       - name: Set Node Version
