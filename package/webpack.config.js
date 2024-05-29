@@ -30,6 +30,16 @@ class ThemePackageBuilderPlugin {
 	/**
 	 * @type {string}
 	 */
+	composerLockPath = '';
+
+	/**
+	 * @type {string}
+	 */
+	composerVendorPath = '';
+
+	/**
+	 * @type {string}
+	 */
 	zipPath = '';
 
 	/**
@@ -57,14 +67,15 @@ class ThemePackageBuilderPlugin {
 		this.options = { ...this.defaults, ...options };
 		this.themePath = process.cwd();
 		this.pkgPath = path.join(this.themePath, 'package.json');
-		this.pkg = this.readPackage();
-		this.zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
+		this.pkg = JSON.parse(fs.readFileSync(this.pkgPath).toString());
+		this.composerLockPath = path.join(this.themePath, 'composer.lock');
+		this.composerVendorPath = path.join(this.themePath, 'vendor');
 		this.translateCommand = `composer run translate . languages/${this.pkg.name}.pot`;
+		this.zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
 		this.zipIgnore = [
 			'.github',
 			'.vscode',
 			'node_modules',
-			'vendor',
 			'src',
 			'.editorconfig',
 			'.eslintrc',
@@ -111,6 +122,7 @@ class ThemePackageBuilderPlugin {
 		});
 		compiler.hooks.afterEmit.tap(this.pluginName, () => {
 			if (process.env.NODE_ENV === 'production') {
+				this.replaceComposerDeps(compiler);
 				this.buildZip(compiler);
 			}
 		});
@@ -123,13 +135,20 @@ class ThemePackageBuilderPlugin {
 	isModifiedFilePHP(compiler) {
 		return (Array.from(compiler.modifiedFiles || []).length === 1);
 	}
-
+	
 	/**
-	 * @return {Record<string, any>} The parsed `package.json` file data.
+	 * @param {webpack.Compiler} compiler
 	 */
-	readPackage() {
-		const pkgPath = path.join(this.themePath, 'package.json');
-		return JSON.parse(fs.readFileSync(pkgPath).toString());
+	replaceComposerDeps(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
+		if (fs.existsSync(this.composerLockPath)) {
+			fs.rmSync(this.composerLockPath, { force: true });
+		}
+		if (fs.existsSync(this.composerVendorPath)) {
+			fs.rmSync(this.composerVendorPath, { recursive: true, force: true });
+		}
+		execSync('composer install --no-dev', { stdio: 'inherit' });
+		logger.info('Replaced composer dependencies successfully');
 	}
 
 	/**
