@@ -39,12 +39,12 @@
 		"normalize.css": "~8.0.1"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "~27.4.0",
+		"@wordpress/scripts": "~27.9.0",
 		"dir-archiver": "~2.1.0",
 		"webpack-remove-empty-scripts": "~1.0.4"
 	},
 	"scripts": {
-		"prepare": "composer install",
+		"prepare": "composer update",
 		"start": "wp-scripts start --webpack-no-externals --webpack-src-dir='.'",
 		"build": "wp-scripts build --webpack-no-externals --webpack-src-dir='.'",
 		"lint": "composer run lint && wp-scripts lint-style && wp-scripts lint-js",
