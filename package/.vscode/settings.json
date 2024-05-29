@@ -17,7 +17,6 @@
 	"files.eol": "\n",
 	"eslint.validate": ["js", "jsx", "ts", "tsx", "mjs"],
 	"eslint.enable": true,
-	"eslint.format.enable": true,
 	"stylelint.enable": true,
 	"stylelint.validate": ["scss", "css"],
 	"phpSniffer.run": "onType",
