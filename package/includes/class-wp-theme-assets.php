@@ -65,18 +65,26 @@ class WP_Theme_Assets {
 	public string $languages_directory_uri;
 
 	/**
+	 * Style Suffix
+	 *
+	 * @since 0.0.1
+	 * @var bool
+	 */
+	public bool $style_suffix;
+
+	/**
 	 * Construct
 	 *
 	 * @since 0.0.1
 	 */
 	public function __construct() {
 		$theme                         = wp_get_theme();
-		$this->theme_directory_uri     = get_template_directory_uri();
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
 		$this->theme_version           = $theme->get( 'Version' );
-		$this->assets_directory_rel    = '/assets/dist';
-		$this->assets_directory_uri    = $this->theme_directory_uri . $this->assets_directory_rel;
-		$this->languages_directory_uri = $this->theme_directory_uri . '/languages';
+		$this->assets_directory_rel    = '/build';
+		$this->assets_directory_uri    = WP_THEME_TEMPLATE_DIRECTORY . $this->assets_directory_rel;
+		$this->languages_directory_uri = WP_THEME_TEMPLATE_DIRECTORY . '/languages';
+		$this->style_suffix            = is_rtl() ? 'min-rtl' : 'min';
 	}
 
 	/**
@@ -117,7 +125,7 @@ class WP_Theme_Assets {
 	public function enqueue_editor_assets(): void {
 		add_editor_style(
 			array(
-				$this->assets_directory_rel . '/css/editor.min.css',
+				$this->assets_directory_rel . '/css/editor.' . $this->style_suffix . '.css',
 			)
 		);
 	}
@@ -131,7 +139,7 @@ class WP_Theme_Assets {
 	public function enqueue_site_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain,
-			$this->assets_directory_uri . '/css/site.min.css',
+			$this->assets_directory_uri . '/css/site.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
@@ -153,7 +161,7 @@ class WP_Theme_Assets {
 	public function enqueue_admin_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-admin',
-			$this->assets_directory_uri . '/css/admin.min.css',
+			$this->assets_directory_uri . '/css/admin.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
@@ -175,7 +183,7 @@ class WP_Theme_Assets {
 	public function enqueue_login_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-login',
-			$this->assets_directory_uri . '/css/login.min.css',
+			$this->assets_directory_uri . '/css/login.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
@@ -197,7 +205,7 @@ class WP_Theme_Assets {
 	public function enqueue_customizer_preview_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-preview',
-			$this->assets_directory_uri . '/css/customizer-preview.min.css',
+			$this->assets_directory_uri . '/css/customizer-preview.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
@@ -219,7 +227,7 @@ class WP_Theme_Assets {
 	public function enqueue_customizer_controls_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-controls',
-			$this->assets_directory_uri . '/css/customizer-controls.min.css',
+			$this->assets_directory_uri . '/css/customizer-controls.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);

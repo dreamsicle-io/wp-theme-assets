@@ -8,7 +8,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Checkout Repo
         id: checkout_repo
@@ -23,11 +22,23 @@ jobs:
       - name: Set Theme Version
         id: set_theme_version
         run: echo "THEME_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+      
+      # Gets the PHP version from composer.json and sets it as an environment variable.
+      - name: Set PHP Version
+        id: set_php_version
+        run: echo "PHP_VERSION=$(jq -r '.require["php"]' composer.json) >> $GITHUB_ENV
 
       # Gets the Node version from .nvmrc and sets it as an environment variable.
       - name: Set Node Version
         id: set_node_version
         run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+      
+      # Setup PHP.
+      - name: Setup PHP
+        id: setup_php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
 
       # Setup Node.
       - name: Setup Node

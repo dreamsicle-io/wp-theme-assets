@@ -1,16 +1,26 @@
 {
 	"extends": [
-		"stylelint-config-standard-scss"
+		"@wordpress/stylelint-config/scss"
+	],
+	"ignoreFiles": [
+		"build/**",
+		"node_modules/**",
+		"vendor/**"
 	],
 	"rules": {
+		"color-hex-case": "upper",
 		"color-hex-length": "long",
-		"color-named": "never",
-		"declaration-no-important": true,
-		"font-weight-notation": "numeric",
-		"no-empty-source": null,
-		"declaration-empty-line-before": null,
-		"rule-empty-line-before": "always",
-		"selector-class-pattern": null,
-		"number-max-precision": 5
+		"at-rule-empty-line-before": [
+			"always",
+			{
+				"except": [
+					"first-nested",
+					"blockless-after-blockless"
+				],
+				"ignoreAtRules": [
+					"else"
+				]
+			}
+		]
 	}
 }

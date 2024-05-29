@@ -1,47 +1,28 @@
 {
 	"[php]": {
-    "editor.defaultFormatter": "wongjn.php-sniffer",
-		"editor.formatOnSave": true,
-  },
-	"[javascript]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
-		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "wongjn.php-sniffer",
+		"editor.formatOnSave": true
+	},
+	"[javascript][typescript][javascriptreact][typescriptreact]": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit"
 		}
 	},
-	"[json]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
-		"editor.formatOnSave": true,
+	"[css][scss]": {
 		"editor.codeActionsOnSave": {
-			"source.fixAll.eslint": "explicit"
+			"source.fixAll.stylelint": "explicit"
 		}
 	},
-	 "[css]": {
-		"editor.defaultFormatter": "stylelint.vscode-stylelint",
-		"editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": "explicit"
-    }
-  },
-	"[scss]": {
-		"editor.defaultFormatter": "stylelint.vscode-stylelint",
-		"editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": "explicit"
-    }
-  },
+	"files.insertFinalNewline": true,
+	"files.eol": "\n",
+	"eslint.validate": ["js", "jsx", "ts", "tsx", "mjs"],
 	"eslint.enable": true,
-	"eslint.format.enable": true,
 	"stylelint.enable": true,
-	"stylelint.validate": [
-		"scss",
-		"css"
-	],
+	"stylelint.validate": ["scss", "css"],
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,
-	"intelephense.environment.phpVersion": "8.1.23",
+	"intelephense.environment.phpVersion": "8",
 	"intelephense.format.braces": "k&r",
 	"intelephense.stubs": [
 		"apache",

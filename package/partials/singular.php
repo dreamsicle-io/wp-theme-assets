@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php the_title( '<h1>', '</h1>' ); ?>
 
-	<div><?php the_content(); ?></div>
+	<?php the_content(); ?>
+
+	<?php wp_link_pages(); ?>
 
 </article>

@@ -21,5 +21,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<body <?php body_class(); ?>>
 		<?php wp_body_open(); ?>
 		<div id="page">
-			<div id="top"></div>
 			<?php get_template_part( 'partials/masthead' ); ?>
