@@ -2,13 +2,6 @@
 /**
  * Comments
  *
- * This is the template that displays the area of the page that
- * contains both the current comments and the comment form.
- *
- * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
- * return early without loading the comments.
- *
  * @link https://developer.wordpress.org/themes/template-files-section/partial-and-miscellaneous-template-files/comment-template/
  * @since 0.0.1
  */
@@ -25,15 +18,7 @@ if ( post_password_required() || ! post_type_supports( get_post_type(), 'comment
 
 	<?php if ( have_comments() ) { ?>
 
-		<h2>
-
-			<?php printf(
-				/* translators: 1: comment count number. */
-				esc_html( _n( '%1$s comment', '%1$s comments', get_comments_number(), 'wp-theme' ) ),
-				esc_html( number_format_i18n( get_comments_number() ) ),
-			); ?>
-
-		</h2>
+		<h2><?php wp_theme_comment_count_message(); ?></h2>
 
 		<ol>
 
@@ -45,11 +30,7 @@ if ( post_password_required() || ! post_type_supports( get_post_type(), 'comment
 
 		</ol>
 
-		<div>
-
-			<?php the_comments_navigation(); ?>
-
-		</div>
+		<?php the_comments_navigation(); ?>
 
 	<?php } ?>
 
