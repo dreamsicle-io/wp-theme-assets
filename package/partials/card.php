@@ -21,21 +21,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div><?php the_excerpt(); ?></div>
 
-	<div>
+	<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { ?>
 
-		<?php if ( post_type_supports( get_post_type(), 'comments' ) ) { ?>
+		<a href="<?php comments_link(); ?>"><?php wp_theme_comment_count_message(); ?></a>
 
-			<a href="<?php comments_link(); ?>"><?php wp_theme_comment_count_message(); ?></a>
+	<?php } ?>
 
-		<?php } ?>
+	<?php if ( post_type_supports( get_post_type(), 'author' ) ) { ?>
 
-		<?php if ( post_type_supports( get_post_type(), 'author' ) ) { ?>
+		<?php the_author_posts_link(); ?>
 
-			<?php the_author_posts_link(); ?>
-
-		<?php } ?>
-
-	</div>
+	<?php } ?>
 
 	<a href="<?php the_permalink(); ?>"><?php esc_html_e( 'Read more', 'wp-theme' ); ?></a>
 
