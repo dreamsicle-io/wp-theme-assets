@@ -22,8 +22,11 @@
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,
-	"intelephense.environment.phpVersion": "8",
+	"intelephense.environment.phpVersion": "^8",
 	"intelephense.format.braces": "k&r",
+	"intelephense.environment.includePaths": [
+		"../../plugins/wp-backstage"
+	],
 	"intelephense.stubs": [
 		"apache",
 		"bcmath",
