@@ -2,15 +2,29 @@
 
 import fs from 'fs';
 import path from 'path';
-import webpack from 'webpack'; /* eslint-disable-line import/no-extraneous-dependencies */
+import webpack from 'webpack'; // eslint-disable-line import/no-extraneous-dependencies
 import wpConfig from '@wordpress/scripts/config/webpack.config.js'; 
 import DirArchiver from 'dir-archiver';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
+import WebpackWatchFilesModule from 'webpack-watch-files-plugin';
 import { execSync } from 'child_process';
+
+/**
+ * Extract the 'default' key from Webpack Watch Files Plugin
+ * because of the way it's bundled.
+ *
+ * @see https://github.com/Fridus/webpack-watch-files-plugin/issues/7#issuecomment-393482656
+ */
+const WebpackWatchFilesPlugin = WebpackWatchFilesModule['default']; // eslint-disable-line dot-notation
 
 const themePath = process.cwd();
 
 class ThemePackageBuilderPlugin {
+
+	/**
+	 * @type {string}
+	 */
+	pluginName = '';
 
 	/**
 	 * @type {Record<string, any>}
@@ -30,22 +44,17 @@ class ThemePackageBuilderPlugin {
 	/**
 	 * @type {string}
 	 */
+	pkgPath = '';
+
+	/**
+	 * @type {string}
+	 */
 	composerLockPath = '';
 
 	/**
 	 * @type {string}
 	 */
 	composerVendorPath = '';
-
-	/**
-	 * @type {string}
-	 */
-	zipPath = '';
-
-	/**
-	 * @type {string}
-	 */
-	pkgPath = '';
 
 	/**
 	 * @type {Record<string, any>}
@@ -67,11 +76,9 @@ class ThemePackageBuilderPlugin {
 		this.options = { ...this.defaults, ...options };
 		this.themePath = process.cwd();
 		this.pkgPath = path.join(this.themePath, 'package.json');
-		this.pkg = JSON.parse(fs.readFileSync(this.pkgPath).toString());
 		this.composerLockPath = path.join(this.themePath, 'composer.lock');
 		this.composerVendorPath = path.join(this.themePath, 'vendor');
-		this.translateCommand = `composer run translate . languages/${this.pkg.name}.pot`;
-		this.zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
+		this.pkg = this.readPackage();
 		this.zipIgnore = [
 			'.github',
 			'.vscode',
@@ -90,8 +97,12 @@ class ThemePackageBuilderPlugin {
 			'phpcs.xml',
 			'README.md',
 			'webpack.config.js',
-			`${this.pkg.name}.zip`,
+			'*.zip',
 		];
+	}
+
+	readPackage() {
+		return JSON.parse(fs.readFileSync(this.pkgPath).toString());
 	}
 	
 	/**
@@ -101,7 +112,9 @@ class ThemePackageBuilderPlugin {
 		// On watch
     compiler.hooks.watchRun.tap(this.pluginName, () => {
 			if (compiler.modifiedFiles) {
+				// Files have changed
 				if (compiler.modifiedFiles.has(this.pkgPath)) {
+					this.pkg = this.readPackage();
 					this.buildStyleHeader(compiler);
 					this.buildReadMeHeader(compiler);
 					this.buildPot(compiler);
@@ -109,6 +122,7 @@ class ThemePackageBuilderPlugin {
 					this.buildPot(compiler);
 				}
 			} else {
+				// Initial run
 				this.buildStyleHeader(compiler);
 				this.buildReadMeHeader(compiler);
 				this.buildPot(compiler);
@@ -133,7 +147,7 @@ class ThemePackageBuilderPlugin {
 	 * @return {boolean} Whether php files were detected in the changed files or not.
 	 */
 	isModifiedFilePHP(compiler) {
-		return (Array.from(compiler.modifiedFiles || []).length === 1);
+		return (Array.from(compiler.modifiedFiles || []).findIndex(file => file.endsWith('.php')) !== -1);
 	}
 	
 	/**
@@ -209,7 +223,7 @@ class ThemePackageBuilderPlugin {
 	 */
 	buildPot(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
-		execSync(this.translateCommand, { stdio: 'inherit' });
+		execSync(`composer run translate . languages/${this.pkg.name}.pot`, { stdio: 'inherit' });
 		logger.info('POT file built successfully');
 	}
 
@@ -229,7 +243,8 @@ class ThemePackageBuilderPlugin {
 				logger.info('Theme zipped successfully');
 			});
 		}
-		const zipper = new DirArchiver(this.themePath, this.zipPath, false, this.zipIgnore);
+		const zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
+		const zipper = new DirArchiver(this.themePath, zipPath, false, this.zipIgnore);
 		zipper.createZip();
 	}
 }
@@ -271,6 +286,7 @@ const config = {
 	},
 	plugins: [
 		...(Array.isArray(wpConfig.plugins) ? wpConfig.plugins : []),
+		new WebpackWatchFilesPlugin({ files: [ './**/*.php' ] }),
 		new RemoveEmptyScriptsPlugin(),
 		new ThemePackageBuilderPlugin(),
 	],

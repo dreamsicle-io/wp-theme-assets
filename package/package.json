@@ -41,14 +41,17 @@
 	"devDependencies": {
 		"@wordpress/scripts": "~27.9.0",
 		"dir-archiver": "~2.1.0",
-		"webpack-remove-empty-scripts": "~1.0.4"
+		"webpack-remove-empty-scripts": "~1.0.4",
+		"webpack-watch-files-plugin": "~1.2.1"
 	},
 	"scripts": {
-		"prepare": "composer update",
-		"prestart": "npm install",
+		"prepare": "composer install",
 		"start": "wp-scripts start --webpack-no-externals --webpack-src-dir='.'",
 		"build": "wp-scripts build --webpack-no-externals --webpack-src-dir='.'",
 		"lint": "composer run lint && wp-scripts lint-style && wp-scripts lint-js",
-		"fix": "composer run fix && wp-scripts lint-style --fix && wp-scripts lint-js --fix"
+		"fix": "composer run fix && wp-scripts lint-style --fix && wp-scripts lint-js --fix",
+		"clean-deps": "rm -rf vendor/ node_modules/ composer.lock package-lock.json",
+		"clean-build": "rm -rf build/ README.txt style.css languages/*.pot *.zip",
+		"clean": "npm run clean-deps && npm run clean-build"
 	}
 }
