@@ -67,10 +67,13 @@ class ThemePackageBuilderPlugin {
 	 * @type {Record<string, any>}
 	 */
 	pkg = {};
+
+	/**
+	 * @type {string[]}
+	 */
+	phpIgnore = [];
 	
 	/**
-	 * Don't use leading or trailing slashes.
-	 *
 	 * @type {string[]}
 	 */
 	zipIgnore = [];
@@ -137,7 +140,7 @@ class ThemePackageBuilderPlugin {
 		// On watch.
 		compiler.hooks.watchRun.tap(this.pluginName, () => {
 			if (compiler.modifiedFiles) {
-				// Files have changed
+				// Files have changed.
 				if (compiler.modifiedFiles.has(this.pkgPath)) {
 					this.pkg = this.readPackage();
 					this.buildStyleHeader(compiler);
