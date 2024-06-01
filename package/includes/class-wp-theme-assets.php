@@ -41,6 +41,14 @@ class WP_Theme_Assets {
 	public string $build_directory_rel;
 
 	/**
+	 * Build Directory Path
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
+	public string $build_directory_path;
+
+	/**
 	 * Build Directory URI
 	 *
 	 * @since 0.0.1
@@ -74,6 +82,7 @@ class WP_Theme_Assets {
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
 		$this->theme_version           = $theme->get( 'Version' );
 		$this->build_directory_rel     = '/build';
+		$this->build_directory_path    = WP_THEME_TEMPLATE_DIRECTORY_PATH . $this->build_directory_rel;
 		$this->build_directory_uri     = WP_THEME_TEMPLATE_DIRECTORY_URI . $this->build_directory_rel;
 		$this->languages_directory_uri = WP_THEME_TEMPLATE_DIRECTORY_URI . '/languages';
 		$this->style_suffix            = is_rtl() ? 'min-rtl' : 'min';
@@ -96,6 +105,17 @@ class WP_Theme_Assets {
 	}
 
 	/**
+	 * Get Asset Version
+	 *
+	 * @since 0.0.1
+	 * @param string $file The name of the file without extensions. Example: `site.min`, `login.min`, `admin.min`, `editor.min`, `customizer-preview.min`, `customizer-controls.min`.
+	 */
+	public function get_asset_version( string $file ): string {
+		$config = require_once $this->$build_directory_path . '/build/' . $file . '.asset.php';
+		return ! empty( $config['version'] ) ? $config['version'] : $this->theme_version;
+	}
+
+	/**
 	 * Load Languages
 	 *
 	 * @since 0.0.1
@@ -115,9 +135,10 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_editor_assets(): void {
+		$version = $this->get_asset_version( 'editor.min' );
 		add_editor_style(
 			array(
-				$this->build_directory_rel . '/css/editor.' . $this->style_suffix . '.css',
+				$this->build_directory_rel . '/editor.' . $this->style_suffix . '.css?v=' . $version,
 			)
 		);
 	}
@@ -129,17 +150,18 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_site_assets(): void {
+		$version = $this->get_asset_version( 'site.min' );
 		wp_enqueue_style(
 			$this->theme_textdomain,
-			$this->build_directory_uri . '/css/site.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/site.' . $this->style_suffix . '.css',
 			array(),
-			$this->theme_version
+			$version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain,
-			$this->build_directory_uri . '/js/site.min.js',
+			$this->build_directory_uri . '/site.min.js',
 			array(),
-			$this->theme_version,
+			$version,
 			true
 		);
 	}
@@ -151,17 +173,18 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_admin_assets(): void {
+		$version = $this->get_asset_version( 'admin.min' );
 		wp_enqueue_style(
 			$this->theme_textdomain . '-admin',
-			$this->build_directory_uri . '/css/admin.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/admin.' . $this->style_suffix . '.css',
 			array(),
-			$this->theme_version
+			$version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-admin',
-			$this->build_directory_uri . '/js/admin.min.js',
+			$this->build_directory_uri . '/admin.min.js',
 			array(),
-			$this->theme_version,
+			$version,
 			true
 		);
 	}
@@ -173,17 +196,18 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_login_assets(): void {
+		$version = $this->get_asset_version( 'login.min' );
 		wp_enqueue_style(
 			$this->theme_textdomain . '-login',
-			$this->build_directory_uri . '/css/login.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/login.' . $this->style_suffix . '.css',
 			array(),
-			$this->theme_version
+			$version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-login',
-			$this->build_directory_uri . '/js/login.min.js',
+			$this->build_directory_uri . '/login.min.js',
 			array(),
-			$this->theme_version,
+			$version,
 			true
 		);
 	}
@@ -195,17 +219,18 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_customizer_preview_assets(): void {
+		$version = $this->get_asset_version( 'customizer-preview.min' );
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-preview',
-			$this->build_directory_uri . '/css/customizer-preview.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/customizer-preview.' . $this->style_suffix . '.css',
 			array(),
-			$this->theme_version
+			$version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-customizer-preview',
-			$this->build_directory_uri . '/js/customizer-preview.min.js',
+			$this->build_directory_uri . '/customizer-preview.min.js',
 			array( 'jquery', 'customize-preview' ),
-			$this->theme_version,
+			$version,
 			true
 		);
 	}
@@ -217,17 +242,18 @@ class WP_Theme_Assets {
 	 * @return void
 	 */
 	public function enqueue_customizer_controls_assets(): void {
+		$version = $this->get_asset_version( 'customizer-controls.min' );
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-controls',
-			$this->build_directory_uri . '/css/customizer-controls.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/customizer-controls.' . $this->style_suffix . '.css',
 			array(),
-			$this->theme_version
+			$version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-customizer-controls',
-			$this->build_directory_uri . '/js/customizer-controls.min.js',
+			$this->build_directory_uri . '/customizer-controls.min.js',
 			array( 'jquery', 'customize-controls' ),
-			$this->theme_version,
+			$version,
 			true
 		);
 	}
