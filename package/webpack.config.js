@@ -120,6 +120,7 @@ class ThemePackageBuilderPlugin {
 			'**/README.md',
 			'**/webpack.config.js',
 			'**/*.d.ts',
+			'**/tsconfig.json',
 			'**/*.zip',
 		];
 	}
