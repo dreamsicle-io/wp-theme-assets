@@ -13,7 +13,7 @@ $args = wp_parse_args(
 	$args,
 	array(
 		'title'       => __( 'Error', 'wp-theme' ),
-		'description' => __( 'There was an error finding what you\'re looking for.', 'wp-theme' ),
+		'description' => __( 'It looks like something went wrong.', 'wp-theme' ),
 	)
 ); ?>
 
