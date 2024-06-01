@@ -3,11 +3,11 @@
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack'; // eslint-disable-line import/no-extraneous-dependencies
+import { glob } from 'glob'; // eslint-disable-line import/no-extraneous-dependencies
 import wpConfig from '@wordpress/scripts/config/webpack.config.js'; 
-import DirArchiver from 'dir-archiver';
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
-import WebpackWatchFilesModule from 'webpack-watch-files-plugin';
 import { execSync } from 'child_process';
+import archiver from 'archiver';
 
 /**
  * Extract the 'default' key from Webpack Watch Files Plugin
@@ -15,7 +15,7 @@ import { execSync } from 'child_process';
  *
  * @see https://github.com/Fridus/webpack-watch-files-plugin/issues/7#issuecomment-393482656
  */
-const WebpackWatchFilesPlugin = WebpackWatchFilesModule['default']; // eslint-disable-line dot-notation
+// const WebpackWatchFilesPlugin = WebpackWatchFilesModule['default']; // eslint-disable-line dot-notation
 
 const themePath = process.cwd();
 
@@ -49,12 +49,27 @@ class ThemePackageBuilderPlugin {
 	/**
 	 * @type {string}
 	 */
+	tmpPath = '';
+
+	/**
+	 * @type {string}
+	 */
 	composerLockPath = '';
 
 	/**
 	 * @type {string}
 	 */
 	composerVendorPath = '';
+
+	/**
+	 * @type {string}
+	 */
+	composerLockBackupPath = '';
+
+	/**
+	 * @type {string}
+	 */
+	composerVendorBackupPath = '';
 
 	/**
 	 * @type {Record<string, any>}
@@ -76,28 +91,32 @@ class ThemePackageBuilderPlugin {
 		this.options = { ...this.defaults, ...options };
 		this.themePath = process.cwd();
 		this.pkgPath = path.join(this.themePath, 'package.json');
+		this.tmpPath = path.join(this.themePath, 'tmp');
 		this.composerLockPath = path.join(this.themePath, 'composer.lock');
 		this.composerVendorPath = path.join(this.themePath, 'vendor');
+		this.composerLockBackupPath = path.join(this.tmpPath, 'composer.lock');
+		this.composerVendorBackupPath = path.join(this.tmpPath, 'vendor');
 		this.pkg = this.readPackage();
 		this.zipIgnore = [
-			'.github',
-			'.vscode',
-			'node_modules',
-			'src',
-			'.editorconfig',
-			'.eslintrc',
-			'.gitignore',
-			'.nvmrc',
-			'.prettierignore',
-			'.stylelintrc',
-			'composer.json',
-			'composer.lock',
-			'package-lock.json',
-			'package.json',
-			'phpcs.xml',
-			'README.md',
-			'webpack.config.js',
-			'*.zip',
+			'**/.github/**',
+			'**/.vscode/**',
+			'**/node_modules/**',
+			'**/src/**',
+			'**/tmp/**',
+			'**/.editorconfig',
+			'**/.eslintrc',
+			'**/.gitignore',
+			'**/.nvmrc',
+			'**/.prettierignore',
+			'**/.stylelintrc',
+			'**/composer.json',
+			'**/composer.lock',
+			'**/package-lock.json',
+			'**/package.json',
+			'**/phpcs.xml',
+			'**/README.md',
+			'**/webpack.config.js',
+			'**/*.zip',
 		];
 	}
 
@@ -108,9 +127,14 @@ class ThemePackageBuilderPlugin {
 	/**
 	 * @param {webpack.Compiler} compiler
 	 */
-  apply(compiler) {
-		// On watch
-    compiler.hooks.watchRun.tap(this.pluginName, () => {
+	apply(compiler) {
+		compiler.hooks.afterCompile.tap(this.pluginName, (compilation) => {
+			// Watch PHP files by adding them to the fileDependencies.
+			const phpFiles = glob.sync('./**/*.php').map(relPath => path.join(this.themePath, relPath));
+			compilation.fileDependencies.addAll(phpFiles);
+		});
+		// On watch.
+		compiler.hooks.watchRun.tap(this.pluginName, () => {
 			if (compiler.modifiedFiles) {
 				// Files have changed
 				if (compiler.modifiedFiles.has(this.pkgPath)) {
@@ -122,25 +146,24 @@ class ThemePackageBuilderPlugin {
 					this.buildPot(compiler);
 				}
 			} else {
-				// Initial run
+				// Initial run.
 				this.buildStyleHeader(compiler);
 				this.buildReadMeHeader(compiler);
 				this.buildPot(compiler);
 			}
 		});
-		// On build
-    compiler.hooks.beforeRun.tap(this.pluginName, () => {
+		// On build.
+		compiler.hooks.beforeRun.tap(this.pluginName, () => {
 			this.buildStyleHeader(compiler);
 			this.buildReadMeHeader(compiler);
 			this.buildPot(compiler);
 		});
-		compiler.hooks.afterEmit.tap(this.pluginName, () => {
+		compiler.hooks.done.tap(this.pluginName, () => {
 			if (process.env.NODE_ENV === 'production') {
-				this.replaceComposerDeps(compiler);
 				this.buildZip(compiler);
 			}
 		});
-  }
+	}
 
 	/**
 	 * @param {webpack.Compiler} compiler
@@ -156,13 +179,34 @@ class ThemePackageBuilderPlugin {
 	replaceComposerDeps(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
 		if (fs.existsSync(this.composerLockPath)) {
+			fs.cpSync(this.composerLockPath, this.composerLockBackupPath, { force: true });
 			fs.rmSync(this.composerLockPath, { force: true });
 		}
 		if (fs.existsSync(this.composerVendorPath)) {
+			fs.cpSync(this.composerVendorPath, this.composerVendorBackupPath, { recursive: true, force: true });
 			fs.rmSync(this.composerVendorPath, { recursive: true, force: true });
 		}
 		execSync('composer install --no-dev', { stdio: 'inherit' });
 		logger.info('Replaced composer dependencies successfully');
+	}
+
+	/**
+	 * @param {webpack.Compiler} compiler
+	 */
+	restoreComposerDeps(compiler) {
+		const logger = compiler.getInfrastructureLogger(this.pluginName);
+		if (fs.existsSync(this.composerLockBackupPath)) {
+			fs.cpSync(this.composerLockBackupPath, this.composerLockPath, { force: true });
+			fs.rmSync(this.composerLockBackupPath, { force: true });
+		}
+		if (fs.existsSync(this.composerVendorBackupPath)) {
+			fs.cpSync(this.composerVendorBackupPath, this.composerVendorPath, { recursive: true, force: true });
+			fs.rmSync(this.composerVendorBackupPath, { recursive: true, force: true });
+		}
+		if (fs.readdirSync(this.tmpPath).length < 1) {
+			fs.rmSync(this.tmpPath, { recursive: true, force: true });
+		}
+		logger.info('Restored composer dependencies successfully');
 	}
 
 	/**
@@ -232,20 +276,37 @@ class ThemePackageBuilderPlugin {
 	 */
 	buildZip(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
-		// Override DirArchiver create zip function to be able to hook
-		// into the output's `on('close', ...)` event.
-		/* @ts-ignore */
-		DirArchiver.prototype._createZip = DirArchiver.prototype.createZip;
-		DirArchiver.prototype.createZip = function() {
-			/* @ts-ignore */
-			this._createZip();
-			this.output?.on('close', function() {
-				logger.info('Theme zipped successfully');
-			});
-		}
 		const zipPath = path.join(this.themePath, `${this.pkg.name}.zip`);
-		const zipper = new DirArchiver(this.themePath, zipPath, false, this.zipIgnore);
-		zipper.createZip();
+		const output = fs.createWriteStream(zipPath);
+		const archive = archiver('zip', { zlib: { level: 9 } });
+		// On start.
+		output.on('open', () => {
+			this.replaceComposerDeps(compiler);
+			logger.info('Zipping theme...');
+		});
+		// On completion.
+		output.on('close', () => {
+			logger.info('Theme zipped successfully');
+			this.restoreComposerDeps(compiler);
+		});
+		// On output error.
+		output.on('error', (error) => {
+			logger.error(error);
+		});
+		// On archive error.
+		archive.on('error', (error) => {
+			logger.error(error);
+		});
+		// Pipe the output stream to the archive.
+		archive.pipe(output);
+		// Add files through glob.
+		archive.glob('**', {
+			cwd: this.themePath,
+			ignore: this.zipIgnore,
+			dot: true,
+		});
+		// Finalize the archive.
+		archive.finalize();
 	}
 }
 
@@ -266,6 +327,7 @@ const config = {
 			'**/languages/**/*',
 			'**/node_modules/**/*',
 			'**/vendor/**/*',
+			'**/tmp/**/*',
 			'**/.editorconfig',
 			'**/.eslintrc',
 			'**/.gitignore',
@@ -286,7 +348,6 @@ const config = {
 	},
 	plugins: [
 		...(Array.isArray(wpConfig.plugins) ? wpConfig.plugins : []),
-		new WebpackWatchFilesPlugin({ files: [ './**/*.php' ] }),
 		new RemoveEmptyScriptsPlugin(),
 		new ThemePackageBuilderPlugin(),
 	],
