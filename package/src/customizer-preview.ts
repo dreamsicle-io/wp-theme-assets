@@ -15,17 +15,17 @@ import { announceEnqueued } from './modules/ts/utils';
 		if (wp?.customize?.selectiveRefresh) {
 
 			// Update customizer partials.
-			wp.customize.selectiveRefresh.bind('partial-content-rendered', ({ container }) => {
-				if (container?.[0] instanceof HTMLElement) {
-					updateModules(container[0]);
+			wp.customize.selectiveRefresh.bind('partial-content-rendered', (partial: any) => {
+				if (partial?.container?.[0] instanceof HTMLElement) {
+					updateModules(partial.container[0]);
 				}
 			});
 			
 			// Update customizer widgets.
-			wp.customize.selectiveRefresh.bind('sidebar-updated', partial => {
+			wp.customize.selectiveRefresh.bind('sidebar-updated', (partial: any) => {
 				const container = document.getElementById(partial.sidebarId);
-				if (container?.[0] instanceof HTMLElement) {
-					updateModules(container[0]);
+				if (container instanceof HTMLElement) {
+					updateModules(container);
 				}
 			});
 
