@@ -1,4 +1,4 @@
-import { announceEnqueued } from './modules/utils';
+import { announceEnqueued } from './modules/ts/utils';
 
 (function() {
 
