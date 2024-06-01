@@ -33,6 +33,25 @@ function wp_theme_branding() {
 }
 
 /**
+ * WP Theme Copyright
+ *
+ * @since 0.0.1
+ */
+function wp_theme_copyright() {
+
+	$copyright_holder = get_option( 'wp_theme_copyright_holder' );
+
+	printf(
+		/* translators: 1: year, 2: copyright holder. */
+		wp_kses_post( __( '&copy; Copyright %1$d <a href="%1$s">%3$s</a>. All rights reserved.', 'wp-theme' ) ),
+		absint( gmdate( 'Y' ) ),
+		esc_url( home_url( '/' ) ),
+		$copyright_holder ? esc_html( $copyright_holder ) : esc_html( get_bloginfo( 'name' ) )
+	);
+
+}
+
+/**
  * WP Theme Comment Count Message
  *
  * @since 0.0.1

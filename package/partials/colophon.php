@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		)
 	); ?>
 
+	<?php wp_theme_copyright(); ?>
+
 	<?php wp_nav_menu(
 		array(
 			'theme_location' => 'legal',

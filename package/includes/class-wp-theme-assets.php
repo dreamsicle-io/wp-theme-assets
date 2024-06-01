@@ -68,9 +68,9 @@ class WP_Theme_Assets {
 	 * Style Suffix
 	 *
 	 * @since 0.0.1
-	 * @var bool
+	 * @var string
 	 */
-	public bool $style_suffix;
+	public string $style_suffix;
 
 	/**
 	 * Construct
@@ -111,7 +111,7 @@ class WP_Theme_Assets {
 	 * @param string $file The name of the file without extensions. Example: `site.min`, `login.min`, `admin.min`, `editor.min`, `customizer-preview.min`, `customizer-controls.min`.
 	 */
 	public function get_asset_version( string $file ): string {
-		$config = require_once $this->$build_directory_path . '/build/' . $file . '.asset.php';
+		$config = require_once $this->$build_directory_path . '/' . $file . '.asset.php';
 		return ! empty( $config['version'] ) ? $config['version'] : $this->theme_version;
 	}
 

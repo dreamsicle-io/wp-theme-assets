@@ -40,6 +40,19 @@ class WP_Theme_Backstage {
 				'show_in_rest' => true,
 				'sections'     => array(
 					array(
+						'id'          => 'wp_theme_general',
+						'title'       => __( 'General', 'wp-theme' ),
+						'description' => __( 'Configure general theme options.', 'wp-theme' ),
+						'fields'      => array(
+							array(
+								'type'        => 'text',
+								'name'        => 'wp_theme_copyright_holder',
+								'label'       => __( 'Copyright Holder', 'wp-theme' ),
+								'description' => __( 'Set a legal copyright holder to be displayed in all copyright messages.', 'wp-theme' ),
+							),
+						),
+					),
+					array(
 						'id'          => 'wp_theme_social',
 						'title'       => __( 'Social', 'wp-theme' ),
 						'description' => __( 'Configure social usernames and URLs for use in various links and meta tags.', 'wp-theme' ),
