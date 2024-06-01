@@ -17,14 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WP_Theme_Assets {
 
 	/**
-	 * Theme Directory URI
-	 *
-	 * @since 0.0.1
-	 * @var string
-	 */
-	public string $theme_directory_uri;
-
-	/**
 	 * Theme Textdomain
 	 *
 	 * @since 0.0.1
@@ -41,20 +33,20 @@ class WP_Theme_Assets {
 	public string $theme_version;
 
 	/**
-	 * Assets Directory Relative
+	 * Build Directory Relative
 	 *
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public string $assets_directory_rel;
+	public string $build_directory_rel;
 
 	/**
-	 * Assets Directory URI
+	 * Build Directory URI
 	 *
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public string $assets_directory_uri;
+	public string $build_directory_uri;
 
 	/**
 	 * Languages Directory URI
@@ -81,9 +73,9 @@ class WP_Theme_Assets {
 		$theme                         = wp_get_theme();
 		$this->theme_textdomain        = $theme->get( 'TextDomain' );
 		$this->theme_version           = $theme->get( 'Version' );
-		$this->assets_directory_rel    = '/build';
-		$this->assets_directory_uri    = WP_THEME_TEMPLATE_DIRECTORY . $this->assets_directory_rel;
-		$this->languages_directory_uri = WP_THEME_TEMPLATE_DIRECTORY . '/languages';
+		$this->build_directory_rel     = '/build';
+		$this->build_directory_uri     = WP_THEME_TEMPLATE_DIRECTORY_URI . $this->build_directory_rel;
+		$this->languages_directory_uri = WP_THEME_TEMPLATE_DIRECTORY_URI . '/languages';
 		$this->style_suffix            = is_rtl() ? 'min-rtl' : 'min';
 	}
 
@@ -125,7 +117,7 @@ class WP_Theme_Assets {
 	public function enqueue_editor_assets(): void {
 		add_editor_style(
 			array(
-				$this->assets_directory_rel . '/css/editor.' . $this->style_suffix . '.css',
+				$this->build_directory_rel . '/css/editor.' . $this->style_suffix . '.css',
 			)
 		);
 	}
@@ -139,13 +131,13 @@ class WP_Theme_Assets {
 	public function enqueue_site_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain,
-			$this->assets_directory_uri . '/css/site.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/css/site.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain,
-			$this->assets_directory_uri . '/js/site.min.js',
+			$this->build_directory_uri . '/js/site.min.js',
 			array(),
 			$this->theme_version,
 			true
@@ -161,13 +153,13 @@ class WP_Theme_Assets {
 	public function enqueue_admin_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-admin',
-			$this->assets_directory_uri . '/css/admin.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/css/admin.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-admin',
-			$this->assets_directory_uri . '/js/admin.min.js',
+			$this->build_directory_uri . '/js/admin.min.js',
 			array(),
 			$this->theme_version,
 			true
@@ -183,13 +175,13 @@ class WP_Theme_Assets {
 	public function enqueue_login_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-login',
-			$this->assets_directory_uri . '/css/login.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/css/login.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-login',
-			$this->assets_directory_uri . '/js/login.min.js',
+			$this->build_directory_uri . '/js/login.min.js',
 			array(),
 			$this->theme_version,
 			true
@@ -205,13 +197,13 @@ class WP_Theme_Assets {
 	public function enqueue_customizer_preview_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-preview',
-			$this->assets_directory_uri . '/css/customizer-preview.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/css/customizer-preview.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-customizer-preview',
-			$this->assets_directory_uri . '/js/customizer-preview.min.js',
+			$this->build_directory_uri . '/js/customizer-preview.min.js',
 			array( 'jquery', 'customize-preview' ),
 			$this->theme_version,
 			true
@@ -227,13 +219,13 @@ class WP_Theme_Assets {
 	public function enqueue_customizer_controls_assets(): void {
 		wp_enqueue_style(
 			$this->theme_textdomain . '-customizer-controls',
-			$this->assets_directory_uri . '/css/customizer-controls.' . $this->style_suffix . '.css',
+			$this->build_directory_uri . '/css/customizer-controls.' . $this->style_suffix . '.css',
 			array(),
 			$this->theme_version
 		);
 		wp_enqueue_script(
 			$this->theme_textdomain . '-customizer-controls',
-			$this->assets_directory_uri . '/js/customizer-controls.min.js',
+			$this->build_directory_uri . '/js/customizer-controls.min.js',
 			array( 'jquery', 'customize-controls' ),
 			$this->theme_version,
 			true
