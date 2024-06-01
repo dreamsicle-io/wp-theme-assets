@@ -3,11 +3,13 @@
 		"@wordpress/stylelint-config/scss"
 	],
 	"ignoreFiles": [
-		"build/**",
-		"node_modules/**",
-		"vendor/**"
+		"build/**/*",
+		"node_modules/**/*",
+		"vendor/**/*",
+		"tmp/**/*"
 	],
 	"rules": {
+		"indentation": "tab",
 		"color-hex-case": "upper",
 		"color-hex-length": "long",
 		"at-rule-empty-line-before": [
