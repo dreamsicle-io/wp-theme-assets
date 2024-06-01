@@ -1,21 +1,13 @@
 // @ts-check
 
+import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack'; // eslint-disable-line import/no-extraneous-dependencies
+import archiver from 'archiver';
 import { glob } from 'glob'; // eslint-disable-line import/no-extraneous-dependencies
 import wpConfig from '@wordpress/scripts/config/webpack.config.js'; 
 import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
-import { execSync } from 'child_process';
-import archiver from 'archiver';
-
-/**
- * Extract the 'default' key from Webpack Watch Files Plugin
- * because of the way it's bundled.
- *
- * @see https://github.com/Fridus/webpack-watch-files-plugin/issues/7#issuecomment-393482656
- */
-// const WebpackWatchFilesPlugin = WebpackWatchFilesModule['default']; // eslint-disable-line dot-notation
 
 const themePath = process.cwd();
 
