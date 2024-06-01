@@ -1,6 +1,6 @@
 # WP Theme 
 
-Just another WordPress site.
+This theme was scaffolded using the [Create WP Theme](https://github.com/dreamsicle-io/create-wp-theme) CLI and the [WP Theme Assets](https://github.com/dreamsicle-io/wp-theme-assets) package.
 
 ## Getting Started
 
@@ -10,17 +10,23 @@ Just another WordPress site.
 nvm use
 ```
 
+### Install dependencies
+
+```shell
+npm install
+```
+
 ### Run a development build and watch for changes
 
 ```shell
 npm start
 ```
 
-## Development Commands
+## Development commands
 
-The theme's build and lint system is powered by Webpack, wp-scripts, and wp-cli.
+The theme's build system is powered by [Webpack](https://webpack.js.org/), [wp-scripts](https://www.npmjs.com/package/@wordpress/scripts), and [wp-cli](https://wp-cli.org/), while linting and fixing is powered by [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer), [ESLint](https://eslint.org/), and [StyleLint](https://stylelint.io/)
 
-### Set Node Version
+### Set Node version
 
 Uses `nvm` to set the node version as defined in the `.nvmrc` file.
 
@@ -38,7 +44,7 @@ npm install
 
 ### Start
 
-Run a development build and watch for changes. This command will run `npm install` on the `prestart` hook.
+Run a development build and watch for changes. This command will watch for changes in `package.json` to generate required `style.css` and `README.txt` headers, as well as generate `*.pot` files.
 
 ```shell
 npm start
@@ -46,7 +52,7 @@ npm start
 
 ### Build
 
-Run a production build.
+Run a production build. This command will zip the theme for production, while installing production Composer dependencies and caching development composer dependencies to restore them once zipping the theme has finished.
 
 ```shell
 npm run build
@@ -54,23 +60,47 @@ npm run build
 
 ### Lint
 
-Lint all files with phpcs, eslint, and stylelint.
+Lint all files with `phpcs`, `eslint`, and `stylelint`.
 
 ```shell
 npm run lint
 ```
 
-### fix
+### Fix
 
-Fix all fixable issues with phpcbf, eslint, and stylelint.
+Fix all fixable issues with `phpcbf`, `eslint`, and `stylelint`.
 
 ```shell
 npm run fix
 ```
 
-## Build File Structure 
+### Clean dependencies
 
-This Webpack setup expects that the project root's `package.json`, and `composer.json` is setup properly, and that an opinionated file structure is followed.
+Clean all Composer and npm dependencies, including lock files. This is useful for debugging dependency issues, allowing for all dependencies to be installed fresh and new lock files to be generated.
+
+```shell
+npm run clean-deps
+```
+
+### Clean build
+
+Clean all built files, including the `/build` directory, the translation `*.pot` file in the `/languages` directory, the `README.txt` file, and the `style.css` file. This command will also clear the `/tmp` file that is used for build utilities, should it be left around for whatever reason.
+
+```shell
+npm run clean-build
+```
+
+### Clean
+
+Clean all dependencies, and build files.
+
+```shell
+npm run clean
+```
+
+## File Structure 
+
+This Webpack setup expects that the project root's `package.json`, and `composer.json` files are set up properly, and that an opinionated file structure is followed.
 
 ### Source Files 
 
@@ -79,11 +109,11 @@ root
 ―――― /src 
 ―――― ―――― /js 
 ―――― ―――― ―――― /modules 
-―――― ―――― ―――― site.js 
-―――― ―――― ―――― admin.js 
-―――― ―――― ―――― login.js 
-―――― ―――― ―――― customizer-preview.js 
-―――― ―――― ―――― customizer-controls.js 
+―――― ―――― ―――― site.ts 
+―――― ―――― ―――― admin.ts 
+―――― ―――― ―――― login.ts 
+―――― ―――― ―――― customizer-preview.ts 
+―――― ―――― ―――― customizer-controls.ts 
 ―――― ―――― /scss 
 ―――― ―――― ―――― /modules 
 ―――― ―――― ―――― site.scss 
