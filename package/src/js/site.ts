@@ -1,3 +1,7 @@
 import { announceEnqueued } from './modules/utils';
 
-announceEnqueued('site.js');
+(function() {
+
+	announceEnqueued('site.js');
+
+})();
