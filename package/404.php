@@ -18,7 +18,7 @@ get_header(); ?>
 			null,
 			array(
 				'title'       => __( '404', 'wp-theme' ),
-				'description' => __( 'It looks like we could\'nt find what you\'re looking for.', 'wp-theme' ),
+				'description' => __( 'It looks like we couldn\'t find what you\'re looking for.', 'wp-theme' ),
 			)
 		); ?>
 

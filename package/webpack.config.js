@@ -67,10 +67,13 @@ class ThemePackageBuilderPlugin {
 	 * @type {Record<string, any>}
 	 */
 	pkg = {};
+
+	/**
+	 * @type {string[]}
+	 */
+	phpIgnore = [];
 	
 	/**
-	 * Don't use leading or trailing slashes.
-	 *
 	 * @type {string[]}
 	 */
 	zipIgnore = [];
@@ -89,6 +92,14 @@ class ThemePackageBuilderPlugin {
 		this.composerLockBackupPath = path.join(this.tmpPath, 'composer.lock');
 		this.composerVendorBackupPath = path.join(this.tmpPath, 'vendor');
 		this.pkg = this.readPackage();
+		this.phpIgnore = [
+			'**/.github/**',
+			'**/.vscode/**',
+			'**/node_modules/**',
+			'**/vendor/**',
+			'**/build/**',
+			'**/tmp/**',
+		];
 		this.zipIgnore = [
 			'**/.github/**',
 			'**/.vscode/**',
@@ -108,6 +119,8 @@ class ThemePackageBuilderPlugin {
 			'**/phpcs.xml',
 			'**/README.md',
 			'**/webpack.config.js',
+			'**/*.d.ts',
+			'**/tsconfig.json',
 			'**/*.zip',
 		];
 	}
@@ -122,13 +135,13 @@ class ThemePackageBuilderPlugin {
 	apply(compiler) {
 		compiler.hooks.afterCompile.tap(this.pluginName, (compilation) => {
 			// Watch PHP files by adding them to the fileDependencies.
-			const phpFiles = glob.sync('./**/*.php').map(relPath => path.join(this.themePath, relPath));
+			const phpFiles = glob.sync('./**/*.php', { ignore: this.phpIgnore }).map(relPath => path.join(this.themePath, relPath));
 			compilation.fileDependencies.addAll(phpFiles);
 		});
 		// On watch.
 		compiler.hooks.watchRun.tap(this.pluginName, () => {
 			if (compiler.modifiedFiles) {
-				// Files have changed
+				// Files have changed.
 				if (compiler.modifiedFiles.has(this.pkgPath)) {
 					this.pkg = this.readPackage();
 					this.buildStyleHeader(compiler);
@@ -311,8 +324,10 @@ const config = {
 		...wpConfig.watchOptions,
 		ignored: [
 			...(Array.isArray(wpConfig.watchOptions?.ignored) ? wpConfig.watchOptions.ignored : []),
-			// These globs must begin with '**/'.
-			// See: https://webpack.js.org/configuration/watch/#watchoptionsignored
+			/**
+			 * These globs must begin with `**`.
+			 * @see https://webpack.js.org/configuration/watch/#watchoptionsignored
+			 */
 			'**/.github/**/*',
 			'**/.vscode/**/*',
 			'**/build/**/*',
@@ -340,24 +355,40 @@ const config = {
 	},
 	plugins: [
 		...(Array.isArray(wpConfig.plugins) ? wpConfig.plugins : []),
-		new RemoveEmptyScriptsPlugin(),
+		new RemoveEmptyScriptsPlugin({
+			/**
+			 * Process after plugins to still allow wp-scripts to output RTL assets and the asset.php file.
+			 * @see https://www.npmjs.com/package/webpack-remove-empty-scripts#specify-stage-for-properly-work-some-plugins
+			 */
+			stage: RemoveEmptyScriptsPlugin.STAGE_AFTER_PROCESS_PLUGINS,
+		}),
 		new ThemePackageBuilderPlugin(),
 	],
 	entry: {
 		...((typeof wpConfig.entry === 'object') ? wpConfig.entry : {}),
-		// Scripts.
-		'js/site.min': path.resolve(themePath, 'src/js/site.ts'),
-		'js/admin.min': path.resolve(themePath, 'src/js/admin.ts'),
-		'js/login.min': path.resolve(themePath, 'src/js/login.ts'),
-		'js/customizer-preview.min': path.resolve(themePath, 'src/js/customizer-preview.ts'),
-		'js/customizer-controls.min': path.resolve(themePath, 'src/js/customizer-controls.ts'),
-		// Styles.
-		'css/site.min': path.resolve(themePath, 'src/scss/site.scss'),
-		'css/admin.min': path.resolve(themePath, 'src/scss/admin.scss'),
-		'css/login.min': path.resolve(themePath, 'src/scss/login.scss'),
-		'css/editor.min': path.resolve(themePath, 'src/scss/editor.scss'),
-		'css/customizer-preview.min': path.resolve(themePath, 'src/scss/customizer-preview.scss'),
-		'css/customizer-controls.min': path.resolve(themePath, 'src/scss/customizer-controls.scss'),
+		'site.min': [
+			path.join(themePath, 'src/site.ts'),
+			path.join(themePath, 'src/site.scss'),
+		],
+		'admin.min': [
+			path.join(themePath, 'src/admin.ts'),
+			path.join(themePath, 'src/admin.scss'),
+		],
+		'login.min': [
+			path.join(themePath, 'src/login.ts'),
+			path.join(themePath, 'src/login.scss'),
+		],
+		'customizer-preview.min': [
+			path.join(themePath, 'src/customizer-preview.ts'),
+			path.join(themePath, 'src/customizer-preview.scss'),
+		],
+		'customizer-controls.min': [
+			path.join(themePath, 'src/customizer-controls.ts'),
+			path.join(themePath, 'src/customizer-controls.scss'),
+		],
+		'editor.min': [
+			path.join(themePath, 'src/editor.scss'),
+		],
 	}
 };
 

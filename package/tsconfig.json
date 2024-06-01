@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"target": "ES6",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "Bundler",
+		"moduleDetection": "force",
+		"isolatedModules": true,
+	},
+	"include": ["./index.d.ts", "./src"]
+}

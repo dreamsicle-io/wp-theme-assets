@@ -13,6 +13,7 @@
 	}
 
 	.gallery-item {
+		position: relative;
 		margin: 0;
 	}
 
@@ -25,6 +26,23 @@
 		img {
 			width: 100%;
 		}
+	}
+
+	.gallery-caption {
+		background: linear-gradient(0deg, rgb(0 0 0 / 70%), rgb(0 0 0 / 30%) 70%, rgb(0 0 0 / 0%));
+		bottom: 0;
+		box-sizing: border-box;
+		color: #FFFFFF;
+		font-size: 0.8em;
+		margin: 0;
+		height: auto;
+		max-height: 100%;
+		overflow: auto;
+		padding: 3em 0.77em 0.7em;
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		z-index: 2;
 	}
 }
 

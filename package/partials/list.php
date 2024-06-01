@@ -17,8 +17,8 @@ $args = wp_parse_args(
 		'query'                 => $wp_query,
 		'partial_slug'          => 'partials/card',
 		'partial_args'          => array(),
-		'not_found_title'       => '',
-		'not_found_description' => '',
+		'not_found_title'       => __( 'Nothing found', 'wp-theme' ),
+		'not_found_description' => __( 'It looks like we couldn\'t find what you\'re looking for.', 'wp-theme' ),
 	)
 ); ?>
 
