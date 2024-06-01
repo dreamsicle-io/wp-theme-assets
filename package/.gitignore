@@ -1,16 +1,20 @@
 # Deps
 
-/node_modules
-/vendor
+node_modules/
+vendor/
 
 # Build
 
-/build
-/languages/*.pot
-/README.txt
-/style.css
-/*.zip
+build/
+languages/*.pot
+README.txt
+style.css
+*.zip
+
+# Temporary files
+
+tmp/
 
 # Logs
 
-/logs
+logs/

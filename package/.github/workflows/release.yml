@@ -11,7 +11,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Checkout Repo
         id: checkout_repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Gets the name from package.json and sets it as an environment variable.
       - name: Set Theme Name
@@ -43,7 +43,7 @@ jobs:
       # Setup Node.
       - name: Setup Node
         id: setup_node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
