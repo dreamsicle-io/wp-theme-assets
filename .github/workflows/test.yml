@@ -1,17 +1,23 @@
-name: Release
+name: Test
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
       - name: Checkout Repo
         id: checkout_repo
         uses: actions/checkout@v4
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Enter Theme Directory
+        id: enter_theme_directory
+        run: cd package
 
       # Gets the name from package.json and sets it as an environment variable.
       - name: Set Theme Name
@@ -51,23 +57,18 @@ jobs:
       - name: Install
         id: install
         run: npm ci
+      
+      # Lint all files.
+      - name: Lint
+        id: lint
+        run: npm run lint
 
       # Runs a build.
       - name: Build
         id: build
         run: npm run build
 
-      # Creates a release draft.
-      - name: Create Release
-        id: create_release
-        uses: ncipollo/release-action@v1
-        with:
-          name: ${{ env.THEME_VERSION }}
-          tag: ${{ env.THEME_VERSION }}
-          commit: main
-          draft: true
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generateReleaseNotes: true
-          skipIfReleaseExists: true
-          artifacts: ${{ env.THEME_NAME }}.zip
+      # Return to root.
+      - name: Return to Root Directory
+        id: return_to_root_directory
+        run: cd ..
