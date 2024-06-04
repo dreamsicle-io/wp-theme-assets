@@ -53,10 +53,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # Installs npm and composer dependencies.
+      # Installs npm and composer dependencies. Note that we use `npm install`
+      # instead of `npm ci` because we do not yet have a lock file.
       - name: Install
         id: install
-        run: npm ci
+        run: npm install
       
       # Lint all files.
       - name: Lint
