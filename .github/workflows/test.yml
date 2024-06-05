@@ -31,7 +31,6 @@ jobs:
         id: set_php_version
         run: |
           RAW_PHP_VERSION=$(jq -r '.require.php' package/composer.json)
-          RAW_PHP_VERSION="^1.2.3"
           MAJOR_VERSION_PATTERN="^\^"
           if [[ $RAW_PHP_VERSION =~ $MAJOR_VERSION_PATTERN ]]; then
             PARSED_PHP_VERSION=$(echo $RAW_PHP_VERSION | grep -oE '[0-9]+' | head -n 1)
