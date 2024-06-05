@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   release:
@@ -23,10 +24,19 @@ jobs:
         id: set_theme_version
         run: echo "THEME_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
       
-      # Gets the PHP version from composer.json and sets it as an environment variable.
+      # Gets the PHP version from composer.json and sets it as an environment variable,
+      # by parsing the semver string to a setup-php string.
       - name: Set PHP Version
         id: set_php_version
-        run: echo "PHP_VERSION=$(jq -r '.require.php' composer.json)" >> $GITHUB_ENV
+        run: |
+          RAW_PHP_VERSION=$(jq -r '.require.php' composer.json)
+          MAJOR_VERSION_PATTERN="^\^"
+          if [[ $RAW_PHP_VERSION =~ $MAJOR_VERSION_PATTERN ]]; then
+            PARSED_PHP_VERSION=$(echo $RAW_PHP_VERSION | grep -oE '[0-9]+' | head -n 1)
+          else
+            PARSED_PHP_VERSION=$(echo $RAW_PHP_VERSION | grep -oE '[0-9]+(\.[0-9]+)?' | head -n 1)
+          fi
+          echo "PHP_VERSION=$PARSED_PHP_VERSION" >> $GITHUB_ENV
 
       # Gets the Node version from .nvmrc and sets it as an environment variable.
       - name: Set Node Version
