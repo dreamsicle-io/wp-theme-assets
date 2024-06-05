@@ -93,35 +93,35 @@ class ThemePackageBuilderPlugin {
 		this.composerVendorBackupPath = path.join(this.tmpPath, 'vendor');
 		this.pkg = this.readPackage();
 		this.phpIgnore = [
-			'./.github/**',
-			'./.vscode/**',
-			'./node_modules/**',
-			'./vendor/**',
-			'./build/**',
-			'./tmp/**',
+			'**/.github/**',
+			'**/.vscode/**',
+			'**/node_modules/**',
+			'**/vendor/**',
+			'**/build/**',
+			'**/tmp/**',
 		];
 		this.zipIgnore = [
-			'./.github/**',
-			'./.vscode/**',
-			'./node_modules/**',
-			'./src/**',
-			'./tmp/**',
-			'./.editorconfig',
-			'./.eslintrc',
-			'./.gitignore',
-			'./.nvmrc',
-			'./.prettierignore',
-			'./.stylelintrc',
-			'./composer.json',
-			'./composer.lock',
-			'./package-lock.json',
-			'./package.json',
-			'./phpcs.xml',
-			'./README.md',
-			'./webpack.config.js',
-			'./*.d.ts',
-			'./tsconfig.json',
-			'./*.zip',
+			'**/.github/**',
+			'**/.vscode/**',
+			'**/node_modules/**',
+			'**/src/**',
+			'**/tmp/**',
+			'**/.editorconfig',
+			'**/.eslintrc',
+			'**/.gitignore',
+			'**/.nvmrc',
+			'**/.prettierignore',
+			'**/.stylelintrc',
+			'**/composer.json',
+			'**/composer.lock',
+			'**/package-lock.json',
+			'**/package.json',
+			'**/phpcs.xml',
+			'**/README.md',
+			'**/webpack.config.js',
+			'**/*.d.ts',
+			'**/tsconfig.json',
+			'**/*.zip',
 		];
 	}
 
@@ -135,7 +135,12 @@ class ThemePackageBuilderPlugin {
 	apply(compiler) {
 		compiler.hooks.afterCompile.tap(this.pluginName, (compilation) => {
 			// Watch PHP files by adding them to the fileDependencies.
-			const phpFiles = glob.sync('./**/*.php', { ignore: this.phpIgnore }).map(relPath => path.join(this.themePath, relPath));
+			const phpFiles = glob.sync('**/*.php', { 
+				cwd: this.themePath,
+				ignore: this.phpIgnore,
+				absolute: true,
+			});
+			// Resolve all relative paths.
 			compilation.fileDependencies.addAll(phpFiles);
 		});
 		// On watch.
