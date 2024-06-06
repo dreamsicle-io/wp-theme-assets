@@ -7,6 +7,7 @@ on:
 
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
 
     # Initialize the env variables. These get set after the repo is checked out
@@ -24,8 +25,7 @@ jobs:
       # Sets the environment variables from the env.sh script.
       - name: Set Environment Variables
         id: set_env_vars
-        working-directory: package
-        run: .github/workflows/scripts/env.sh
+        run: package/.github/workflows/scripts/env.sh
       
       # Setup PHP.
       - name: Setup PHP
