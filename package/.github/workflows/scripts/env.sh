@@ -18,19 +18,19 @@ fi
 
 # Get the theme name from the package.json file.
 
-THEME_NAME=$(echo jq -r ".name" ../../package.json)
+THEME_NAME=$(jq -r ".name" ../../package.json)
 
 # Get the theme version from the package.json file.
 
-THEME_VERSION=$(echo jq -r ".version" ../../package.json)
+THEME_VERSION=$(jq -r ".version" ../../package.json)
 
 # Get the node version from the .nvmrc file.
 
-NODE_VERSION=$(echo cat ../../.nvmrc)
+NODE_VERSION=$(cat ../../.nvmrc)
 
 # Set environment variables on $GITHUB_ENV.
 
-echo "THEME_NAME=$(echo $THEME_NAME)" >> $GITHUB_ENV
-echo "THEME_VERSION=$(echo $THEME_VERSION)" >> $GITHUB_ENV
-echo "PHP_VERSION=$(echo $PHP_VERSION)" >> $GITHUB_ENV
-echo "NODE_VERSION=$(echo $NODE_VERSION)" >> $GITHUB_ENV
+echo "THEME_NAME=$($THEME_NAME)" >> $GITHUB_ENV
+echo "THEME_VERSION=$($THEME_VERSION)" >> $GITHUB_ENV
+echo "PHP_VERSION=$($PHP_VERSION)" >> $GITHUB_ENV
+echo "NODE_VERSION=$($NODE_VERSION)" >> $GITHUB_ENV
