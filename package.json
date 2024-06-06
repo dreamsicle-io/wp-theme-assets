@@ -2,14 +2,18 @@
   "name": "wp-theme-assets",
   "version": "4.2.3",
   "description": "WP Theme Assets",
+  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dreamsicle-io/wp-theme-assets.git"
   },
-  "author": "Dreamsicle",
-  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"
   },
-  "homepage": "https://github.com/dreamsicle-io/wp-theme-assets"
+  "author": {
+		"name": "Dreamsicle",
+		"email": "hello@dreamsicle.io",
+		"url": "https://www.dreamsicle.io"
+	}
 }
