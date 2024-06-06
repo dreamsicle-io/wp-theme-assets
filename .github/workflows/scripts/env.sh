@@ -10,4 +10,4 @@ PACKAGE_VERSION=$(jq -r ".version" package.json)
 
 # Set environment variables on $GITHUB_ENV.
 
-echo "PACKAGE_VERSION=$(echo $THEME_VERSION)" >> $GITHUB_ENV
+echo "PACKAGE_VERSION=$(echo $PACKAGE_VERSION)" >> $GITHUB_ENV

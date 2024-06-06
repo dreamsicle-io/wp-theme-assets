@@ -2,7 +2,7 @@
 
 # This file must have permissions to run in a GitHub action.
 # To do this cross-env, use the following command from the project root:
-# git update-index --chmod=+x package/.github/workflows/scripts/env.sh
+# git update-index --chmod=+x .github/workflows/scripts/env.sh
 
 # Get PHP version that satisfies the setup-php action version keys
 # by parsing the composer.json file's require.php config.
