@@ -68,7 +68,7 @@ npm run lint
 
 ### Fix
 
-Fix all fixable issues with `phpcbf`, `eslint`, and `stylelint`.
+Fix all fixable issues with `phpcbf`, `eslint`, and `stylelint`; and Fix all fixable package.json issues with `npm pkg fix`.
 
 ```shell
 npm run fix
@@ -107,21 +107,20 @@ This Webpack setup expects that the project root's `package.json`, and `composer
 ``` 
 root 
 ―――― /src 
-―――― ―――― /js 
-―――― ―――― ―――― /modules 
-―――― ―――― ―――― site.ts 
-―――― ―――― ―――― admin.ts 
-―――― ―――― ―――― login.ts 
-―――― ―――― ―――― customizer-preview.ts 
-―――― ―――― ―――― customizer-controls.ts 
-―――― ―――― /scss 
-―――― ―――― ―――― /modules 
-―――― ―――― ―――― site.scss 
-―――― ―――― ―――― admin.scss 
-―――― ―――― ―――― login.scss 
-―――― ―――― ―――― editor.scss 
-―――― ―――― ―――― customizer-preview.scss 
-―――― ―――― ―――― customizer-controls.scss 
+―――― ―――― /modules 
+―――― ―――― ―――― /scss 
+―――― ―――― ―――― /ts 
+―――― ―――― site.scss 
+―――― ―――― site.ts 
+―――― ―――― admin.scss 
+―――― ―――― admin.ts
+―――― ―――― login.scss  
+―――― ―――― login.ts 
+―――― ―――― editor.scss 
+―――― ―――― customizer-preview.scss 
+―――― ―――― customizer-preview.ts 
+―――― ―――― customizer-controls.scss 
+―――― ―――― customizer-controls.ts 
 ``` 
 
 ### Build Files 
@@ -129,38 +128,44 @@ root
 ``` 
 root 
 ―――― /build 
-―――― ―――― /js 
-―――― ―――― ―――― site.min.js 
-―――― ―――― ―――― site.min.js.map 
-―――― ―――― ―――― admin.min.js 
-―――― ―――― ―――― admin.min.js.map 
-―――― ―――― ―――― login.min.js 
-―――― ―――― ―――― login.min.js.map 
-―――― ―――― ―――― customizer-preview.min.js 
-―――― ―――― ―――― customizer-preview.min.js.map 
-―――― ―――― ―――― customizer-controls.min.js 
-―――― ―――― ―――― customizer-controls.min.js.map 
-―――― ―――― /css 
-―――― ―――― ―――― site.min.css 
-―――― ―――― ―――― site.min-rtl.css 
-―――― ―――― ―――― site.min.css.map 
-―――― ―――― ―――― admin.min.css 
-―――― ―――― ―――― admin.min-rtl.css 
-―――― ―――― ―――― admin.min.css.map 
-―――― ―――― ―――― login.min.css 
-―――― ―――― ―――― login.min-rtl.css 
-―――― ―――― ―――― login.min.css.map 
-―――― ―――― ―――― editor.min.css 
-―――― ―――― ―――― editor.min-rtl.css 
-―――― ―――― ―――― editor.min.css.map 
-―――― ―――― ―――― customizer-preview.min.css 
-―――― ―――― ―――― customizer-preview.min-rtl.css 
-―――― ―――― ―――― customizer-preview.min.css.map 
-―――― ―――― ―――― customizer-controls.min.css 
-―――― ―――― ―――― customizer-controls.min-rtl.css 
-―――― ―――― ―――― customizer-controls.min.css.map 
+―――― ―――― site.min.asset.php 
+―――― ―――― site.min.css 
+―――― ―――― site.min-rtl.css 
+―――― ―――― site.min.css.map
+―――― ―――― site.min.js 
+―――― ―――― site.min.js.map 
+―――― ―――― admin.min.asset.php
+―――― ―――― admin.min.css 
+―――― ―――― admin.min-rtl.css 
+―――― ―――― admin.min.css.map 
+―――― ―――― admin.min.js 
+―――― ―――― admin.min.js.map
+―――― ―――― login.min.asset.php
+―――― ―――― login.min.css 
+―――― ―――― login.min-rtl.css 
+―――― ―――― login.min.css.map  
+―――― ―――― login.min.js 
+―――― ―――― login.min.js.map 
+―――― ―――― editor.min.asset.php
+―――― ―――― editor.min.css 
+―――― ―――― editor.min-rtl.css 
+―――― ―――― editor.min.css.map 
+―――― ―――― customizer-preview.min.asset.php
+―――― ―――― customizer-preview.min.css 
+―――― ―――― customizer-preview.min-rtl.css 
+―――― ―――― customizer-preview.min.css.map 
+―――― ―――― customizer-preview.min.js 
+―――― ―――― customizer-preview.min.js.map 
+―――― ―――― customizer-controls.min.asset.php 
+―――― ―――― customizer-controls.min.css 
+―――― ―――― customizer-controls.min-rtl.css 
+―――― ―――― customizer-controls.min.css.map 
+―――― ―――― customizer-controls.min.js 
+―――― ―――― customizer-controls.min.js.map 
 ―――― /languages 
 ―――― ―――― {textdomain}.pot 
 ―――― README.txt 
 ―――― style.css 
 ```
+
+> **Note:** The map files are only output when running a development build. They will not be included when building for production.

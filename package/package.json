@@ -48,7 +48,7 @@
 		"start": "wp-scripts start",
 		"build": "wp-scripts build",
 		"lint": "composer run lint && wp-scripts lint-style && wp-scripts lint-js && tsc --noEmit",
-		"fix": "composer run fix && wp-scripts lint-style --fix && wp-scripts lint-js --fix",
+		"fix": "npm pkg fix && composer run fix && wp-scripts lint-style --fix && wp-scripts lint-js --fix",
 		"clean-deps": "rm -rf vendor/ node_modules/ composer.lock package-lock.json",
 		"clean-build": "rm -rf build/ tmp/ README.txt style.css languages/*.pot *.zip",
 		"clean": "npm run clean-deps && npm run clean-build"
