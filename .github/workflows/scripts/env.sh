@@ -6,7 +6,7 @@
 
 # Get the package version from the package.json file.
 
-PACKAGE_VERSION=$(jq -r ".version" ../../package.json)
+PACKAGE_VERSION=$(jq -r ".version" package.json)
 
 # Set environment variables on $GITHUB_ENV.
 
