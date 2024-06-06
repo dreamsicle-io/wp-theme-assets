@@ -23,7 +23,7 @@ jobs:
         id: checkout_repo
         uses: actions/checkout@v4
 
-      # Sets the environment variables from the env.sh scrips.
+      # Sets the environment variables from the env.sh script.
       - name: Set Environment Variables
         id: set_env_vars
         run: .github/workflows/scripts/env.sh
