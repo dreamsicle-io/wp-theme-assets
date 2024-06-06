@@ -24,7 +24,8 @@ jobs:
       # Sets the environment variables from the env.sh script.
       - name: Set Environment Variables
         id: set_env_vars
-        run: package/.github/workflows/scripts/env.sh
+        working-directory: package
+        run: .github/workflows/scripts/env.sh
       
       # Setup PHP.
       - name: Setup PHP
