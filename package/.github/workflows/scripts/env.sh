@@ -28,9 +28,14 @@ THEME_VERSION=$(jq -r ".version" package.json)
 
 NODE_VERSION=$(cat .nvmrc)
 
+# Get the theme name from the package.json file.
+
+WPE_ENV=$(jq -r ".wpEngine.env" package.json)
+
 # Set environment variables on $GITHUB_ENV.
 
 echo "THEME_NAME=$(echo $THEME_NAME)" >> $GITHUB_ENV
 echo "THEME_VERSION=$(echo $THEME_VERSION)" >> $GITHUB_ENV
 echo "PHP_VERSION=$(echo $PHP_VERSION)" >> $GITHUB_ENV
 echo "NODE_VERSION=$(echo $NODE_VERSION)" >> $GITHUB_ENV
+echo "WPE_ENV=$(echo $WPE_ENV)" >> $GITHUB_ENV
