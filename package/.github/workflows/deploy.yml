@@ -64,8 +64,10 @@ jobs:
           unzip ${{ env.THEME_NAME }}.zip -d .deploy/
 
       # Deploys the contents of .deploy/ to the theme directory on WPEngine.
+      # More information: https://my.wpengine.com/profile/github_action
+      # Manage WP Engine SSH keys: https://my.wpengine.com/profile/ssh_keys
       - name: Deploy to WPEngine
-        id: 'deploy_to_wpengine'
+        id: deploy_to_wpengine
         uses: wpengine/github-action-wpe-site-deploy@v3
         with:
           WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
