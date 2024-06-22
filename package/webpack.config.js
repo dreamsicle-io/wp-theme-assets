@@ -196,8 +196,9 @@ class ThemePackageBuilderPlugin {
 			fs.cpSync(this.composerVendorPath, this.composerVendorBackupPath, { recursive: true, force: true });
 			fs.rmSync(this.composerVendorPath, { recursive: true, force: true });
 		}
-		execSync('composer install --no-dev', { stdio: 'inherit' });
-		logger.info('Replaced composer dependencies successfully');
+		logger.info('Replacing Composer dependencies...');
+		execSync('composer install --no-dev', { stdio: 'ignore' });
+		logger.info('Replaced Composer dependencies successfully');
 	}
 
 	/**
@@ -205,6 +206,7 @@ class ThemePackageBuilderPlugin {
 	 */
 	restoreComposerDeps(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
+		logger.info('Restoring Composer dependencies...');
 		if (fs.existsSync(this.composerLockBackupPath)) {
 			fs.cpSync(this.composerLockBackupPath, this.composerLockPath, { force: true });
 			fs.rmSync(this.composerLockBackupPath, { force: true });
@@ -216,7 +218,7 @@ class ThemePackageBuilderPlugin {
 		if (fs.readdirSync(this.tmpPath).length < 1) {
 			fs.rmSync(this.tmpPath, { recursive: true, force: true });
 		}
-		logger.info('Restored composer dependencies successfully');
+		logger.info('Restored Composer dependencies successfully');
 	}
 
 	/**
@@ -277,7 +279,8 @@ class ThemePackageBuilderPlugin {
 	 */
 	buildPot(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
-		execSync(`composer run translate . languages/${this.pkg.name}.pot`, { stdio: 'inherit' });
+		logger.info('Building POT file...');
+		execSync(`composer run translate . languages/${this.pkg.name}.pot`, { stdio: 'ignore' });
 		logger.info('POT file built successfully');
 	}
 
