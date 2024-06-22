@@ -1,6 +1,6 @@
 {
   "name": "wp-theme-assets",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "description": "WP Theme Assets",
   "homepage": "https://github.com/dreamsicle-io/wp-theme-assets",
   "license": "GPL-3.0",
@@ -12,8 +12,8 @@
     "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"
   },
   "author": {
-		"name": "Dreamsicle",
-		"email": "hello@dreamsicle.io",
-		"url": "https://www.dreamsicle.io"
-	}
+    "name": "Dreamsicle",
+    "email": "hello@dreamsicle.io",
+    "url": "https://www.dreamsicle.io"
+  }
 }

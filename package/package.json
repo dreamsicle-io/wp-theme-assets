@@ -27,6 +27,9 @@
 		"versionRequired": "6.4.0",
 		"versionTested": "6.4.0"
 	},
+	"wpEngine": {
+		"env": "wpthemedev"
+	},
 	"browserslist": {
 		"development": [
 			"last 1 versions"

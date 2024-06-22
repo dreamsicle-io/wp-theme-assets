@@ -169,3 +169,24 @@ root
 ```
 
 > **Note:** The map files are only output when running a development build. They will not be included when building for production.
+
+## GitHub Actions
+
+This theme uses GitHub Actions that automate various steps of the test, build, and deployment pipelines.
+
+### Test
+
+**Runs when a pull request to `main` is created** ― This action lints the code and runs a build; and fails when errors are found.
+
+### Release
+
+**Runs when a push to `main` is detected** ― This action runs a build and creates a release draft; and uploads a theme zip file as a release asset. The zip file will be named by the `name` key from the `package.json` file.
+
+### Deploy
+
+**Runs when a release is published** ― This action runs a build at the tag referenced in the release, and deploys the theme to the WP Engine environment specified in the `package.json` file at the `wpEngine.env` key.
+
+> **More information:** https://my.wpengine.com/profile/github_action
+
+> **Manage WP Engine SSH keys:** https://my.wpengine.com/profile/ssh_keys
+
