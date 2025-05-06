@@ -6,7 +6,7 @@ import { announceEnqueued } from './modules/ts/utils';
 
 	announceEnqueued('customizer-preview.js');
 
-	function updateModules(container: HTMLElement) {
+	function updateModules(_container: HTMLElement) {
 		// Update all modules in the updated container here.
 	}
 
