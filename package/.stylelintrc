@@ -9,8 +9,6 @@
 		"tmp/**/*"
 	],
 	"rules": {
-		"indentation": "tab",
-		"color-hex-case": "upper",
 		"color-hex-length": "long",
 		"at-rule-empty-line-before": [
 			"always",
