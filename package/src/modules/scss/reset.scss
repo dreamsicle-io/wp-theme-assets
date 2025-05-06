@@ -1,5 +1,7 @@
+@use "mixins";
+
 :root {
-	@include dream-theme-root-vars;
+	@include mixins.theme-root-vars;
 }
 
 *[title] {
@@ -7,16 +9,16 @@
 }
 
 *:focus-visible {
-	@include dream-focus-ring;
+	@include mixins.focus-ring;
 }
 
 html {
-	@include dream-root-font-size;
+	@include mixins.root-font-size;
 }
 
 body {
-	@include dream-theme(background-color, "background");
-	@include dream-theme(color, "on-background");
+	@include mixins.theme(background-color, "background");
+	@include mixins.theme(color, "on-background");
 	font-weight: 400;
 	font-family: sans-serif;
 	font-size: 1rem;
@@ -130,11 +132,6 @@ input:not(
 ),
 textarea,
 select {
-	@include dream-font-size(20px);
-	@include dream-theme(background-color, "surface");
-	@include dream-theme(color, "on-surface");
-	@include dream-border(border, 1px, "border-on-surface");
-	@include dream-placeholder("surface");
 	appearance: none;
 	border-radius: 4px;
 	padding: 0 0.5em;
@@ -144,6 +141,12 @@ select {
 	width: 100%;
 	max-width: 100%;
 	text-overflow: ellipsis;
+
+	@include mixins.font-size(20px);
+	@include mixins.theme(background-color, "surface");
+	@include mixins.theme(color, "on-surface");
+	@include mixins.border(border, 1px, "border-on-surface");
+	@include mixins.placeholder("surface");
 
 	&::-webkit-search-cancel-button {
 		appearance: none;
@@ -229,7 +232,7 @@ strong {
 }
 
 a {
-	@include dream-theme(color, "primary");
+	@include mixins.theme(color, "primary");
 	font-weight: 600;
 
 	&:not(:hover, :active, :focus) {

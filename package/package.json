@@ -42,7 +42,7 @@
 		"normalize.css": "~8.0.1"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "~27.9.0",
+		"@wordpress/scripts": "~30.15.0",
 		"archiver": "~7.0.1",
 		"webpack-remove-empty-scripts": "~1.0.4"
 	},

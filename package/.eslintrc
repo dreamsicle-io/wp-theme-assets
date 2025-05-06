@@ -13,14 +13,6 @@
 		"package-lock.json",
 		"composer.lock"
 	],
-	"overrides": [
-		{
-			"files": ["./webpack.config.js"],
-			"env": {
-				"node": true
-			}
-		}
-	],
 	"rules": {
 		"indent": ["error", "tab"],
 		"eol-last": ["error", "always"],
@@ -29,6 +21,23 @@
 			{
 				"allow": ["info", "warn", "error"]
 			}
-		]
-	}
+		],
+		"@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+	},
+	"overrides": [
+		{
+			"files": ["./webpack.config.js"],
+			"env": {
+				"node": true
+			}
+		}
+	]
 }

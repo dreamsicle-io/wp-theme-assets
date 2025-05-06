@@ -1,12 +1,11 @@
-// Dependencies
+@forward "~normalize.css/normalize";
 
-@import "normalize.css/normalize";
+/**
+ * Site styles
+ *
+ * Forward modules here to enqueue them into the site's front end (theme) pages.
+ * Example: @forward "modules/scss/example";
+ */
 
-// Utils
-
-@import "./modules/scss/utils";
-
-// Modules
-
-@import "./modules/scss/reset";
-@import "./modules/scss/wp";
+@forward "modules/scss/reset";
+@forward "modules/scss/wp";

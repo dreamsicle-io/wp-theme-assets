@@ -1,3 +1,3 @@
 export function announceEnqueued(name: string) {
-	console.info('Script enqueued: ', name);
+	console.info('Script enqueued:', name);
 }
