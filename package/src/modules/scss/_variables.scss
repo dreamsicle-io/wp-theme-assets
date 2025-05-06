@@ -1,110 +1,110 @@
 // root
-$dream-root-font-size: 16px;
+$root-font-size: 16px;
 
 // contain
-$dream-contain-max-width: 1280px;
+$contain-max-width: 1280px;
 
 // focus ring
-$dream-focus-ring-width: 2px;
-$dream-focus-ring-offset: 2px;
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
 
 // gutter
-$dream-gutter-phone: 16px;
-$dream-gutter-tablet: 18px;
-$dream-gutter-laptop: 20px;
-$dream-gutter-desktop: 22px;
+$gutter-phone: 16px;
+$gutter-tablet: 18px;
+$gutter-laptop: 20px;
+$gutter-desktop: 22px;
 
 // respond
-$dream-respond-phone-max: 640px;
-$dream-respond-tablet-min: 640.001px;
-$dream-respond-tablet-max: 1024px;
-$dream-respond-laptop-min: 1024.001px;
-$dream-respond-laptop-max: 1280px;
-$dream-respond-desktop-min: 1280.001px;
+$respond-phone-max: 640px;
+$respond-tablet-min: 640.001px;
+$respond-tablet-max: 1024px;
+$respond-laptop-min: 1024.001px;
+$respond-laptop-max: 1280px;
+$respond-desktop-min: 1280.001px;
 
 // respond map
-$dream-respond-map: (
-	"phone": ("max": $dream-respond-phone-max),
-	"tablet": ("min": $dream-respond-tablet-min, "max": $dream-respond-tablet-max),
-	"laptop": ("min": $dream-respond-laptop-min, "max": $dream-respond-laptop-max),
-	"desktop": ("min": $dream-respond-desktop-min),
-	"mobile": ("max": $dream-respond-tablet-max),
-	"tablet-up": ("min": $dream-respond-tablet-min),
-	"non-mobile": ("min": $dream-respond-laptop-min),
+$respond-map: (
+	"phone": ("max": $respond-phone-max),
+	"tablet": ("min": $respond-tablet-min, "max": $respond-tablet-max),
+	"laptop": ("min": $respond-laptop-min, "max": $respond-laptop-max),
+	"desktop": ("min": $respond-desktop-min),
+	"mobile": ("max": $respond-tablet-max),
+	"tablet-up": ("min": $respond-tablet-min),
+	"non-mobile": ("min": $respond-laptop-min),
 );
 
 // background theme
-$dream-theme-background: #EFEFEF;
-$dream-theme-on-background: #222222;
-$dream-theme-accent-on-background: #0016BA;
-$dream-theme-soft-on-background: rgba($dream-theme-on-background, 0.5);
-$dream-theme-border-on-background: rgba($dream-theme-on-background, 0.15);
+$theme-background: #EFEFEF;
+$theme-on-background: #222222;
+$theme-accent-on-background: #0016BA;
+$theme-soft-on-background: rgba($theme-on-background, 0.5);
+$theme-border-on-background: rgba($theme-on-background, 0.15);
 
 // surface theme
-$dream-theme-surface: #FFFFFF;
-$dream-theme-on-surface: #222222;
-$dream-theme-accent-on-surface: #0016BA;
-$dream-theme-soft-on-surface: rgba($dream-theme-on-surface, 0.5);
-$dream-theme-border-on-surface: rgba($dream-theme-on-surface, 0.15);
+$theme-surface: #FFFFFF;
+$theme-on-surface: #222222;
+$theme-accent-on-surface: #0016BA;
+$theme-soft-on-surface: rgba($theme-on-surface, 0.5);
+$theme-border-on-surface: rgba($theme-on-surface, 0.15);
 
 // primary theme
-$dream-theme-primary: #0016BA;
-$dream-theme-on-primary: #FFFFFF;
-$dream-theme-accent-on-primary: #B69EED;
-$dream-theme-soft-on-primary: rgba($dream-theme-on-primary, 0.64);
-$dream-theme-border-on-primary: rgba($dream-theme-on-primary, 0.15);
+$theme-primary: #0016BA;
+$theme-on-primary: #FFFFFF;
+$theme-accent-on-primary: #B69EED;
+$theme-soft-on-primary: rgba($theme-on-primary, 0.64);
+$theme-border-on-primary: rgba($theme-on-primary, 0.15);
 
 // secondary theme
-$dream-theme-secondary: #255A7D;
-$dream-theme-on-secondary: #FFFFFF;
-$dream-theme-accent-on-secondary: #8CD4E6;
-$dream-theme-soft-on-secondary: rgba($dream-theme-on-secondary, 0.64);
-$dream-theme-border-on-secondary: rgba($dream-theme-on-secondary, 0.15);
+$theme-secondary: #255A7D;
+$theme-on-secondary: #FFFFFF;
+$theme-accent-on-secondary: #8CD4E6;
+$theme-soft-on-secondary: rgba($theme-on-secondary, 0.64);
+$theme-border-on-secondary: rgba($theme-on-secondary, 0.15);
 
 // registration theme
-$dream-theme-registration: #000000;
-$dream-theme-on-registration: #FFFFFF;
-$dream-theme-accent-on-registration: #B69EED;
-$dream-theme-soft-on-registration: rgba($dream-theme-on-registration, 0.64);
-$dream-theme-border-on-registration: rgba($dream-theme-on-registration, 0.15);
+$theme-registration: #000000;
+$theme-on-registration: #FFFFFF;
+$theme-accent-on-registration: #B69EED;
+$theme-soft-on-registration: rgba($theme-on-registration, 0.64);
+$theme-border-on-registration: rgba($theme-on-registration, 0.15);
 
 // paper theme
-$dream-theme-paper: #FFFFFF;
-$dream-theme-on-paper: #000000;
-$dream-theme-accent-on-paper: #0016BA;
-$dream-theme-soft-on-paper: rgba($dream-theme-on-paper, 0.5);
-$dream-theme-border-on-paper: rgba($dream-theme-on-paper, 0.15);
+$theme-paper: #FFFFFF;
+$theme-on-paper: #000000;
+$theme-accent-on-paper: #0016BA;
+$theme-soft-on-paper: rgba($theme-on-paper, 0.5);
+$theme-border-on-paper: rgba($theme-on-paper, 0.15);
 
 // theme map
-$dream-theme-map: (
-	"background": $dream-theme-background,
-	"on-background": $dream-theme-on-background,
-	"soft-on-background": $dream-theme-soft-on-background,
-	"border-on-background": $dream-theme-border-on-background,
-	"accent-on-background": $dream-theme-accent-on-background,
-	"surface": $dream-theme-surface,
-	"on-surface": $dream-theme-on-surface,
-	"soft-on-surface": $dream-theme-soft-on-surface,
-	"border-on-surface": $dream-theme-border-on-surface,
-	"accent-on-surface": $dream-theme-accent-on-surface,
-	"primary": $dream-theme-primary,
-	"on-primary": $dream-theme-on-primary,
-	"soft-on-primary": $dream-theme-soft-on-primary,
-	"border-on-primary": $dream-theme-border-on-primary,
-	"accent-on-primary": $dream-theme-accent-on-primary,
-	"secondary": $dream-theme-secondary,
-	"on-secondary": $dream-theme-on-secondary,
-	"soft-on-secondary": $dream-theme-soft-on-secondary,
-	"border-on-secondary": $dream-theme-border-on-secondary,
-	"accent-on-secondary": $dream-theme-accent-on-secondary,
-	"registration": $dream-theme-registration,
-	"on-registration": $dream-theme-on-registration,
-	"soft-on-registration": $dream-theme-soft-on-registration,
-	"border-on-registration": $dream-theme-border-on-registration,
-	"accent-on-registration": $dream-theme-accent-on-registration,
-	"paper": $dream-theme-paper,
-	"on-paper": $dream-theme-on-paper,
-	"soft-on-paper": $dream-theme-soft-on-paper,
-	"border-on-paper": $dream-theme-border-on-paper,
-	"accent-on-paper": $dream-theme-accent-on-paper,
+$theme-map: (
+	"background": $theme-background,
+	"on-background": $theme-on-background,
+	"soft-on-background": $theme-soft-on-background,
+	"border-on-background": $theme-border-on-background,
+	"accent-on-background": $theme-accent-on-background,
+	"surface": $theme-surface,
+	"on-surface": $theme-on-surface,
+	"soft-on-surface": $theme-soft-on-surface,
+	"border-on-surface": $theme-border-on-surface,
+	"accent-on-surface": $theme-accent-on-surface,
+	"primary": $theme-primary,
+	"on-primary": $theme-on-primary,
+	"soft-on-primary": $theme-soft-on-primary,
+	"border-on-primary": $theme-border-on-primary,
+	"accent-on-primary": $theme-accent-on-primary,
+	"secondary": $theme-secondary,
+	"on-secondary": $theme-on-secondary,
+	"soft-on-secondary": $theme-soft-on-secondary,
+	"border-on-secondary": $theme-border-on-secondary,
+	"accent-on-secondary": $theme-accent-on-secondary,
+	"registration": $theme-registration,
+	"on-registration": $theme-on-registration,
+	"soft-on-registration": $theme-soft-on-registration,
+	"border-on-registration": $theme-border-on-registration,
+	"accent-on-registration": $theme-accent-on-registration,
+	"paper": $theme-paper,
+	"on-paper": $theme-on-paper,
+	"soft-on-paper": $theme-soft-on-paper,
+	"border-on-paper": $theme-border-on-paper,
+	"accent-on-paper": $theme-accent-on-paper,
 );

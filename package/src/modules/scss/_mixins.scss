@@ -1,33 +1,33 @@
 @use "sass:map";
 @use "sass:list";
-@import "./variables";
-@import "./functions";
+@use "variables";
+@use "functions";
 
-@mixin dream-root-font-size {
-	font-size: $dream-root-font-size;
+@mixin root-font-size {
+	font-size: variables.$root-font-size;
 }
 
-@mixin dream-theme-root-vars {
-	@each $key, $value in $dream-theme-map {
-		@include dream-theme(--dream-theme-#{$key}, $key, false);
+@mixin theme-root-vars {
+	@each $key, $value in variables.$theme-map {
+		@include theme(--theme-#{$key}, $key, false);
 	}
 }
 
-@mixin dream-theme($prop: color, $color: "surface", $has-var: true) {
-	$theme-color: map.get($dream-theme-map, $color);
+@mixin theme($prop: color, $color: "surface", $has-var: true) {
+	$theme-color: map.get(variables.$theme-map, $color);
 
 	#{$prop}: $theme-color;
 
 	@if $has-var {
-		#{$prop}: var(--dream-theme-#{$color}, $theme-color);
+		#{$prop}: var(--theme-#{$color}, $theme-color);
 	}
 }
 
-@mixin dream-font-size($px) {
-	font-size: dream-px-to-rem($px);
+@mixin font-size($px) {
+	font-size: functions.px-to-rem($px);
 }
 
-@mixin dream-flatten-children($horizontal: false, $include-padding: false) {
+@mixin flatten-children($horizontal: false, $include-padding: false) {
 	@if $horizontal {
 
 		> *:first-child {
@@ -65,7 +65,7 @@
 	}
 }
 
-@mixin dream-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
+@mixin flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
 	align-items: $align-items;
 	display: flex;
 	flex-flow: $flex-flow;
@@ -74,14 +74,14 @@
 	min-height: 0;
 }
 
-@mixin dream-inline-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
+@mixin inline-flex($flex-flow: column, $align-items: flex-start, $justify-content: flex-start) {
 	align-items: $align-items;
 	display: inline-flex;
 	flex-flow: $flex-flow;
 	justify-content: $justify-content;
 }
 
-@mixin dream-overlay($position: absolute) {
+@mixin overlay($position: absolute) {
 	position: $position;
 	top: 0;
 	left: 0;
@@ -89,8 +89,8 @@
 	height: 100%;
 }
 
-@mixin dream-respond($device: "mobile") {
-	$device-map: map.get($dream-respond-map, $device);
+@mixin respond($device: "mobile") {
+	$device-map: map.get(variables.$respond-map, $device);
 	$min: map.get($device-map, "min");
 	$max: map.get($device-map, "max");
 
@@ -109,46 +109,46 @@
 	}
 }
 
-@mixin dream-gutter($props: margin, $multiplier: 1) {
-	@include dream-respond("desktop") {
+@mixin gutter($props: margin, $multiplier: 1) {
+	@include respond("desktop") {
 		@each $prop in $props {
-			#{$prop}: $dream-gutter-desktop * $multiplier;
+			#{$prop}: variables.$gutter-desktop * $multiplier;
 		}
 	}
 
-	@include dream-respond("laptop") {
+	@include respond("laptop") {
 		@each $prop in $props {
-			#{$prop}: $dream-gutter-laptop * $multiplier;
+			#{$prop}: variables.$gutter-laptop * $multiplier;
 		}
 	}
 
-	@include dream-respond("tablet") {
+	@include respond("tablet") {
 		@each $prop in $props {
-			#{$prop}: $dream-gutter-tablet * $multiplier;
+			#{$prop}: variables.$gutter-tablet * $multiplier;
 		}
 	}
 
-	@include dream-respond("phone") {
+	@include respond("phone") {
 		@each $prop in $props {
-			#{$prop}: $dream-gutter-phone * $multiplier;
+			#{$prop}: variables.$gutter-phone * $multiplier;
 		}
 	}
 }
 
-@mixin dream-border($prop: border, $size: 1px, $color: "border-on-background") {
-	@include dream-theme(#{$prop}-color, $color);
+@mixin border($prop: border, $size: 1px, $color: "border-on-background") {
+	@include theme(#{$prop}-color, $color);
 
 	#{$prop}-style: solid;
 	#{$prop}-width: #{$size};
 }
 
-@mixin dream-cover-background($position: center) {
+@mixin cover-background($position: center) {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: $position;
 }
 
-@mixin dream-transition(
+@mixin transition(
 	$props: all,
 	$duration: 125ms,
 	$delay: 0ms,
@@ -160,14 +160,14 @@
 	transition-timing-function: $function; /* stylelint-disable-line declaration-block-no-redundant-longhand-properties */
 }
 
-@mixin dream-contain($max-width: $dream-contain-max-width) {
+@mixin contain($max-width: variables.$contain-max-width) {
 	width: 100%;
 	max-width: $max-width;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-@mixin dream-unlist {
+@mixin unlist {
 	display: block;
 	padding: 0;
 	margin: 0;
@@ -178,10 +178,11 @@
 	}
 }
 
-@mixin dream-grid($columns: 1, $gutter: 1, $equal-height: false) {
-	@include dream-gutter(gap, $gutter);
+@mixin grid($columns: 1, $gutter: 1, $equal-height: false) {
 	display: grid;
 	grid-template-columns: repeat($columns, 1fr);
+
+	@include gutter(gap, $gutter);
 
 	@if $equal-height {
 		grid-auto-rows: 1fr;
@@ -192,19 +193,19 @@
 	}
 }
 
-@mixin dream-vertical-list($justify: flex-start, $gutter: 1) {
-	@include dream-unlist;
-	@include dream-flex(column, stretch, $justify);
-	@include dream-gutter(gap, $gutter);
+@mixin vertical-list($justify: flex-start, $gutter: 1) {
+	@include unlist;
+	@include flex(column, stretch, $justify);
+	@include gutter(gap, $gutter);
 }
 
-@mixin dream-horizontal-list($justify: flex-start, $gutter: 1) {
-	@include dream-unlist;
-	@include dream-flex(row wrap, center, $justify);
-	@include dream-gutter(gap, $gutter);
+@mixin horizontal-list($justify: flex-start, $gutter: 1) {
+	@include unlist;
+	@include flex(row wrap, center, $justify);
+	@include gutter(gap, $gutter);
 }
 
-@mixin dream-background-video {
+@mixin background-video {
 	min-width: 100%;
 	min-height: 100%;
 	width: auto;
@@ -218,7 +219,7 @@
 	pointer-events: none;
 }
 
-@mixin dream-unbutton {
+@mixin unbutton {
 	appearance: none;
 	border: 0;
 	padding: 0;
@@ -235,7 +236,7 @@
 	vertical-align: text-bottom;
 }
 
-@mixin dream-screen-reader-only {
+@mixin screen-reader-only {
 	border: 0 !important; /* stylelint-disable-line declaration-no-important */
 	clip: rect(1px, 1px, 1px, 1px) !important; /* stylelint-disable-line declaration-no-important */
 	clip-path: inset(50%) !important; /* stylelint-disable-line declaration-no-important */
@@ -248,7 +249,7 @@
 	word-wrap: normal !important; /* stylelint-disable-line declaration-no-important */
 }
 
-@mixin dream-clearfix {
+@mixin clearfix {
 
 	&::before,
 	&::after {
@@ -259,18 +260,18 @@
 	}
 }
 
-@mixin dream-focus-ring {
-	outline-width: $dream-focus-ring-width;
-	outline-offset: $dream-focus-ring-offset;
+@mixin focus-ring {
+	outline-width: variables.$focus-ring-width;
+	outline-offset: variables.$focus-ring-offset;
 	outline-color: currentcolor;
 	outline-style: solid; /* stylelint-disable-line declaration-block-no-redundant-longhand-properties */
 }
 
-@mixin dream-remove-tap-hightlight {
+@mixin remove-tap-hightlight {
 	-webkit-tap-highlight-color: transparent;
 }
 
-@mixin dream-scrollbar($color: "background", $gutter: 0, $show-track: true) {
+@mixin scrollbar($color: "background", $gutter: 0, $show-track: true) {
 
 	&::-webkit-scrollbar {
 		width: 8px;
@@ -281,26 +282,26 @@
 	}
 
 	&::-webkit-scrollbar-thumb {
-		@include dream-theme(background, "accent-on-#{$color}");
+		@include theme(background, "accent-on-#{$color}");
 		border-radius: 0;
 
 		&:hover {
-			@include dream-theme(background, "accent-on-#{$color}");
+			@include theme(background, "accent-on-#{$color}");
 		}
 	}
 
 	&::-webkit-scrollbar-track {
-		@include dream-gutter(margin, $gutter);
+		@include gutter(margin, $gutter);
 
 		@if $show-track {
-			@include dream-theme(background, "border-on-#{$color}");
+			@include theme(background, "border-on-#{$color}");
 		} @else {
 			background: transparent;
 		}
 	}
 }
 
-@mixin dream-hide-scrollbar {
+@mixin hide-scrollbar {
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 
@@ -309,7 +310,7 @@
 	}
 }
 
-@mixin dream-box-shadow($x: 0, $y: 4px, $blur: 64px, $opacity: 0.1, $inset: false) {
+@mixin box-shadow($x: 0, $y: 4px, $blur: 64px, $opacity: 0.1, $inset: false) {
 	@if $inset {
 		box-shadow: $x $y $blur rgba(0, 0, 0, $opacity) inset;
 	} @else {
@@ -317,12 +318,12 @@
 	}
 }
 
-@mixin dream-ripple {
+@mixin ripple {
 	position: relative;
 
 	&::before {
-		@include dream-overlay(absolute);
-		@include dream-transition(opacity);
+		@include overlay(absolute);
+		@include transition(opacity);
 		content: "";
 		background-color: currentcolor;
 		opacity: 0;
@@ -350,7 +351,7 @@
 	}
 }
 
-@mixin dream-transparency {
+@mixin transparency {
 	background-color: #FFFFFF;
 	background-image:
 		linear-gradient(45deg, #B0B0B0 25%, transparent 25%),
@@ -365,23 +366,23 @@
 		-10px 0;
 }
 
-@mixin dream-placeholder($color: "background") {
+@mixin placeholder($color: "background") {
 
 	&::-webkit-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
-		@include dream-theme(color, "soft-on-#{$color}");
+		@include theme(color, "soft-on-#{$color}");
 	}
 
 	&:-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
-		@include dream-theme(color, "soft-on-#{$color}");
+		@include theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
 	&::-moz-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
-		@include dream-theme(color, "soft-on-#{$color}");
+		@include theme(color, "soft-on-#{$color}");
 		opacity: 1;
 	}
 
 	&:-ms-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
-		@include dream-theme(color, "soft-on-#{$color}");
+		@include theme(color, "soft-on-#{$color}");
 	}
 }
