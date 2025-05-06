@@ -196,9 +196,9 @@ class ThemePackageBuilderPlugin {
 			fs.cpSync(this.composerVendorPath, this.composerVendorBackupPath, { recursive: true, force: true });
 			fs.rmSync(this.composerVendorPath, { recursive: true, force: true });
 		}
-		logger.info('Replacing Composer dependencies...');
+		logger.info('Installing production Composer dependencies...');
 		execSync('composer install --no-dev', { stdio: 'ignore' });
-		logger.info('Replaced Composer dependencies successfully');
+		logger.info('Installed production Composer dependencies successfully');
 	}
 
 	/**
@@ -206,7 +206,7 @@ class ThemePackageBuilderPlugin {
 	 */
 	restoreComposerDeps(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
-		logger.info('Restoring Composer dependencies...');
+		logger.info('Restoring development Composer dependencies...');
 		if (fs.existsSync(this.composerLockBackupPath)) {
 			fs.cpSync(this.composerLockBackupPath, this.composerLockPath, { force: true });
 			fs.rmSync(this.composerLockBackupPath, { force: true });
@@ -218,7 +218,7 @@ class ThemePackageBuilderPlugin {
 		if (fs.readdirSync(this.tmpPath).length < 1) {
 			fs.rmSync(this.tmpPath, { recursive: true, force: true });
 		}
-		logger.info('Restored Composer dependencies successfully');
+		logger.info('Restored development Composer dependencies successfully');
 	}
 
 	/**
