@@ -42,7 +42,7 @@ function wp_theme_copyright() {
 	$copyright_holder = get_option( 'wp_theme_copyright_holder' );
 
 	printf(
-		/* translators: 1: year, 2: url, 2: copyright holder. */
+		/* translators: 1: year, 2: url, 3: copyright holder. */
 		wp_kses_post( __( '&copy; Copyright %1$d <a href="%2$s">%3$s</a>. All rights reserved.', 'wp-theme' ) ),
 		absint( gmdate( 'Y' ) ),
 		esc_url( home_url( '/' ) ),
