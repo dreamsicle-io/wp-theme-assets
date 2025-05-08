@@ -1,12 +1,12 @@
 {
   "name": "wp-theme-assets",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "WP Theme Assets",
   "homepage": "https://github.com/dreamsicle-io/wp-theme-assets",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:dreamsicle-io/wp-theme-assets.git"
+    "url": "https://github.com/dreamsicle-io/wp-theme-assets.git"
   },
   "bugs": {
     "url": "https://github.com/dreamsicle-io/wp-theme-assets/issues"

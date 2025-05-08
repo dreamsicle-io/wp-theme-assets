@@ -6,7 +6,7 @@
 	"description": "Just another WordPress theme.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://git.example.org/wp-theme.git"
+		"url": "https://git.example.org/wp-theme.git"
 	},
 	"keywords": [
 		"accessibility-ready",
