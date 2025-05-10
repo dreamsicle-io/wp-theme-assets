@@ -20,9 +20,9 @@ class WP_Theme_SEO {
 	 * Max Characters
 	 *
 	 * @since 0.0.1
-	 * @var string
+	 * @var int
 	 */
-	public $max_characters = 155;
+	public int $max_characters = 155;
 
 	/**
 	 * Image Size
@@ -30,7 +30,7 @@ class WP_Theme_SEO {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $image_size = 'medium';
+	public string $image_size = 'medium';
 
 	/**
 	 * Init
