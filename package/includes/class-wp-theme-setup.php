@@ -191,7 +191,7 @@ class WP_Theme_Setup {
 		$more = '...';
 		return $more;
 	}
-	
+
 	/**
 	 * Manage Archive Title Prefix
 	 *
