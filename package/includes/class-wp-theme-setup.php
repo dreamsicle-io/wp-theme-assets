@@ -36,7 +36,7 @@ class WP_Theme_Setup {
 		add_filter( 'tiny_mce_before_init', array( $this, 'manage_editor_args' ), 10, 2 );
 		add_filter( 'mce_buttons', array( $this, 'manage_editor_buttons_row_1' ), 10, 2 );
 		add_filter( 'mce_buttons_2', array( $this, 'manage_editor_buttons_row_2' ), 10, 2 );
-		add_filter( 'get_the_archive_title', array( $this, 'manage_archive_title' ), 10, 2 );
+		add_filter( 'get_the_archive_title_prefix', array( $this, 'manage_archive_title_prefix' ), 10 );
 	}
 
 	/**
@@ -190,6 +190,20 @@ class WP_Theme_Setup {
 	public function manage_excerpt_more( string $more ): string {
 		$more = '...';
 		return $more;
+	}
+
+	/**
+	 * Manage Archive Title Prefix
+	 *
+	 * @link https://developer.wordpress.org/reference/hooks/get_the_archive_title_prefix/
+	 * @since 0.0.1
+	 * @param string $prefix The original archive title prefix.
+	 */
+	public function manage_archive_title_prefix( string $prefix ): string {
+		if ( is_author() || is_post_type_archive() ) {
+			$prefix = '';
+		}
+		return $prefix;
 	}
 
 	/**
