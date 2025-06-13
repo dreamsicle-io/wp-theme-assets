@@ -93,6 +93,7 @@ class ThemePackageBuilderPlugin {
 		this.composerVendorBackupPath = path.join(this.tmpPath, 'vendor');
 		this.pkg = this.readPackage();
 		this.phpIgnore = [
+			'**/.git/**',
 			'**/.github/**',
 			'**/.vscode/**',
 			'**/node_modules/**',
@@ -101,6 +102,7 @@ class ThemePackageBuilderPlugin {
 			'**/tmp/**',
 		];
 		this.zipIgnore = [
+			'**/.git/**',
 			'**/.github/**',
 			'**/.vscode/**',
 			'**/node_modules/**',
@@ -336,6 +338,7 @@ const config = {
 			 * These globs must begin with `**`.
 			 * @see https://webpack.js.org/configuration/watch/#watchoptionsignored
 			 */
+			'**/.git/**/*',
 			'**/.github/**/*',
 			'**/.vscode/**/*',
 			'**/build/**/*',
