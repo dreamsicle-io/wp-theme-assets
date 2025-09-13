@@ -10,6 +10,7 @@
 	],
 	"rules": {
 		"color-hex-length": "long",
+		"function-url-quotes": "always",
 		"at-rule-empty-line-before": [
 			"always",
 			{
