@@ -373,6 +373,34 @@ const config = {
 		...(Array.isArray(wpConfig.plugins) ? wpConfig.plugins : []),
 		new ThemePackageBuilderPlugin(),
 	],
+	module: {
+		...((typeof wpConfig.module === 'object') ? wpConfig.module : {}),
+		rules: wpConfig.module?.rules?.map(rule => {
+			if (
+				rule &&
+				(typeof rule === 'object')
+				&& Array.isArray(rule.use)
+				&& rule.use.some(entry => (entry && (typeof entry === "object") && entry.loader?.includes("css-loader")))
+			) {
+				return {
+					...rule,
+					use: rule.use.map(entry => {
+						if (entry && (typeof entry === "object") && entry.loader?.includes("\\css-loader\\")) {
+							return {
+								...entry,
+								options: {
+									...((typeof entry.options === "object") ? entry.options : {}),
+									url: false,
+								}
+							};
+						}
+						return entry;
+					}),
+				};
+			}
+			return rule;
+		}),
+	},
 	entry: {
 		...((typeof wpConfig.entry === 'object') ? wpConfig.entry : {}),
 		'site.min': [
