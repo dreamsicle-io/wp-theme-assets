@@ -53,7 +53,7 @@ jobs:
       - name: Lint
         id: lint
         working-directory: package
-        run: npm run lint
+        run: npm run lint-fail
 
       # Runs a build.
       - name: Build
