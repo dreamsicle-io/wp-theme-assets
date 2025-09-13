@@ -45,6 +45,6 @@
 				"import/named": "off",
 				"import/no-unresolved": "off"
 			}
-  	}
+		}
 	]
 }
