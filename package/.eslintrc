@@ -38,6 +38,13 @@
 			"env": {
 				"node": true
 			}
-		}
+		},
+		{
+			"files": ["*.ts?(x)"],
+			"rules": {
+				"import/named": "off",
+				"import/no-unresolved": "off"
+			}
+  	}
 	]
 }
