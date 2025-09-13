@@ -7,7 +7,6 @@ import webpack from 'webpack'; // eslint-disable-line import/no-extraneous-depen
 import archiver from 'archiver';
 import { glob } from 'glob'; // eslint-disable-line import/no-extraneous-dependencies
 import wpConfig from '@wordpress/scripts/config/webpack.config.js'; 
-import RemoveEmptyScriptsPlugin from 'webpack-remove-empty-scripts';
 
 const themePath = process.cwd();
 
@@ -228,6 +227,9 @@ class ThemePackageBuilderPlugin {
 	 */
 	buildStyleHeader(compiler) {
 		const logger = compiler.getInfrastructureLogger(this.pluginName);
+		/**
+		 * @type {Record<string, string>}
+		 */
 		const data = {
 			'Theme Name': this.pkg.themeName || this.pkg.name || '',
 			'Theme URI': this.pkg.homepage || '',
@@ -258,6 +260,9 @@ class ThemePackageBuilderPlugin {
 		if (Array.isArray(this.pkg.contributors)) {
 			this.pkg.contributors.forEach((contributor) => contributorNames.push(contributor.name));
 		}
+		/**
+		 * @type {Record<string, string>}
+		 */
 		const data = {
 			'Contributors': contributorNames.join(', '),
 			'Version': this.pkg.version,
@@ -366,15 +371,36 @@ const config = {
 	},
 	plugins: [
 		...(Array.isArray(wpConfig.plugins) ? wpConfig.plugins : []),
-		new RemoveEmptyScriptsPlugin({
-			/**
-			 * Process after plugins to still allow wp-scripts to output RTL assets and the asset.php file.
-			 * @see https://www.npmjs.com/package/webpack-remove-empty-scripts#specify-stage-for-properly-work-some-plugins
-			 */
-			stage: RemoveEmptyScriptsPlugin.STAGE_AFTER_PROCESS_PLUGINS,
-		}),
 		new ThemePackageBuilderPlugin(),
 	],
+	module: {
+		...((typeof wpConfig.module === 'object') ? wpConfig.module : {}),
+		rules: wpConfig.module?.rules?.map(rule => {
+			if (
+				rule &&
+				(typeof rule === 'object')
+				&& Array.isArray(rule.use)
+				&& rule.use.some(entry => (entry && (typeof entry === "object") && entry.loader?.split(path.sep).includes("css-loader")))
+			) {
+				return {
+					...rule,
+					use: rule.use.map(entry => {
+						if (entry && (typeof entry === "object") && entry.loader?.split(path.sep).includes("css-loader")) {
+							return {
+								...entry,
+								options: {
+									...((typeof entry.options === "object") ? entry.options : {}),
+									url: false,
+								}
+							};
+						}
+						return entry;
+					}),
+				};
+			}
+			return rule;
+		}),
+	},
 	entry: {
 		...((typeof wpConfig.entry === 'object') ? wpConfig.entry : {}),
 		'site.min': [

@@ -49,7 +49,7 @@ jobs:
       # Runs a build.
       - name: Lint
         id: lint
-        run: npm run lint
+        run: npm run lint-fail
 
       # Runs a build.
       - name: Build
