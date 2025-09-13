@@ -380,12 +380,12 @@ const config = {
 				rule &&
 				(typeof rule === 'object')
 				&& Array.isArray(rule.use)
-				&& rule.use.some(entry => (entry && (typeof entry === "object") && entry.loader?.includes("css-loader")))
+				&& rule.use.some(entry => (entry && (typeof entry === "object") && entry.loader?.split(path.sep).includes("css-loader")))
 			) {
 				return {
 					...rule,
 					use: rule.use.map(entry => {
-						if (entry && (typeof entry === "object") && entry.loader?.includes("\\css-loader\\")) {
+						if (entry && (typeof entry === "object") && entry.loader?.split(path.sep).includes("css-loader")) {
 							return {
 								...entry,
 								options: {
