@@ -3,7 +3,7 @@
 		"editor.defaultFormatter": "wongjn.php-sniffer",
 		"editor.formatOnSave": true
 	},
-	"[javascript][typescript][javascriptreact][typescriptreact]": {
+	"[javascript][typescript][javascriptreact][typescriptreact][json]": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit"
 		}
@@ -15,10 +15,19 @@
 	},
 	"files.insertFinalNewline": true,
 	"files.eol": "\n",
-	"eslint.validate": ["js", "jsx", "ts", "tsx", "mjs"],
 	"eslint.enable": true,
+	"eslint.probe": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"json",
+	],
 	"stylelint.enable": true,
-	"stylelint.validate": ["scss", "css"],
+	"stylelint.validate": [
+		"css",
+		"scss",
+	],
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,
 	"phpSniffer.onTypeDelay": 500,
