@@ -14,13 +14,19 @@ $gutter-tablet: 18px;
 $gutter-laptop: 20px;
 $gutter-desktop: 22px;
 
+// admin bar height
+$admin-bar-height-mobile: 46px;
+$admin-bar-height-desktop: 32px;
+
 // respond
-$respond-phone-max: 640px;
-$respond-tablet-min: 640.001px;
-$respond-tablet-max: 1024px;
-$respond-laptop-min: 1024.001px;
-$respond-laptop-max: 1280px;
-$respond-desktop-min: 1280.001px;
+$respond-phone-max: 639.99999px;
+$respond-tablet-min: 640px;
+$respond-tablet-max: 1023.99999px;
+$respond-laptop-min: 1024px;
+$respond-laptop-max: 1279.99999px;
+$respond-desktop-min: 1280px;
+$respond-admin-bar-desktop-min: 783px;
+$respond-admin-bar-mobile-max: 782.99999px;
 
 // respond map
 $respond-map: (
@@ -31,6 +37,8 @@ $respond-map: (
 	"mobile": ("max": $respond-tablet-max),
 	"tablet-up": ("min": $respond-tablet-min),
 	"non-mobile": ("min": $respond-laptop-min),
+	"admin-bar-mobile": ("max": $respond-admin-bar-mobile-max),
+	"admin-bar-desktop": ("min": $respond-admin-bar-desktop-min),
 );
 
 // background theme
