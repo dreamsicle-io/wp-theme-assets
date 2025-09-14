@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "sass:map";
 @use "sass:list";
 @use "variables";
@@ -109,28 +110,30 @@
 	}
 }
 
-@mixin gutter($props: margin, $multiplier: 1) {
-	@include respond("desktop") {
+@mixin gutter($props, $multiplier: 1) {
+	// Because this rule applies a top-level rule, and nested rules, use `& {}`
+	// on the top-level rule in order to level out the specificity.
+	& {
 		@each $prop in $props {
-			#{$prop}: variables.$gutter-desktop * $multiplier;
+			#{$prop}: variables.$gutter-phone * $multiplier;
 		}
 	}
 
-	@include respond("laptop") {
-		@each $prop in $props {
-			#{$prop}: variables.$gutter-laptop * $multiplier;
-		}
-	}
-
-	@include respond("tablet") {
+	@include respond("tablet-up") {
 		@each $prop in $props {
 			#{$prop}: variables.$gutter-tablet * $multiplier;
 		}
 	}
 
-	@include respond("phone") {
+	@include respond("non-mobile") {
 		@each $prop in $props {
-			#{$prop}: variables.$gutter-phone * $multiplier;
+			#{$prop}: variables.$gutter-laptop * $multiplier;
+		}
+	}
+
+	@include respond("desktop") {
+		@each $prop in $props {
+			#{$prop}: variables.$gutter-desktop * $multiplier;
 		}
 	}
 }
@@ -366,6 +369,13 @@
 		-10px 0;
 }
 
+@mixin inherit-font {
+	font: inherit;
+	line-height: inherit;
+	text-transform: inherit;
+	letter-spacing: inherit;
+}
+
 @mixin placeholder($color: "background") {
 
 	&::-webkit-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
@@ -384,5 +394,49 @@
 
 	&:-ms-input-placeholder { /* stylelint-disable-line selector-no-vendor-prefix */
 		@include theme(color, "soft-on-#{$color}");
+	}
+}
+
+@mixin plus-admin-bar($prop, $value) {
+	@if math.is-unitless($value) {
+		// Cannot do calc() with unitless values, so ensure px is present
+		// if the value passed is a plain number like `0`.
+		$value: #{$value}px;
+	}
+
+	// Because this rule applies a top-level rule, and nested rules, use `& {}`
+	// on the top-level rule in order to level out the specificity of both.
+	& {
+		#{$prop}: $value;
+	}
+
+	body.admin-bar & {
+		#{$prop}: calc(#{$value} + #{variables.$admin-bar-height-mobile});
+
+		@include respond('admin-bar-desktop') {
+			#{$prop}: calc(#{$value} + #{variables.$admin-bar-height-desktop});
+		}
+	}
+}
+
+@mixin minus-admin-bar($prop, $value) {
+	@if math.is-unitless($value) {
+		// Cannot do calc() with unitless values, so ensure px is present
+		// if the value passed is a plain number like `0`.
+		$value: #{$value}px;
+	}
+
+	// Because this rule applies a top-level rule, and nested rules, use `& {}`
+	// on the top-level rule in order to level out the specificity of both.
+	& {
+		#{$prop}: $value;
+	}
+
+	body.admin-bar & {
+		#{$prop}: calc(#{$value} - #{variables.$admin-bar-height-mobile});
+
+		@include respond('admin-bar-desktop') {
+			#{$prop}: calc(#{$value} - #{variables.$admin-bar-height-desktop});
+		}
 	}
 }
