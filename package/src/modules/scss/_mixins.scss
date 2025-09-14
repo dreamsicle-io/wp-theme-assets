@@ -110,7 +110,7 @@
 	}
 }
 
-@mixin gutter($props: margin, $multiplier: 1) {
+@mixin gutter($props, $multiplier: 1) {
 	// Because this rule applies a top-level rule, and nested rules, use `& {}`
 	// on the top-level rule in order to level out the specificity.
 	& {
