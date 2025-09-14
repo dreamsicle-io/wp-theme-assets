@@ -111,27 +111,29 @@
 }
 
 @mixin gutter($props: margin, $multiplier: 1) {
-	@include respond("desktop") {
+	// Because this rule applies a top-level rule, and nested rules, use `& {}`
+	// on the top-level rule in order to level out the specificity.
+	& {
 		@each $prop in $props {
-			#{$prop}: variables.$gutter-desktop * $multiplier;
+			#{$prop}: variables.$gutter-phone * $multiplier;
 		}
 	}
 
-	@include respond("laptop") {
-		@each $prop in $props {
-			#{$prop}: variables.$gutter-laptop * $multiplier;
-		}
-	}
-
-	@include respond("tablet") {
+	@include respond("tablet-up") {
 		@each $prop in $props {
 			#{$prop}: variables.$gutter-tablet * $multiplier;
 		}
 	}
 
-	@include respond("phone") {
+	@include respond("non-mobile") {
 		@each $prop in $props {
-			#{$prop}: variables.$gutter-phone * $multiplier;
+			#{$prop}: variables.$gutter-laptop * $multiplier;
+		}
+	}
+
+	@include respond("desktop") {
+		@each $prop in $props {
+			#{$prop}: variables.$gutter-desktop * $multiplier;
 		}
 	}
 }

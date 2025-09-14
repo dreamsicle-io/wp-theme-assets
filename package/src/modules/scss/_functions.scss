@@ -8,3 +8,7 @@
 @function column-width($columns) {
 	@return math.div(100%, $columns);
 }
+
+@function is-important($rule, $is-important: false) {
+	@return if($is-important, $rule !important, $rule);
+}
