@@ -15,18 +15,21 @@
 	},
 	"files.insertFinalNewline": true,
 	"files.eol": "\n",
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
 	"eslint.enable": true,
 	"eslint.probe": [
 		"javascript",
 		"javascriptreact",
 		"typescript",
 		"typescriptreact",
-		"json",
+		"json"
 	],
 	"stylelint.enable": true,
 	"stylelint.validate": [
 		"css",
-		"scss",
+		"scss"
 	],
 	"phpSniffer.run": "onType",
 	"phpSniffer.autoDetect": true,

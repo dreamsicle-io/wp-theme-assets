@@ -16,6 +16,7 @@
 	"rules": {
 		"indent": ["error", "tab"],
 		"eol-last": ["error", "always"],
+		"curly": ["error", "multi-line"],
 		"no-console": [
 			"error",
 			{
