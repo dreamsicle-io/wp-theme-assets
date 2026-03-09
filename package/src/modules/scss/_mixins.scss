@@ -398,7 +398,7 @@
 }
 
 @mixin plus-admin-bar($prop, $value) {
-	@if math.is-unitless($value) {
+	@if meta.type-of($value) == 'number' and math.is-unitless($value) {
 		// Cannot do calc() with unitless values, so ensure px is present
 		// if the value passed is a plain number like `0`.
 		$value: #{$value}px;
@@ -420,7 +420,7 @@
 }
 
 @mixin minus-admin-bar($prop, $value) {
-	@if math.is-unitless($value) {
+	@if meta.type-of($value) == 'number' and math.is-unitless($value) {
 		// Cannot do calc() with unitless values, so ensure px is present
 		// if the value passed is a plain number like `0`.
 		$value: #{$value}px;
